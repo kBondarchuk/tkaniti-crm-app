@@ -4,7 +4,7 @@
     <template #toolbar>
       <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
       <UISpacer />
-      <UIButton text="Сохранить" type="basic primary" :class="validateSubmit" @click.prevent="actionsSave" />
+      <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
     </template>
     <!-- /Toolbar -->
 
