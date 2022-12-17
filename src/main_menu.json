@@ -1,0 +1,36 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "name": "Клиенты",
+            "icon": "user friends",
+            "route": "/customers",
+            "access": "customers.view"
+        },
+        {
+            "id": 2,
+            "name": "Товары",
+            "icon": "gifts",
+            "route": "/goods",
+            "access": "cars.view"
+        },
+        {
+            "id": 3,
+            "name": "Заказы",
+            "icon": "shopping cart",
+            "route": "/orders",
+            "access": "cars.view"
+        },
+
+        {
+            "id": 66,
+            "name": "Эквайринг",
+            "icon": "cc visa",
+            "route": "/cashier/transactions",
+            "access": "acquiring",
+            "divider": "top"
+        }
+
+
+    ]
+}

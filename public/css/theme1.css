@@ -1,0 +1,6 @@
+/** CSS Variables **/
+:root {
+    /** primary **/
+    /* --yum-mainmenu-accent-color: rgb(78, 167, 232); */
+    --yum-mainmenu-accent-color: rgb(59 144 206);
+}

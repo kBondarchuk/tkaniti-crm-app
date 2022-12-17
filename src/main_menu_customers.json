@@ -1,0 +1,144 @@
+{
+    "items": [
+        {
+            "id": 1,
+            "name": "Автомобили",
+            "icon": "car",
+            "route": "/cars",
+            "access": "cars.view"
+        },
+        {
+            "id": 2,
+            "name": "Клиенты",
+            "icon": "id card",
+            "route": "/customers",
+            "access": "customers.view"
+        },
+        {
+            "id": 3,
+            "name": "Договоры",
+            "icon": "handshake",
+            "items": [
+                {
+                    "id": 31,
+                    "name": "Выкуп",
+                    "icon": "folder",
+                    "route": "/contracts/lease",
+                    "access": "contracts.view"
+
+                },
+                {
+                    "id": 32,
+                    "name": "Аренда",
+                    "icon": "folder",
+                    "route": "/contracts/rent",
+                    "access": "contracts.view"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Калькулятор",
+            "icon": "calculator",
+            "route": "/calc",
+            "access": "manager"
+        },
+        {
+            "id": 5,
+            "name": "Статистика",
+            "icon": "id chart line",
+            "route": "/statistics",
+            "access": "statistics"
+        },
+        {
+            "id": 6,
+            "name": "Финансы",
+            "icon": "id ruble sign",
+            "route": "",
+            "items": [
+                {
+                    "id": 63,
+                    "name": "Бюджетные заявки",
+                    "icon": "piggy bank",
+                    "route": "/budget/requests",
+                    "access": "budget.view"
+
+                },
+                {
+                    "id": 67,
+                    "name": "Деньги под отчёт",
+                    "icon": "hand holding usd icon",
+                    "route": "/advance/requests",
+                    "access": "budget.view"
+                },
+                {
+                    "id": 64,
+                    "name": "Фин. операции",
+                    "icon": "coins icon",
+                    "route": "/finances/operations",
+                    "access": "operations"
+                },
+                {
+                    "id": 65,
+                    "name": "Отчёты",
+                    "icon": "table",
+                    "route": "/finances/reports",
+                    "access": "reports",
+                    "divider": "top"
+                },
+                {
+                    "id": 66,
+                    "name": "Эквайринг",
+                    "icon": "cc visa",
+                    "route": "/cashier/transactions",
+                    "access": "acquiring",
+                    "divider": "top"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Сервисы",
+            "icon": "star icon",
+            "route": "",
+            "items": [
+                {
+                    "id": 71,
+                    "name": "Фото-отчёты",
+                    "icon": "camera",
+                    "route": "/photo_reports",
+                    "access": "photo_reports"
+                },
+                {
+                    "id": 73,
+                    "name": "Уведомления",
+                    "icon": "bullhorn",
+                    "route": "/notifications",
+                    "access": "notifications"
+                },
+                {
+                    "id": 74,
+                    "name": "Заявки на регистрацию",
+                    "icon": "user plus",
+                    "route": "/registrations/requests",
+                    "access": "registration.view"
+                },
+                {
+                    "id": 75,
+                    "name": "ДТП",
+                    "icon": "car crash",
+                    "route": "/dtp",
+                    "access": "manager",
+                    "divider": "top"
+                },
+                {
+                    "id": 76,
+                    "name": "Штрафы",
+                    "icon": "receipt",
+                    "route": "/car_fines",
+                    "access": "manager"
+                }
+            ]
+        }
+    ]
+}

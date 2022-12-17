@@ -1,0 +1,22 @@
+<template>
+  <tr :class="{ warning: item.warnings > 0 }" @click="$emit('eventDetails', item)">
+    <td>{{ item.id }}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.details }}</td>
+    <td>{{ item.bank_details }}</td>
+  </tr>
+</template>
+
+<script>
+export default {
+  name: "CMPrefsCompaniesListItem",
+  components: {},
+  props: {
+    item: {
+      type: Object,
+      default: null,
+    },
+  },
+  emits: ["eventDetails"],
+};
+</script>
