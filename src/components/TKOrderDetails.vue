@@ -13,10 +13,12 @@
     <!--  -->
     <UITableDividerRow />
     <UITableRow name="Дата, время заказа" :value="order.date" type="date" />
+
     <!-- Customer -->
     <UITableDividerRow />
     <UITableRow name="ФИО клиента" :value="order.customer_fio" />
     <UITableRow name="Телефон клиента" :value="order.customer_phone" type="phone" />
+    <UITableRow name="Комментарий клиента" :value="order.notes" />
 
     <UITableDividerRow />
     <!-- delivery_method_id -->
@@ -31,7 +33,7 @@
     <UITableRow name="Метод оплаты" :value="order.payment_method_name" />
 
     <!--  -->
-    <UITableDividerRow />
+    <!-- <UITableDividerRow /> -->
     <UITableRow name="Комментарий" :value="order.notes" />
     <!--  -->
   </UIStaticTable>

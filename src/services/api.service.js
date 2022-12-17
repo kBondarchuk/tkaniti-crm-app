@@ -1564,9 +1564,17 @@ class APIService extends APIServiceCore {
       delivery_method_other: order.delivery_method_other,
       notes: order.notes,
       payment_method_id: parseInt(order.payment_method_id),
-      goods: order.basket,
+      basket: order.basket.map((item) => {
+        return {
+          id: item.id,
+          good_id: item.good_id,
+          good_quantity: item.good_quantity,
+          good_price: item.good_price,
+        };
+      }),
     };
 
+    // console.warn("[parseOrder]: ", params.basket);
     return params;
   }
 
