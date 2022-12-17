@@ -1,9 +1,9 @@
 <template>
   <!-- Grid -->
-  <LayoutTwoColumns>
-    <!-- First column -->
-    <TKGoodOrders v-if="good.id" :good-id="good.id" />
-  </LayoutTwoColumns>
+  <!-- <LayoutTwoColumns> -->
+  <!-- First column -->
+  <TKGoodOrders v-if="good.id" :good-id="good.id" />
+  <!-- </LayoutTwoColumns> -->
   <!--  -->
 </template>
 

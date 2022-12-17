@@ -9,6 +9,7 @@
         <th>Дата</th>
         <th>Покупатель</th>
         <th class="right aligned">Количество</th>
+        <th class="right aligned">Цена</th>
         <th class="right aligned">Стоимость</th>
       </tr>
     </thead>
@@ -21,6 +22,7 @@
         <td>{{ $filters.date(item.order_date) }}</td>
         <td>{{ item.customer_fio }}</td>
         <td class="right aligned">{{ $filters.money(item.good_quantity) }}</td>
+        <td class="right aligned">{{ $filters.money(item.good_price) }}</td>
         <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
       </tr>
       <!--  -->
