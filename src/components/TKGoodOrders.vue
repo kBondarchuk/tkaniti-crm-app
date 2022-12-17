@@ -16,7 +16,7 @@
     <tbody>
       <!--  -->
       <tr v-for="item in orders" :key="item.id">
-        <td>{{ item.order_id }}</td>
+        <td><TKLinkGood :id="item.order_id" path-name="order_details" />{{ item.order_id }}</td>
         <td><TKOrderStatus :value="item.order_status_id" /></td>
         <td>{{ $filters.date(item.order_date) }}</td>
         <td>{{ item.customer_fio }}</td>
@@ -40,12 +40,14 @@
 <script>
 import apiService from "@/services/api.service.js";
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
+import TKLinkGood from "@/components/TKLink.vue";
 
 export default {
   name: "TKGoodOrders",
 
   components: {
     TKOrderStatus,
+    TKLinkGood,
   },
 
   props: {
