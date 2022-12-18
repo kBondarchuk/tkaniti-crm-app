@@ -28,7 +28,7 @@
       {{ item.quantity }}
     </td>
     <!--  -->
-    <td :title="item.description" v-html="truncate(item.description, 30)"></td>
+    <!-- <td :title="item.description" v-html="$filters.truncate(item.description, 30)"></td> -->
     <!--  -->
     <td :title="item.notes" v-html="$filters.truncate(item.notes, 30)"></td>
     <!--  -->

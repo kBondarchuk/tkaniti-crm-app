@@ -22,8 +22,12 @@
         <td><i class="times circle red large icon" @click.stop="deleteItem(item)"></i></td>
         <td>{{ item.good_id }}</td>
         <td :class="{ deleted: item.delete == 1 }">{{ item.good_name }}</td>
-        <td><UIInputMoney v-model="basket[index].good_quantity" /></td>
-        <td><UIInputMoney v-model="basket[index].good_price" /></td>
+        <td>
+          <UIInputMoney v-model="basket[index].good_quantity" />
+        </td>
+        <td>
+          <UIInputMoney v-model="basket[index].good_price" />
+        </td>
         <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
       </tr>
       <!--  -->
@@ -33,8 +37,8 @@
       <tr>
         <th colspan="5">
           <!-- Buttons -->
-          <UIButton text="Сохранить" @click.prevent="save" />
-          <UIButton text="Отменить" @click.prevent="undo" />
+          <!-- <UIButton text="Сохранить" @click.prevent="save" />
+          <UIButton text="Отменить" @click.prevent="undo" /> -->
           <UIButton text="Добавить товар" @click.prevent="add" />
         </th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
@@ -54,6 +58,7 @@
 
 <script>
 import { toRaw } from "vue";
+import { arrayEquals } from "@/utils/utils.js";
 
 import BrowseGoods from "@/components/BrowseGoods.vue";
 
@@ -69,9 +74,13 @@ export default {
       type: Object,
       default: null,
     },
+    modelValue: {
+      type: Array,
+      default: null,
+    },
   },
 
-  emits: ["basket"],
+  emits: ["update:modelValue", "basket"],
 
   data() {
     return {
@@ -86,16 +95,26 @@ export default {
   },
 
   watch: {
-    order() {
+    modelValue(newVal, oldVal) {
       console.warn("Order changed!");
-
-      this.copyBasket();
+      // console.warn(toRaw(newVal), toRaw(this.basket));
+      // console.warn("arrayEquals: ", arrayEquals(toRaw(newVal), toRaw(this.basket)));
+      if (!arrayEquals(toRaw(newVal), toRaw(this.basket))) {
+        this.copyBasket();
+      }
+    },
+    basket: {
+      handler(val, oldVal) {
+        console.warn("watch basket!");
+        this.$emit("update:modelValue", this.basket);
+      },
+      deep: true,
     },
   },
 
   methods: {
     copyBasket() {
-      this.basket = structuredClone(toRaw(this.order.basket));
+      this.basket = structuredClone(toRaw(this.modelValue));
     },
     deleteItem(item) {
       console.warn("[delete]: ", item.id);

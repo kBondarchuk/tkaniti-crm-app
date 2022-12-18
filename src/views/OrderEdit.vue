@@ -71,7 +71,7 @@
         <!-- second column -->
         <div class="ten wide second column">
           <!-- Список товаров (корзина) -->
-          <TKOrderBasketEdit :order="order" @basket="basketChanged" />
+          <TKOrderBasketEdit v-model="order.basket" :order="order" @basket="basketChanged" />
         </div>
       </div>
     </form>

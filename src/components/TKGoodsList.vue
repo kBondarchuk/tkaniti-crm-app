@@ -59,7 +59,7 @@ export default {
         { id: "code", name: "Артикул", class: "" },
         { id: "price", name: "Цена", class: "right aligned" },
         { id: "quantity", name: "Остаток", class: "right aligned" },
-        { id: "description", name: "Описание", class: "" },
+        // { id: "description", name: "Описание", class: "" },
         { id: "notes", name: "Комментарий", class: "" },
         // { id: "gibdd_valid_number", name: "М", class: "" },
       ],
