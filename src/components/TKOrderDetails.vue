@@ -34,7 +34,7 @@
 
     <!--  -->
     <!-- <UITableDividerRow /> -->
-    <UITableRow name="Комментарий" :value="order.notes" />
+    <!-- <UITableRow name="Комментарий" :value="order.notes" /> -->
     <!--  -->
   </UIStaticTable>
 

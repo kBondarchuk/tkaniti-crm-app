@@ -19,7 +19,7 @@
       <!-- Grid -->
       <div class="ui grid" style="height: 100%">
         <!-- fist column -->
-        <div class="six wide column">
+        <div class="six wide column" style="background-color: #22242605">
           <div class="two fields">
             <!-- ФИО -->
             <UITextfield v-model="order.customer_fio" label="ФИО заказчика" />
@@ -91,6 +91,8 @@ import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 
 import UITextAria from "@/components/UITextAria.vue";
 
+import OrderObject from "@/objects/Order";
+
 export default {
   name: "OrderEdit",
 
@@ -108,9 +110,10 @@ export default {
         subTitle: "Редактирование заказа",
       },
       // model data
-      order: {
-        // company_id: null,
-      },
+      // order: {
+      //   // company_id: null,
+      // },
+      order: Object.assign({}, OrderObject),
       investor: undefined,
       paramId: null,
       isLoading: false,
@@ -156,7 +159,7 @@ export default {
   },
 
   created() {
-    console.log("Created Params.id: " + this.$route.params);
+    console.log("[OrderEdit]: Created Params.id: " + this.$route.params);
     // Get ID from params
     this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
   },
@@ -197,12 +200,13 @@ export default {
       this.order.basket = structuredClone(toRaw(basket));
     },
     actionsSave() {
-      console.log("[SAVE] " + JSON.stringify(this.order));
+      console.log("[OrderEdit]: SAVE " + JSON.stringify(this.order));
+
       if (this.order.id == null) {
-        console.log("create");
+        console.log("[OrderEdit]: create");
         this.create();
       } else {
-        console.log("update");
+        console.log("[OrderEdit]: update");
         this.update();
       }
     },
@@ -250,15 +254,16 @@ export default {
     async create() {
       console.log("[OrderEdit]: Create ", this.order);
       this.isLoading = true;
+
       try {
-        // let result = await apiService.createGood(this.order);
-        this.order = result;
+        let result = await apiService.createOrder(this.order);
         this.$router.push({ name: "order_details", params: { id: result.id } });
       } catch (error) {
-        console.error("!!!! " + error);
+        // console.error("!!!! " + error);
         this.$UIService.showNetworkError(error);
+      } finally {
+        this.isLoading = false;
       }
-      this.isLoading = false;
     },
     async update() {
       console.log("[OrderEdit]: Update ", this.order);

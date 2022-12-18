@@ -1,0 +1,24 @@
+const _order = {
+  id: null,
+  customer_fio: "Пупсик Иван Иванович",
+  customer_id: null,
+  customer_phone: "+79998883322",
+  // date: "2022-12-11 09:40:12",
+  delivery_address: "г. Краснодар",
+  delivery_method_id: null,
+  delivery_method_other: null,
+  payment_method_id: null,
+  payment_status_id: 0,
+  status_id: 0,
+  notes: "",
+  // delivery_method_name: "СДЭК",
+  // goods_count: 1,
+  // order_status_name: "Новый",
+  // payment_method_name: "Оплата картой",
+  // payment_status_name: "Не оплачен",
+  // total_price: "3300.00",
+  // total_quantity: "2.00",
+  basket: [],
+};
+
+export default _order;

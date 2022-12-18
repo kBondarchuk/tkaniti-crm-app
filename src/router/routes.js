@@ -43,12 +43,12 @@ export default [
           },
         ],
       },
-      // {
-      //   path: "new",
-      //   name: "cars_new",
-      //   meta: { ignoreHistory: true },
-      //   component: () => import("@/views/CarsEdit.vue"),
-      // },
+      {
+        path: "new",
+        name: "order_new",
+        meta: { ignoreHistory: true },
+        component: () => import("@/views/OrderEdit.vue"),
+      },
       {
         path: ":id/edit",
         name: "order_edit",

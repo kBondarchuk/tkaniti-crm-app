@@ -4,7 +4,10 @@
     <!--  -->
     <thead>
       <tr>
-        <th>Наименование</th>
+        <th class="center aligned" colspan="4">КОРЗИНА ТОВАРОВ</th>
+      </tr>
+      <tr>
+        <th>Наименование товара</th>
         <th class="">Количество</th>
         <th class="right aligned">Цена</th>
         <th class="right aligned">Стоимость</th>

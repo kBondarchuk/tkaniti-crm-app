@@ -4,7 +4,11 @@
     <!--  -->
     <thead>
       <tr>
-        <th>Наименование</th>
+        <th class="center aligned" colspan="5">КОРЗИНА ТОВАРОВ</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>Наименование товара</th>
         <th class="">Количество</th>
         <th class="">Цена</th>
         <th class="right aligned">Стоимость</th>
@@ -14,7 +18,8 @@
     <tbody>
       <!--  -->
       <tr v-for="(item, index) in basket" :key="item.id">
-        <td>{{ item.good_name }}</td>
+        <td><i class="times circle red large icon" @click.stop="deleteItem(item)"></i></td>
+        <td :class="{ deleted: item.delete == 1 }">{{ item.good_name }}</td>
         <td><UIInputMoney v-model="basket[index].good_quantity" /></td>
         <td><UIInputMoney v-model="basket[index].good_price" /></td>
         <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
@@ -24,28 +29,38 @@
     <!--  -->
     <tfoot>
       <tr>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th colspan="4">
+          <!-- Buttons -->
+          <UIButton text="Сохранить" @click.prevent="save" />
+          <UIButton text="Отменить" @click.prevent="undo" />
+          <UIButton text="Добавить товар" @click.prevent="add" />
+        </th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
       </tr>
     </tfoot>
   </table>
 
-  <!-- Buttons -->
-  <UIButton text="Сохранить" @click.prevent="save" />
-  <UIButton text="Отменить" @click.prevent="undo" />
-
+  <!-- Good Select Browser -->
+  <BrowseGoods
+    :active="modals.browseGoods"
+    :filter-status="[2]"
+    @hide="modals.browseGoods = false"
+    @selected="goodSelected"
+  />
   <!-- e-o-t -->
 </template>
 
 <script>
 import { toRaw } from "vue";
 
+import BrowseGoods from "@/components/BrowseGoods.vue";
+
 export default {
   name: "TKOrderBasketEdit",
 
-  components: {},
+  components: {
+    BrowseGoods,
+  },
 
   props: {
     order: {
@@ -62,6 +77,9 @@ export default {
       basket: [],
       // UI
       isLoading: false,
+      modals: {
+        browseGoods: false,
+      },
     };
   },
 
@@ -77,7 +95,14 @@ export default {
     copyBasket() {
       this.basket = structuredClone(toRaw(this.order.basket));
     },
+    deleteItem(item) {
+      console.warn("[delete]: ", item.id);
+      item.delete = 1;
+    },
 
+    add() {
+      this.modals.browseGoods = !this.modals.browseGoods;
+    },
     save() {
       //
       this.$emit("basket", this.basket);
@@ -86,8 +111,28 @@ export default {
     undo() {
       this.copyBasket();
     },
+    goodSelected(good) {
+      console.warn(good);
+
+      const newGood = {
+        good_uuid: good.uuid,
+        good_id: good.id,
+        good_name: good.name,
+        good_quantity: good.quantity,
+        good_price: good.price,
+      };
+      this.basket.push(newGood);
+
+      this.modals.browseGoods = false;
+    },
   },
 
   // EOF
 };
 </script>
+
+<style scoped>
+.deleted {
+  text-decoration: line-through;
+}
+</style>
