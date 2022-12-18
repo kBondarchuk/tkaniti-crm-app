@@ -248,6 +248,8 @@ export default {
 
       try {
         await apiService.setOrderStatus(order_id, status);
+
+        this.$UIService.showSuccess(`Заказ сменил статус!`);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {
