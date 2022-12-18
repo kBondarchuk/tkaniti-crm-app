@@ -8,8 +8,8 @@
       </tr>
       <tr>
         <th>Наименование товара</th>
-        <th class="">Количество</th>
         <th class="right aligned">Цена</th>
+        <th class="right aligned">Количество</th>
         <th class="right aligned">Стоимость</th>
       </tr>
     </thead>
@@ -17,9 +17,9 @@
     <tbody>
       <!--  -->
       <tr v-for="item in order.basket" :key="item.id">
-        <td><TKLinkGood :id="item.good_id" path-name="goods_details" />{{ item.good_name }}</td>
-        <td>{{ item.good_quantity }}</td>
+        <td><TKLinkGood :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
         <td class="right aligned">{{ $filters.money(item.good_price) }}</td>
+        <td class="right aligned">{{ item.good_quantity }}</td>
         <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
       </tr>
       <!--  -->
@@ -29,7 +29,7 @@
       <tr>
         <th></th>
         <th></th>
-        <th></th>
+        <th class="right aligned text-bold">{{ $filters.money(order.total_quantity) }}</th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
       </tr>
     </tfoot>
