@@ -62,7 +62,7 @@ export default {
         { id: "total_quantity", name: "Кол-во", class: "" },
         { id: "total_price", name: "Стоимость", class: "right aligned" },
         { id: "customer_fio", name: "ФИО", class: "" },
-        { id: "customer_phone", name: "Номер телефона", class: "right aligned" },
+        { id: "customer_phone", name: "Номер телефона", class: "" },
         { id: "notes", name: "Комментарий", class: "" },
         // { id: "gibdd_valid_number", name: "М", class: "" },
       ],

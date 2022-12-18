@@ -27,7 +27,7 @@
       {{ item.customer_fio }}
     </td>
     <!--  -->
-    <td class="right aligned nobr">
+    <td class="nobr">
       {{ $filters.phone(item.customer_phone) }}
     </td>
     <!--  -->
