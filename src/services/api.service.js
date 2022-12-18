@@ -1567,9 +1567,11 @@ class APIService extends APIServiceCore {
       basket: order.basket.map((item) => {
         return {
           id: item.id,
+          good_uuid: item.good_uuid,
           good_id: item.good_id,
           good_quantity: item.good_quantity,
           good_price: item.good_price,
+          delete: item.delete,
         };
       }),
     };
