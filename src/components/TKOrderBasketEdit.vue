@@ -19,7 +19,7 @@
     <tbody>
       <!--  -->
       <tr v-for="(item, index) in basket" :key="item.id">
-        <td><i class="times circle red large icon" @click.stop="deleteItem(item)"></i></td>
+        <td><i class="trash alternate red large icon" title="Удалить товар" @click.stop="deleteItem(item)"></i></td>
         <td>{{ item.good_id }}</td>
         <td :class="{ deleted: item.delete == 1 }">{{ item.good_name }}</td>
         <td>
@@ -39,7 +39,7 @@
           <!-- Buttons -->
           <!-- <UIButton text="Сохранить" @click.prevent="save" />
           <UIButton text="Отменить" @click.prevent="undo" /> -->
-          <UIButton text="Добавить товар" @click.prevent="add" />
+          <UIButton text="Добавить товар" icon="cart plus" type="labeled" @click.prevent="add" />
         </th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
       </tr>
@@ -118,7 +118,11 @@ export default {
     },
     deleteItem(item) {
       console.warn("[delete]: ", item.id);
-      item.delete = 1;
+      if (item.delete) {
+        item.delete = 0;
+      } else {
+        item.delete = 1;
+      }
     },
 
     add() {
@@ -136,7 +140,7 @@ export default {
       console.warn(good);
 
       const newGood = {
-        good_uuid: good.uuid,
+        // good_uuid: good.uuid,
         good_id: good.id,
         good_name: good.name,
         good_quantity: good.quantity,
