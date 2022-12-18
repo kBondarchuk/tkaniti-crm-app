@@ -4,10 +4,11 @@
     <!--  -->
     <thead>
       <tr>
-        <th class="center aligned" colspan="5">КОРЗИНА ТОВАРОВ</th>
+        <th class="center aligned" colspan="6">КОРЗИНА ТОВАРОВ</th>
       </tr>
       <tr>
         <th></th>
+        <th>ID</th>
         <th>Наименование товара</th>
         <th class="">Количество</th>
         <th class="">Цена</th>
@@ -19,6 +20,7 @@
       <!--  -->
       <tr v-for="(item, index) in basket" :key="item.id">
         <td><i class="times circle red large icon" @click.stop="deleteItem(item)"></i></td>
+        <td>{{ item.good_id }}</td>
         <td :class="{ deleted: item.delete == 1 }">{{ item.good_name }}</td>
         <td><UIInputMoney v-model="basket[index].good_quantity" /></td>
         <td><UIInputMoney v-model="basket[index].good_price" /></td>
@@ -29,7 +31,7 @@
     <!--  -->
     <tfoot>
       <tr>
-        <th colspan="4">
+        <th colspan="5">
           <!-- Buttons -->
           <UIButton text="Сохранить" @click.prevent="save" />
           <UIButton text="Отменить" @click.prevent="undo" />
