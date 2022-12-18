@@ -135,4 +135,8 @@ export default {
 .deleted {
   text-decoration: line-through;
 }
+
+.icon:hover {
+  cursor: pointer;
+}
 </style>
