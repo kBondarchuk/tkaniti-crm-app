@@ -22,11 +22,13 @@
 
     <!--  -->
     <template #second>
-      <UIStaticTable>
+      <UIStaticTable two-columns>
         <!--  -->
         <!-- <UITableDividerRow /> -->
         <UITableRow name="Цена" :value="good.price" type="money2" align="right" />
-        <UITableRow name="Исходный остаток" :value="good.quantity" align="right" />
+        <UITableDividerRow />
+        <UITableRow name="Исходное количество" :value="good.quantity" align="right" />
+        <UITableRow name="Продано" :value="good.stats?.sold" align="right" />
         <UITableRow name="Текущий остаток" :value="good.stats?.remains" align="right" />
       </UIStaticTable>
     </template>
