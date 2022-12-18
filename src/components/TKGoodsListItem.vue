@@ -30,7 +30,7 @@
     <!--  -->
     <td :title="item.description" v-html="truncate(item.description, 30)"></td>
     <!--  -->
-    <td :title="item.notes" v-html="truncate(item.notes, 30)"></td>
+    <td :title="item.notes" v-html="$filters.truncate(item.notes, 30)"></td>
     <!--  -->
   </tr>
 </template>
@@ -55,11 +55,5 @@ export default {
   },
 
   emits: ["eventDetails"],
-
-  methods: {
-    truncate(str, n) {
-      return str && str.length > n ? str.substr(0, n - 1) + "&hellip;" : str;
-    },
-  },
 };
 </script>

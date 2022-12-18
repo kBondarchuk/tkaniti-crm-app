@@ -31,8 +31,7 @@
       {{ $filters.phone(item.customer_phone) }}
     </td>
     <!--  -->
-    <td>{{ item.notes }}</td>
-    <!-- <td>{{ item.gibdd_valid_number }}</td> -->
+    <td :title="item.notes" v-html="$filters.truncate(item.notes, 30)"></td>
   </tr>
 </template>
 

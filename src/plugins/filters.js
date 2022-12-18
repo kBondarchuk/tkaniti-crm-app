@@ -261,6 +261,10 @@ const _filters = {
     return statuses[value + 1];
   },
 
+  truncate(str, n) {
+    return str && str.length > n ? str.substr(0, n - 1) + "&hellip;" : str;
+  },
+
   //
 };
 
