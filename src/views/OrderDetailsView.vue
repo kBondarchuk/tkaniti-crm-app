@@ -49,6 +49,14 @@
         @click="actionSetStatus(5)"
       />
       <!--  -->
+      <!-- Оплата -->
+      <UIButton
+        :disabled="order.status_id < 1"
+        text="Внести оплату"
+        icon="ruble sign"
+        type="right labeled"
+        @click="actionDeposit"
+      />
       <UISpacer />
       <!-- Всегда? -->
       <UIButton
@@ -225,6 +233,9 @@ export default {
       if (confirmed) {
         this.postSetStatus(this.orderId, status);
       }
+    },
+    actionDeposit() {
+      //
     },
     // Events
 
