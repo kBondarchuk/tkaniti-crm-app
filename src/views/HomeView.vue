@@ -1,12 +1,14 @@
 <template>
   <CMHomeManager v-if="checkAuthRole('manager')" />
   <!-- <CMHomeInvestor v-else-if="checkAuthRole('investor')" /> -->
+  <TKHomeEmpty v-else />
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 
 import CMHomeManager from "@/components/CMHomeManager.vue";
+import TKHomeEmpty from "@/components/TKHomeEmpty.vue";
 // import CMHomeInvestor from "@/components/CMHomeInvestor.vue";
 
 export default {
@@ -14,7 +16,7 @@ export default {
 
   components: {
     CMHomeManager,
-    // CMHomeInvestor,
+    TKHomeEmpty,
   },
 
   mounted() {

@@ -39,7 +39,7 @@
         type="basic labeled"
         text="Изменить"
         icon="edit"
-        :class="{ disabled: !checkAuthRole('cars.edit') }"
+        :class="{ disabled: !checkAuthRole('goods') }"
         @click="edit"
       />
       <!--  -->

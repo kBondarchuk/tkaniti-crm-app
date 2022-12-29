@@ -13,11 +13,11 @@
       <!--  -->
       <!-- <UISpacer /> -->
       <UIButton
-        v-if="checkAuthRole('manager')"
+        v-if="checkAuthRole('customers')"
         type="basic labeled"
         icon="edit"
         text="Изменить"
-        :class="{ disabled: !checkAuthRole('customers.edit') }"
+        :class="{ disabled: !checkAuthRole('customers') }"
         @click="edit"
       />
     </template>

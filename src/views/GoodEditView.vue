@@ -104,17 +104,10 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 
 // import BrowseInvestors from "@/components/BrowseInvestors.vue";
 
-import { plate_number_regx } from "@/utils/regexps";
-import { vin_regx } from "@/utils/regexps";
-import { frame_regx } from "@/utils/regexps";
-import UITextAria from "@/components/UITextAria.vue";
-
 export default {
-  name: "GoodEdit",
+  name: "GoodEditView",
 
-  components: {
-    UITextAria,
-  },
+  components: {},
 
   mixins: [viewMixin],
 

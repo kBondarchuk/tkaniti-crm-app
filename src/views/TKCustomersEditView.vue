@@ -86,7 +86,7 @@ import CustomerObject from "@/objects/Customer";
 // import BrowseCustomers from "@/components/BrowseCustomers.vue";
 
 export default {
-  name: "CMCustomersEdit",
+  name: "CMCustomersEditView",
 
   components: {
     // BrowseCustomers,
@@ -121,7 +121,7 @@ export default {
       };
     },
     isEditable() {
-      return this.checkAuthRole("customers.edit.fio") || !this.customer.id > 0;
+      return this.checkAuthRole("customers") || !this.customer.id > 0;
     },
   },
 

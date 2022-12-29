@@ -15,7 +15,7 @@
       <UISpacer />
       <!-- Add -->
       <UIButton
-        v-if="checkAuthRole('customers.create')"
+        v-if="checkAuthRole('customers')"
         icon="plus"
         type="right labeled"
         text="Новый клиент"

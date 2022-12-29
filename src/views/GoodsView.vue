@@ -13,13 +13,7 @@
       <!--  -->
       <UISpacer />
       <!--  -->
-      <UIButton
-        v-if="checkAuthRole('cars.create')"
-        icon="plus"
-        type="right labeled"
-        text="Новый товар"
-        @click="newGood"
-      />
+      <UIButton v-if="checkAuthRole('goods')" icon="plus" type="right labeled" text="Новый товар" @click="newGood" />
     </template>
     <!-- /Toolbar -->
     <!-- Side Menu -->
