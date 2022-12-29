@@ -1,6 +1,6 @@
 <template>
   <UITableList
-    id="CMOperationsList"
+    :id="$options.name"
     :headers="headers"
     :items-count="list.length"
     :is-loading="isLoading"
@@ -16,7 +16,7 @@
     @paging:last="handlePagingLast"
     @header:sort="handleHeaderSort"
   >
-    <CMOperationsListItem
+    <TKOperationsListItem
       v-for="item in list"
       :key="item.id"
       :item="item"
@@ -35,12 +35,13 @@
 <script>
 import apiService from "@/services/api.service.js";
 import UITableList from "@/components/UITableList.vue";
-import CMOperationsListItem from "@/components/CMOperationsListItem.vue";
+import TKOperationsListItem from "@/components/TKOperationsListItem.vue";
 
 export default {
-  name: "CMOperationsList",
+  name: "TKOperationsList",
+
   components: {
-    CMOperationsListItem,
+    TKOperationsListItem,
     UITableList,
   },
 
@@ -50,11 +51,7 @@ export default {
       default: null,
       validator: function (value) {
         // The value must match one of these strings
-        return (
-          ["contracts", "rent_contracts", "cars", "customers", "branches", "investors", "expenses", "sales"].indexOf(
-            value
-          ) !== -1
-        );
+        return ["orders"].indexOf(value) !== -1;
       },
     },
     operationsSubType: {
@@ -131,11 +128,11 @@ export default {
         { name: "Филиал", id: "branch" },
         { name: "Куда", id: "subject1_type" },
         { name: "Откуда", id: "subject2_type" },
-        { name: "Автор", id: "user" },
+        { name: "Создал", id: "user" },
         { name: "Сумма", class: "right aligned", id: "amount" },
         { name: "Сумма +", class: "right aligned", id: "amount_plus" },
         { name: "Сумма -", class: "right aligned", id: "amount_minus" },
-        { name: "Основание", id: "basis" },
+        { name: "Заказ", id: "basis" },
         { name: "Примечание", id: "notes" },
       ];
 

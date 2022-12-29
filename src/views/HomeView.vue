@@ -1,20 +1,20 @@
 <template>
   <CMHomeManager v-if="checkAuthRole('manager')" />
-  <CMHomeInvestor v-else-if="checkAuthRole('investor')" />
+  <!-- <CMHomeInvestor v-else-if="checkAuthRole('investor')" /> -->
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 
 import CMHomeManager from "@/components/CMHomeManager.vue";
-import CMHomeInvestor from "@/components/CMHomeInvestor.vue";
+// import CMHomeInvestor from "@/components/CMHomeInvestor.vue";
 
 export default {
   name: "HomeView",
 
   components: {
     CMHomeManager,
-    CMHomeInvestor,
+    // CMHomeInvestor,
   },
 
   mounted() {

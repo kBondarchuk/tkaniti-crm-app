@@ -872,8 +872,8 @@ class APIService extends APIServiceCore {
 
     let response = await this.service.get(REQUESTS.OPERATIONS + `/${type}` + _arg + _sub_type, {
       params: {
-        // sort_by: filter.sort_by,
-        // sort_order: filter.sort_order,
+        sort_by: filter.sort_by,
+        sort_order: filter.sort_order,
         page: filter.page,
         per_page: filter.per_page,
       },
@@ -1633,6 +1633,11 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async getOrderAccounts(order_id) {
+    let response = await this.service.get(REQUESTS.ORDERS + "/" + order_id + "/accounts");
+    return response.data.data;
+  }
+
   async createOrder(order) {
     let response = await this.service.post(REQUESTS.ORDERS, this.parseOrder(order));
     return response.data.data;
@@ -1645,6 +1650,15 @@ class APIService extends APIServiceCore {
 
   async deleteCar(id) {
     let response = await this.service.delete(REQUESTS.CARS + "/" + id);
+    return response.data.data;
+  }
+
+  async orderPay(order_id, amount, notes) {
+    const params = {
+      amount: amount,
+      notes: notes,
+    };
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/pay", params);
     return response.data.data;
   }
 

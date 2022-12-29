@@ -7,7 +7,7 @@
     <td>{{ $filters.date(item.date) }}</td>
     <td>
       <!-- {{ item.operation_name }} -->
-      <CMOperationType :type="item.operation_name" />
+      <TKOperationType :type="item.operation_name" />
       <UIBadge v-if="item.amount < 0" text="Сторно" class="background-color-red text-color-white" />
     </td>
     <!-- <td v-if="showBasis">{{ item.category_name }}</td> -->
@@ -49,21 +49,21 @@
       <strong class="nobr">{{ $filters.money(item.amount) }}</strong>
     </td>
     <!--  -->
-    <td v-if="showBasis"><CMLinkBudget :request-id="item.basis_id" /></td>
+    <td v-if="showBasis"><TKLinkOrder :id="item.basis_id" /></td>
     <td>{{ item.notes }}</td>
   </tr>
 </template>
 
 <script>
-import CMOperationType from "@/components/CMOperationType.vue";
-import CMLinkBudget from "@/components/CMLinkBudget.vue";
+import TKOperationType from "@/components/TKOperationType.vue";
+import TKLinkOrder from "@/components/TKLinkOrder.vue";
 import UIBadge from "@/components/UIBadge.vue";
 
 export default {
-  name: "CMOperationsListItem",
+  name: "TKOperationsListItem",
   components: {
-    CMOperationType,
-    CMLinkBudget,
+    TKOperationType,
+    TKLinkOrder,
     UIBadge,
   },
   props: {

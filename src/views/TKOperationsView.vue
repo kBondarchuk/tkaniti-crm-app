@@ -8,31 +8,31 @@
       <UIInputDropdown v-model.number="filter.helper_value" :options="options" @update:model-value="dropDownChanged" />
 
       <!-- Select Car -->
-      <UIInputSelect
+      <!-- <UIInputSelect
         v-if="filter.helper_value == 4"
         placeholder="Автомобиль не выбран"
         :value="selectedCar"
         style="padding-left: 1em; min-width: 22em"
         @button-did-click="browseCars"
-      />
+      /> -->
 
       <!-- Select Investor -->
-      <UIInputSelect
+      <!-- <UIInputSelect
         v-if="filter.helper_value == 6"
         placeholder="Инвестор не выбран"
         :value="selectedInvestor"
         style="padding-left: 1em; min-width: 22em"
         @button-did-click="browseInvestors"
-      />
+      /> -->
 
       <!-- Select Customer -->
-      <UIInputSelect
+      <!-- <UIInputSelect
         v-if="filter.helper_value == 5"
         placeholder="Клиент не выбран"
         :value="selectedCustomer"
         style="padding-left: 1em; min-width: 22em"
         @button-did-click="browseCustomers"
-      />
+      /> -->
 
       <!-- Clear button -->
       <UIButton v-if="[4, 5, 6].includes(filter.helper_value)" icon="close" @click="clearSelection" />
@@ -60,7 +60,7 @@
         style="transition: all 0.2s; transition-timing-function: ease-in"
       >
         <!-- List -->
-        <CMOperationsList
+        <TKOperationsList
           :operations-type="filter.operations_type"
           :operations-subject-id="filter.operations_subject_id"
           :show-general="filter.show_general"
@@ -93,27 +93,6 @@
         />
       </div> -->
     </div>
-    <!-- Cars Browser -->
-    <BrowseCars
-      :active="modals.browseCars"
-      :filter-status="[0, 1, 2, 3, 4, 5, 6]"
-      @hide="modals.browseCars = false"
-      @selected="carSelected"
-    />
-    <!------->
-    <!-- Investors Browser -->
-    <BrowseInvestors
-      :active="modals.browseInvestors"
-      @hide="modals.browseInvestors = false"
-      @selected="investorSelected"
-    />
-    <!------->
-    <!-- Customers Browser -->
-    <BrowseCustomers
-      :active="modals.browseCustomers"
-      @hide="modals.browseCustomers = false"
-      @selected="customerSelected"
-    />
     <!------->
   </LayoutPage>
 </template>
@@ -122,26 +101,20 @@
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
-import CMOperationsList from "@/components/CMOperationsList.vue";
-import BrowseCars from "@/components/BrowseCars.vue";
-import BrowseInvestors from "@/components/BrowseInvestors.vue";
-import BrowseCustomers from "@/components/BrowseCustomers.vue";
+import TKOperationsList from "@/components/TKOperationsList.vue";
+// import BrowseCars from "@/components/BrowseCars.vue";
+// import BrowseInvestors from "@/components/BrowseInvestors.vue";
+// import BrowseCustomers from "@/components/BrowseCustomers.vue";
 
 export default {
-  name: "OperationsView",
+  name: "TKOperationsView",
 
   components: {
     LayoutPage,
-    // UIButton,
-    CMOperationsList,
-    // CMExpensesTotalsList,
-    // FormExpense,
-    // UIInputDropdown,
-    // UIInputNumber,
-    // UIInputSelect,
-    BrowseCars,
-    BrowseInvestors,
-    BrowseCustomers,
+    TKOperationsList,
+    // BrowseCars,
+    // BrowseInvestors,
+    // BrowseCustomers,
   },
 
   mixins: [viewMixin],

@@ -1,23 +1,23 @@
 <template>
-  <a v-if="requestId > 0" title="Переход к заявке" class="ui label" @click.stop="go">
-    <!-- :href="'/budget/requests/' + requestId" -->
-    <i class="file alternate outline icon grow"></i><span>{{ requestId }}</span>
+  <a v-if="id > 0" title="Переход к заказу" class="ui label" @click.stop="go">
+    <!-- :href="'/budget/requests/' + id" -->
+    <i class="file alternate outline icon grow"></i><span>{{ id }}</span>
     <!-- style="float: left; line-height: unset" -->
   </a>
 </template>
 
 <script>
 export default {
-  name: "CMLinkBudget",
+  name: "TKLinkOrder",
 
   props: {
-    requestId: {
+    id: {
       type: Number,
       default: null,
     },
     path: {
       type: String,
-      default: "budget_request_details",
+      default: "order_details",
     },
   },
 
@@ -25,7 +25,7 @@ export default {
     go() {
       this.$router.push({
         name: this.path,
-        params: { request_id: this.requestId },
+        params: { id: this.id },
       });
     },
   },

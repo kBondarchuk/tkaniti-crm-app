@@ -141,7 +141,7 @@ export default {
         // good_uuid: good.uuid,
         good_id: good.id,
         good_name: good.name,
-        good_quantity: good.quantity,
+        good_quantity: good.remains,
         good_price: good.price,
       };
       this.basket.push(newGood);

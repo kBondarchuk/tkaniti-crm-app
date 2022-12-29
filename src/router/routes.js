@@ -37,6 +37,11 @@ export default [
             component: () => import("@/components/TKOrderDetailsTab_General.vue"),
           },
           {
+            path: "operations",
+            name: "order_details_operations",
+            component: () => import("@/components/TKOrderDetailsTab_Transactions.vue"),
+          },
+          {
             path: "history",
             name: "order_details_history",
             component: () => import("@/components/TKOrderDetailsTab_History.vue"),
@@ -407,7 +412,7 @@ export default [
       {
         path: "/finances/operations",
         name: "finances_operations",
-        component: () => import("@/views/OperationsView.vue"),
+        component: () => import("@/views/TKOperationsView.vue"),
       },
       // Reports
       {

@@ -25,7 +25,7 @@
     <UIMoneyCell :value="item.price" />
     <!--  -->
     <td class="right aligned">
-      {{ item.quantity }}
+      {{ item.remains }}
     </td>
     <!--  -->
     <!-- <td :title="item.description" v-html="$filters.truncate(item.description, 30)"></td> -->

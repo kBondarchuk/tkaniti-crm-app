@@ -65,7 +65,7 @@ export default {
         { id: null, name: "Все", icon: "folder" },
         { id: 0, name: "Новый", icon: "edit" },
         { id: 1, name: "На складе", icon: "warehouse", label: "" },
-        { id: 2, name: "В продаже", icon: "play" },
+        { id: 2, name: "В продаже", icon: "store" },
         { id: 3, name: "Продано", icon: "thumbs up" },
         // { id: 4, name: "Отправлен", icon: "car" },
         // { id: 5, name: "Получен", icon: "undo alternate" },

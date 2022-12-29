@@ -49,14 +49,7 @@
         @click="actionSetStatus(5)"
       />
       <!--  -->
-      <!-- Оплата -->
-      <UIButton
-        :disabled="order.status_id < 1"
-        text="Внести оплату"
-        icon="ruble sign"
-        type="right labeled"
-        @click="actionDeposit"
-      />
+
       <UISpacer />
       <!-- Всегда? -->
       <UIButton
@@ -88,7 +81,7 @@
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
-      <router-view :order="order" @update="fetchOrder()"></router-view>
+      <router-view :order="order" @update="refetchOrder()"></router-view>
     </div>
 
     <!------->
@@ -101,6 +94,7 @@ import apiService from "@/services/api.service.js";
 
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
+  { name: "РАСЧЕТЫ", id: "operations" },
   { name: "ИСТОРИЯ", id: "history" },
 ];
 
@@ -234,10 +228,10 @@ export default {
         this.postSetStatus(this.orderId, status);
       }
     },
-    actionDeposit() {
-      //
-    },
     // Events
+    refetchOrder() {
+      this.fetchOrder(this.orderId);
+    },
 
     // Networking
     async fetchOrder(order_id) {

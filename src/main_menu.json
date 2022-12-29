@@ -29,6 +29,31 @@
             "route": "/cashier/transactions",
             "access": "acquiring",
             "divider": "top"
+        },
+
+        {
+            "id": 6,
+            "name": "Финансы",
+            "icon": "id ruble sign",
+            "route": "",
+            "items": [
+
+                {
+                    "id": 64,
+                    "name": "Фин. операции",
+                    "icon": "coins icon",
+                    "route": "/finances/operations",
+                    "access": "operations"
+                },
+                {
+                    "id": 66,
+                    "name": "Эквайринг",
+                    "icon": "cc visa",
+                    "route": "/cashier/transactions",
+                    "access": "acquiring",
+                    "divider": "top"
+                }
+            ]
         }
 
 

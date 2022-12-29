@@ -4,12 +4,13 @@
     <!--  -->
     <thead>
       <tr>
-        <th class="center aligned" colspan="4">КОРЗИНА ТОВАРОВ</th>
+        <th class="center aligned" colspan="5">КОРЗИНА ТОВАРОВ</th>
       </tr>
       <tr>
         <th>Наименование товара</th>
-        <th class="right aligned">Цена</th>
+        <th class="right aligned">Остатки</th>
         <th class="right aligned">Количество</th>
+        <th class="right aligned">Цена</th>
         <th class="right aligned">Стоимость</th>
       </tr>
     </thead>
@@ -18,15 +19,17 @@
       <!--  -->
       <tr v-for="item in order.basket" :key="item.id">
         <td><TKLinkGood :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
-        <td class="right aligned">{{ $filters.money(item.good_price) }}</td>
+        <td class="right aligned">{{ item.remains }}</td>
         <td class="right aligned">{{ item.good_quantity }}</td>
-        <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
+        <UIMoneyCell :value="item.good_price" />
+        <UIMoneyCell :value="item.good_total_price" />
       </tr>
       <!--  -->
     </tbody>
     <!--  -->
     <tfoot>
       <tr>
+        <th></th>
         <th></th>
         <th></th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_quantity) }}</th>

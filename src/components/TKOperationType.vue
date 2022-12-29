@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "CMOperationType",
+  name: "TKOperationType",
   props: {
     type: {
       type: String,
@@ -17,6 +17,11 @@ export default {
   data() {
     return {
       colors: {
+        "Op.OrderPayment": {
+          color: "green",
+          icon: "check",
+          name: "Оплата наличными",
+        },
         "contract_leasing.ChargeDebt": {
           color: "yellow",
           icon: "dollar sign",
