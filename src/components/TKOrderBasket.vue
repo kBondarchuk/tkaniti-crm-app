@@ -31,8 +31,8 @@
       <tr>
         <th></th>
         <th></th>
-        <th></th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_quantity) }}</th>
+        <th></th>
         <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
       </tr>
     </tfoot>
