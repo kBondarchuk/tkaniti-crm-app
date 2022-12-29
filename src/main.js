@@ -8,6 +8,8 @@ import GlobalComponents from "@/global_components";
 import UIService from "./plugins/UIService";
 import UIFilters from "./plugins/filters";
 import APIService from "./services/api.service.js";
+import UIComponents from "@kbond/vue-ui";
+import "@kbond/vue-ui/dist/style.css";
 
 // create store and router instances
 const router = createRouter();
@@ -23,7 +25,8 @@ app.use(router);
 app.use(UIService, { app_name: store.state.appName });
 // UI Filters
 app.use(UIFilters);
-
+// UI Components
+app.use(UIComponents);
 // Register global components
 GlobalComponents.register(app);
 

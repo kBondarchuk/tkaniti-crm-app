@@ -140,123 +140,123 @@ export default [
     ],
   },
 
-  {
-    path: "/contracts/lease",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "contracts",
-        component: () => import("@/views/ContractsLeasingView.vue"),
-      },
-      {
-        path: "new",
-        name: "new_contract",
-        component: () => import("@/views/NewContract.vue"),
-      },
-      {
-        path: ":id",
-        name: "contract_details",
-        props: (route) => ({ contract_id: Number(route.params.id), tab_name: route.params.tab_name }),
-        component: () => import("@/views/ContractDetails.vue"),
-        redirect: {
-          name: "contract_details_general",
-        },
-        children: [
-          {
-            path: "general",
-            name: "contract_details_general",
-            component: () => import("@/components/CMContractDetailsTab_General.vue"),
-          },
-          {
-            path: "accounts",
-            name: "contract_details_accounts",
-            component: () => import("@/components/CMContractDetailsTab_Accounts.vue"),
-          },
-          {
-            path: "schedule",
-            name: "contract_details_schedule",
-            component: () => import("@/components/CMContractDetailsTab_Schedule.vue"),
-          },
-          {
-            path: "history",
-            name: "contract_details_history",
-            component: () => import("@/components/CMContractDetailsTab_History.vue"),
-          },
-          {
-            path: "options",
-            name: "contract_details_options",
-            component: () => import("@/components/CMContractDetailsTab_Options.vue"),
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   path: "/contracts/lease",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "contracts",
+  //       component: () => import("@/views/ContractsLeasingView.vue"),
+  //     },
+  //     {
+  //       path: "new",
+  //       name: "new_contract",
+  //       component: () => import("@/views/NewContract.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       name: "contract_details",
+  //       props: (route) => ({ contract_id: Number(route.params.id), tab_name: route.params.tab_name }),
+  //       component: () => import("@/views/ContractDetails.vue"),
+  //       redirect: {
+  //         name: "contract_details_general",
+  //       },
+  //       children: [
+  //         {
+  //           path: "general",
+  //           name: "contract_details_general",
+  //           component: () => import("@/components/CMContractDetailsTab_General.vue"),
+  //         },
+  //         {
+  //           path: "accounts",
+  //           name: "contract_details_accounts",
+  //           component: () => import("@/components/CMContractDetailsTab_Accounts.vue"),
+  //         },
+  //         {
+  //           path: "schedule",
+  //           name: "contract_details_schedule",
+  //           component: () => import("@/components/CMContractDetailsTab_Schedule.vue"),
+  //         },
+  //         {
+  //           path: "history",
+  //           name: "contract_details_history",
+  //           component: () => import("@/components/CMContractDetailsTab_History.vue"),
+  //         },
+  //         {
+  //           path: "options",
+  //           name: "contract_details_options",
+  //           component: () => import("@/components/CMContractDetailsTab_Options.vue"),
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   // Rent
-  {
-    path: "/contracts/rent",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "contracts_rent",
-        component: () => import("@/views/ContractsRent.vue"),
-      },
-      {
-        path: "new",
-        name: "new_contract_rent",
-        component: () => import("@/views/NewContractRent.vue"),
-      },
-      {
-        path: ":id",
-        name: "contract_rent_details",
-        props: (route) => ({ contract_id: Number(route.params.id) }),
-        component: () => import("@/views/ContractRentDetails.vue"),
-      },
-    ],
-  },
+  // {
+  //   path: "/contracts/rent",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "contracts_rent",
+  //       component: () => import("@/views/ContractsRent.vue"),
+  //     },
+  //     {
+  //       path: "new",
+  //       name: "new_contract_rent",
+  //       component: () => import("@/views/NewContractRent.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       name: "contract_rent_details",
+  //       props: (route) => ({ contract_id: Number(route.params.id) }),
+  //       component: () => import("@/views/ContractRentDetails.vue"),
+  //     },
+  //   ],
+  // },
 
   // Budget
-  {
-    path: "/budget/requests",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "budget_request_list",
-        component: () => import("@/views/BudgetView.vue"),
-      },
-      {
-        path: "new/:request_type",
-        name: "budget_request_new",
-        props: (route) => ({ car_id: Number(route.query.car_id), request_type: route.params.request_type }),
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/BudgetRequestDetails2.vue"),
-      },
-      {
-        name: "budget_request_details",
-        path: ":request_id",
-        props: (route) => ({ request_id: Number(route.params.request_id) }),
-        component: () => import("@/views/BudgetRequestDetails2.vue"),
-      },
-      {
-        name: "budget_request_new2",
-        path: "v2/new/:request_type",
-        props: (route) => ({ car_id: Number(route.query.car_id), request_type: route.params.request_type }),
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/BudgetRequestDetails2.vue"),
-      },
-      /*
-      {
-        name: "budget_request_details2",
-        path: "v2/:request_id",
-        props: (route) => ({ request_id: Number(route.params.request_id) }),
-        component: () => import("@/views/BudgetRequestDetails2.vue"),
-      },
-      */
-    ],
-  },
+  // {
+  //   path: "/budget/requests",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "budget_request_list",
+  //       component: () => import("@/views/BudgetView.vue"),
+  //     },
+  //     {
+  //       path: "new/:request_type",
+  //       name: "budget_request_new",
+  //       props: (route) => ({ car_id: Number(route.query.car_id), request_type: route.params.request_type }),
+  //       meta: { ignoreHistory: true },
+  //       component: () => import("@/views/BudgetRequestDetails2.vue"),
+  //     },
+  //     {
+  //       name: "budget_request_details",
+  //       path: ":request_id",
+  //       props: (route) => ({ request_id: Number(route.params.request_id) }),
+  //       component: () => import("@/views/BudgetRequestDetails2.vue"),
+  //     },
+  //     {
+  //       name: "budget_request_new2",
+  //       path: "v2/new/:request_type",
+  //       props: (route) => ({ car_id: Number(route.query.car_id), request_type: route.params.request_type }),
+  //       meta: { ignoreHistory: true },
+  //       component: () => import("@/views/BudgetRequestDetails2.vue"),
+  //     },
+  //     /*
+  //     {
+  //       name: "budget_request_details2",
+  //       path: "v2/:request_id",
+  //       props: (route) => ({ request_id: Number(route.params.request_id) }),
+  //       component: () => import("@/views/BudgetRequestDetails2.vue"),
+  //     },
+  //     */
+  //   ],
+  // },
 
   // Aquiring
   {
@@ -306,28 +306,28 @@ export default [
   },
 
   // Car fines
-  {
-    path: "/car_fines",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "car_fines",
-        props: (route) => ({
-          termsStatus: Number.isNaN(parseInt(route.query.terms)) ? null : Number(route.query.terms),
-          payedStatus: Number.isNaN(parseInt(route.query.payed)) ? null : Number(route.query.payed),
-          carId: Number.isNaN(parseInt(route.query.car_id)) ? null : Number(route.query.car_id),
-        }),
-        component: () => import("@/views/CarFinesView.vue"),
-      },
-      {
-        path: ":id",
-        name: "car_fines_details",
-        props: (route) => ({ fine_id: Number(route.params.id) }),
-        component: () => import("@/views/CarFinesDetails.vue"),
-      },
-    ],
-  },
+  // {
+  //   path: "/car_fines",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "car_fines",
+  //       props: (route) => ({
+  //         termsStatus: Number.isNaN(parseInt(route.query.terms)) ? null : Number(route.query.terms),
+  //         payedStatus: Number.isNaN(parseInt(route.query.payed)) ? null : Number(route.query.payed),
+  //         carId: Number.isNaN(parseInt(route.query.car_id)) ? null : Number(route.query.car_id),
+  //       }),
+  //       component: () => import("@/views/CarFinesView.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       name: "car_fines_details",
+  //       props: (route) => ({ fine_id: Number(route.params.id) }),
+  //       component: () => import("@/views/CarFinesDetails.vue"),
+  //     },
+  //   ],
+  // },
 
   // Car fines
   {
@@ -349,42 +349,42 @@ export default [
   },
 
   // Investors
-  {
-    path: "/investors",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "investors",
-        component: () => import("@/views/InvestorsView.vue"),
-      },
-      {
-        path: ":id",
-        name: "investors_details",
-        props: (route) => ({ investor_id: Number(route.params.id) }),
-        component: () => import("@/views/InvestorsDetails.vue"),
-      },
-    ],
-  },
+  // {
+  //   path: "/investors",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "investors",
+  //       component: () => import("@/views/InvestorsView.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       name: "investors_details",
+  //       props: (route) => ({ investor_id: Number(route.params.id) }),
+  //       component: () => import("@/views/InvestorsDetails.vue"),
+  //     },
+  //   ],
+  // },
 
   // Branches
-  {
-    path: "/branches",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "branches",
-        component: () => import("@/views/BranchesView.vue"),
-      },
-      {
-        path: ":id",
-        name: "branches_details",
-        props: (route) => ({ branch_id: Number(route.params.id) }),
-        component: () => import("@/views/BranchDetails.vue"),
-      },
-    ],
-  },
+  // {
+  //   path: "/branches",
+  //   component: LayoutView,
+  //   children: [
+  //     {
+  //       path: "",
+  //       name: "branches",
+  //       component: () => import("@/views/BranchesView.vue"),
+  //     },
+  //     {
+  //       path: ":id",
+  //       name: "branches_details",
+  //       props: (route) => ({ branch_id: Number(route.params.id) }),
+  //       component: () => import("@/views/BranchDetails.vue"),
+  //     },
+  //   ],
+  // },
 
   // Main
   {
@@ -439,11 +439,11 @@ export default [
         component: () => import("@/views/NotificationsView.vue"),
       },
       //
-      {
-        path: "/dtp",
-        name: "dtp_list",
-        component: () => import("@/views/DTPView.vue"),
-      },
+      // {
+      //   path: "/dtp",
+      //   name: "dtp_list",
+      //   component: () => import("@/views/DTPView.vue"),
+      // },
       //
       {
         path: "/prefs",

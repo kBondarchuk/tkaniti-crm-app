@@ -14,6 +14,7 @@
     "lint-fix": "eslint --fix 'src/**/*.{js,vue}'"
   },
   "dependencies": {
+    "@kbond/vue-ui": "file:../../vue-ui",
     "axios": "^0.21.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "cleave.js": "^1.6.0",
