@@ -8,6 +8,8 @@
       <UITableRow name="Бренд" :value="good.brand" />
       <UITableRow name="Артикул" :value="good.code" />
       <UITableRow name="Описание" :value="good.description" />
+      <!--  -->
+      <UITableDividerRow />
       <UITableRow name="Ширина" :value="good.width" />
       <UITableRow name="Состав" :value="good.sostav" />
       <!--  -->
