@@ -133,7 +133,7 @@ export default {
   computed: {
     validateEdit() {
       //
-      return this.checkAuthRole("cars.edit") && [0, 1, 2, 3, 4, 5].includes(this.order.status_id);
+      return this.checkAuthRole("store") && [0, 1, 2, 3, 4, 5].includes(this.order.status_id);
     },
   },
 
