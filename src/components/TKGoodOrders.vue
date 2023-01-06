@@ -1,40 +1,25 @@
 <template>
   <!-- Orders -->
-  <table class="ui very compact small table" :class="{ loading: isLoading }">
+  <UITableList
+    id="$options.name"
+    :headers="headers"
+    :items-count="orders.length"
+    :is-loading="isLoading"
+    no-sort
+    bordered
+  >
     <!--  -->
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Статус</th>
-        <th>Дата</th>
-        <th>Покупатель</th>
-        <th class="right aligned">Количество</th>
-        <th class="right aligned">Цена</th>
-        <th class="right aligned">Стоимость</th>
-      </tr>
-    </thead>
+    <tr v-for="item in orders" :key="item.id" @click="go('order_details', item.order_id)">
+      <td>{{ item.order_id }}</td>
+      <td><TKOrderStatus :value="item.order_status_id" /></td>
+      <td>{{ $filters.date(item.order_date) }}</td>
+      <td>{{ item.customer_fio }}</td>
+      <td class="right aligned">{{ $filters.money(item.good_quantity) }}</td>
+      <td class="right aligned">{{ $filters.money(item.good_price) }}</td>
+      <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
+    </tr>
     <!--  -->
-    <tbody>
-      <!--  -->
-      <tr v-for="item in orders" :key="item.id">
-        <td><TKLinkGood :id="item.order_id" path-name="order_details" />{{ item.order_id }}</td>
-        <td><TKOrderStatus :value="item.order_status_id" /></td>
-        <td>{{ $filters.date(item.order_date) }}</td>
-        <td>{{ item.customer_fio }}</td>
-        <td class="right aligned">{{ $filters.money(item.good_quantity) }}</td>
-        <td class="right aligned">{{ $filters.money(item.good_price) }}</td>
-        <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
-      </tr>
-      <!--  -->
-      <!-- <tr>
-        <td></td>
-        <td></td>
-        <td class="right aligned"></td>
-        <td class="right aligned text-bold">{{ $filters.money(item.total_price) }}</td>
-      </tr> -->
-      <!--  -->
-    </tbody>
-  </table>
+  </UITableList>
 
   <!-- EOT -->
 </template>
@@ -42,14 +27,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
-import TKLinkGood from "@/components/TKLink.vue";
 
 export default {
   name: "TKGoodOrders",
 
   components: {
     TKOrderStatus,
-    TKLinkGood,
   },
 
   props: {
@@ -62,7 +45,16 @@ export default {
   data() {
     return {
       //Model
-      orders: null,
+      headers: [
+        { id: "order_id", name: "ID", class: "" },
+        { id: "order_status_id", name: "Статус", class: "" },
+        { id: "order_date", name: "Дата", class: "" },
+        { id: "customer_fio", name: "Покупатель", class: "" },
+        { id: "good_price", name: "Количество", class: "right aligned" },
+        { id: "good_quantity", name: "Цена", class: "right aligned" },
+        { id: "good_total_price", name: "Стоимость", class: "right aligned" },
+      ],
+      orders: [],
       // UI
       isLoading: false,
     };
@@ -73,6 +65,13 @@ export default {
   },
 
   methods: {
+    go(pathName, id) {
+      this.$router.push({
+        name: pathName,
+        params: { id: id },
+      });
+    },
+    // Networking
     async refetch() {
       this.isLoading = true;
       try {
