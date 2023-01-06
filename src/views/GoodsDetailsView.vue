@@ -4,21 +4,8 @@
     <!-- Back -->
     <template #toolbar>
       <UIButton type="basic labeled" text="Назад" icon="left arrow" @click="back('goods')" />
-
-      <!--  -->
-      <!-- <UISpacer /> -->
-      <!--  -->
-
-      <!-- <UIButton
-        :class="{ disabled: ![0, 1].includes(good.status_id) }"
-        text="Изменить филиал"
-        @click="actionChangeBranch"
-      /> -->
       <!--  -->
       <UISpacer />
-      <!-- Выкуп -->
-
-      <!--  -->
       <!-- Statuses -->
       <div class="ui compact buttons">
         <button class="ui button" :class="{ active: good.status_id == 0 }" @click="actionSetStatus(0)">Новый</button>
