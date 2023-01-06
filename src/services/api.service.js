@@ -1613,6 +1613,18 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async getOrdersForCustomer({ customer_id, filter }) {
+    filter = filter || { sort_by: "id", sort_order: "desc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+    };
+
+    let response = await this.service.get(REQUESTS.ORDERS + "/customer/" + customer_id, { params: params });
+    return response.data.data;
+  }
+
   async getOrdersCount() {
     let response = await this.service.get(REQUESTS.ORDERS + "/count");
     return response.data.data;

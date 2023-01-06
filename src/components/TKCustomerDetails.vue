@@ -18,19 +18,25 @@
 </template>
 
 <script>
-import apiService from "@/services/api.service.js";
+// import apiService from "@/services/api.service.js";
 
 export default {
   name: "TKCustomerDetails",
+
   props: {
     customerId: {
       type: Number,
       default: null,
     },
+    customer: {
+      type: Object,
+      default: null,
+    },
   },
+
   data() {
     return {
-      customer: {},
+      // customer: {},
       referrer: {},
       isLoading: false,
     };
@@ -63,27 +69,27 @@ export default {
     },
   },
 
-  watch: {
-    customerId: {
-      immediate: true,
-      handler(newValue) {
-        if (newValue !== undefined) {
-          this.fetchItem(newValue);
-        }
-      },
-    },
-  },
+  // watch: {
+  //   customerId: {
+  //     immediate: true,
+  //     handler(newValue) {
+  //       if (newValue !== undefined) {
+  //         this.fetchItem(newValue);
+  //       }
+  //     },
+  //   },
+  // },
   methods: {
-    async fetchItem(customer_id) {
-      this.isLoading = true;
-      try {
-        this.customer = await apiService.getCustomer(customer_id);
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    // async fetchItem(customer_id) {
+    //   this.isLoading = true;
+    //   try {
+    //     this.customer = await apiService.getCustomer(customer_id);
+    //   } catch (error) {
+    //     this.$UIService.showNetworkError(error);
+    //   } finally {
+    //     this.isLoading = false;
+    //   }
+    // },
   },
   // mounted() {
   //   if (this.customer_id !== undefined) {
