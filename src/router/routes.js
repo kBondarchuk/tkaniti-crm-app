@@ -129,7 +129,23 @@ export default [
       {
         path: ":id",
         name: "customers_details",
+        props: (route) => ({ customerId: Number(route.params.id), tab_name: route.params.tab_name }),
         component: () => import("@/views/TKCustomersDetailsView.vue"),
+        redirect: {
+          name: "customers_details_general",
+        },
+        children: [
+          {
+            path: "general",
+            name: "customers_details_general",
+            component: () => import("@/components/TKCustomersDetailsTab_General.vue"),
+          },
+          {
+            path: "orders",
+            name: "customers_details_orders",
+            component: () => import("@/components/TKCustomersDetailsTab_Orders.vue"),
+          },
+        ],
       },
       {
         path: ":id/edit",
