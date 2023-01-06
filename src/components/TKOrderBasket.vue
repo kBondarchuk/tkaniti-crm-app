@@ -18,7 +18,7 @@
     <tbody>
       <!--  -->
       <tr v-for="item in order.basket" :key="item.id">
-        <td><TKLinkGood :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
+        <td><TKLink :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
         <td class="right aligned">{{ item.remains }}</td>
         <td class="right aligned">{{ item.good_quantity }}</td>
         <UIMoneyCell :value="item.good_price" />
@@ -42,13 +42,13 @@
 </template>
 
 <script>
-import TKLinkGood from "@/components/TKLink.vue";
+import TKLink from "@/components/TKLink.vue";
 
 export default {
   name: "TKOrderBasket",
 
   components: {
-    TKLinkGood,
+    TKLink,
   },
 
   props: {
