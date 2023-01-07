@@ -20,9 +20,16 @@
       <div class="ui grid" style="height: 100%">
         <!-- fist column -->
         <div class="six wide column" style="background-color: #22242605">
+          <div class="one field">
+            <!-- Customer -->
+            <CUISelectCustomer :customer-id="order.customer_id" @selected="customerSelected" />
+          </div>
+
+          <div class="ui hidden divider"></div>
+
           <div class="two fields">
             <!-- ФИО -->
-            <UITextfield v-model="order.customer_fio" label="ФИО заказчика" />
+            <UITextfield v-model="order.customer_fio" label="ФИО получателя" />
             <!-- Номер телефона -->
             <UIInputPhone v-model="order.customer_phone" label="Номер телефона" />
             <!-- Адрес доставки -->
@@ -90,6 +97,7 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 
 import UITextAria from "@/components/UITextAria.vue";
+import CUISelectCustomer from "@/components/CUISelectCustomer.vue";
 
 import OrderObject from "@/objects/Order";
 
@@ -98,6 +106,7 @@ export default {
 
   components: {
     TKOrderBasketEdit,
+    CUISelectCustomer,
   },
 
   mixins: [viewMixin],
@@ -198,6 +207,15 @@ export default {
     basketChanged(basket) {
       //
       this.order.basket = structuredClone(toRaw(basket));
+    },
+    customerSelected(item) {
+      // console.warn(item);
+      this.order.customer_id = item.id;
+
+      if (this.order.id == null) {
+        this.order.customer_fio = item._fio_full;
+        this.order.customer_phone = item.phone;
+      }
     },
     actionsSave() {
       console.log("[OrderEdit]: SAVE " + JSON.stringify(this.order));
