@@ -8,6 +8,7 @@ const _order = {
   delivery_address: "",
   delivery_method_id: null,
   delivery_method_other: null,
+  delivery_date: null,
   payment_method_id: null,
   payment_status_id: 0,
   status_id: 0,
