@@ -17,12 +17,13 @@
     <!-- Customer -->
     <UITableDividerRow />
     <UITableRow name="Клиент" :value="order.real_customer_fio">
-      <TKLink :id="order.customer_id" path-name="customers_details" />
+      <TKLink v-if="order.customer_id" :id="order.customer_id" path-name="customers_details" />
     </UITableRow>
+
     <!-- Order Customer data -->
     <UITableDividerRow />
-    <UITableRow name="ФИО клиента" :value="order.customer_fio" />
-    <UITableRow name="Телефон клиента" :value="order.customer_phone" type="phone" />
+    <UITableRow name="ФИО получателя" :value="order.customer_fio" />
+    <UITableRow name="Телефон получателя" :value="order.customer_phone" type="phone" />
     <UITableRow name="Комментарий клиента" :value="order.notes" />
 
     <UITableDividerRow />
