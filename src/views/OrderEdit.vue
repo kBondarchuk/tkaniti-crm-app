@@ -65,6 +65,11 @@
             <UITextAria v-model="order.delivery_address" label="Адрес доставки" rows="5" />
           </div>
 
+          <div class="two fields">
+            <!-- Отложенная отправка -->
+            <UIInputDate v-model="order.delivery_date" label="Отложить до" />
+          </div>
+
           <div class="ui hidden divider"></div>
 
           <div class="one field">

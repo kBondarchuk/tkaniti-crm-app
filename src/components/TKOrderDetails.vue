@@ -33,6 +33,8 @@
     <UITableRow v-if="order.delivery_method_other" name="Другой" :value="order.delivery_method_other" />
     <!-- delivery_address -->
     <UITableRow name="Адрес доставки" :value="order.delivery_address" />
+    <!-- Отложенная отправка -->
+    <UITableRow name="Отложить до" :value="order.delivery_date" type="date" />
 
     <!--  -->
     <UITableDividerRow />

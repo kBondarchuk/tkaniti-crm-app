@@ -1562,6 +1562,7 @@ class APIService extends APIServiceCore {
       delivery_address: order.delivery_address,
       delivery_method_id: order.delivery_method_id,
       delivery_method_other: order.delivery_method_other,
+      delivery_date: order.delivery_date,
       notes: order.notes,
       payment_method_id: parseInt(order.payment_method_id),
       basket: order.basket.map((item) => {
