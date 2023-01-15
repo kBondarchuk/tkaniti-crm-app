@@ -28,7 +28,6 @@ import TKGoodsListItem from "@/components/TKGoodsListItem.vue";
 export default {
   name: "TKGoodsList",
   components: {
-    UITableList,
     TKGoodsListItem,
   },
   props: {

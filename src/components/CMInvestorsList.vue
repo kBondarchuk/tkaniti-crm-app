@@ -40,7 +40,6 @@ export default {
   name: "CMInvestorsList",
 
   components: {
-    UITableList,
     CMInvestorsListItem,
   },
 

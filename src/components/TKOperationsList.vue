@@ -41,7 +41,6 @@ export default {
 
   components: {
     TKOperationsListItem,
-    UITableList,
   },
 
   props: {
