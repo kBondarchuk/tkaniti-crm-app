@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td>
+    <td style="vertical-align: baseline">
       {{ name }}
     </td>
     <td :class="valueClass">
