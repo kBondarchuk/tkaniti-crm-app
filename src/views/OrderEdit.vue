@@ -83,7 +83,13 @@
         <!-- second column -->
         <div class="ten wide second column">
           <!-- Список товаров (корзина) -->
-          <TKOrderBasketEdit v-model="order.basket" :order="order" @basket="basketChanged" />
+          <TKOrderBasketEdit
+            v-if="[0].includes(order.status_id)"
+            v-model="order.basket"
+            :order="order"
+            @basket="basketChanged"
+          />
+          <TKOrderBasket v-else :order="order" />
         </div>
       </div>
     </form>
@@ -100,6 +106,7 @@ import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
+import TKOrderBasket from "@/components/TKOrderBasket.vue";
 
 import UITextAria from "@/components/UITextAria.vue";
 import CUISelectCustomer from "@/components/CUISelectCustomer.vue";
@@ -111,6 +118,7 @@ export default {
 
   components: {
     TKOrderBasketEdit,
+    TKOrderBasket,
     CUISelectCustomer,
   },
 

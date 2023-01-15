@@ -114,15 +114,8 @@ export default {
 
   data() {
     return {
-      // Models
+      // Model
       order: {},
-      // Modals
-      // modals: {
-      //   buy: false,
-      //   sell: false,
-      //   changeBranch: false,
-      //   finishService: false,
-      // },
       // View
       view: { title: "Заказ", subTitle: "Детализация заказа" },
       // Tabs
