@@ -34,9 +34,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextAria from "@/components/UITextAria.vue";
-
 const _companyObject = {
   id: null,
   name: "",
@@ -47,10 +44,7 @@ const _companyObject = {
 
 export default {
   name: "ModalCompanyEdit",
-  components: {
-    UIModal,
-    UITextAria,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

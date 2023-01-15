@@ -18,13 +18,10 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMCustomerHistoryList",
-  components: {
-    UITableList,
-  },
+  components: {},
   props: {
     customer_id: {
       type: Number,

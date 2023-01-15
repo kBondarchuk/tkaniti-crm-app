@@ -36,13 +36,9 @@
 </template>
 
 <script>
-import UIContextMenu from "@/components/UIContextMenu.vue";
-
 export default {
   name: "CMDocumentsListItem",
-  components: {
-    UIContextMenu,
-  },
+  components: {},
   props: {
     item: {
       type: Object,

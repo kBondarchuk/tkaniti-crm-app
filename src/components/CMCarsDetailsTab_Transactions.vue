@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import UIButton from "@/components/UIButton.vue";
 import CMExpensesTotalsList from "@/components/CMExpensesTotalsList.vue";
 import CMSalesTotalsList from "@/components/CMSalesTotalsList.vue";
 import CMOperationsList from "@/components/CMOperationsList.vue";
@@ -53,7 +52,6 @@ export default {
   name: "CMCarsDetailsTabTransactions",
 
   components: {
-    UIButton,
     CMExpensesTotalsList,
     CMOperationsList,
     CMSalesTotalsList,

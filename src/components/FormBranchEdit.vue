@@ -30,15 +30,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextfield from "@/components/UITextfield.vue";
-
 export default {
   name: "FormBranchEdit",
-  components: {
-    UIModal,
-    UITextfield,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

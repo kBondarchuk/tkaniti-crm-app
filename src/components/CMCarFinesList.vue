@@ -30,7 +30,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMCarFinesItem from "@/components/CMCarFinesItem.vue";
 import { arrayEquals } from "@/utils/utils.js";
 
@@ -39,7 +38,6 @@ export default {
 
   components: {
     CMCarFinesItem,
-    UITableList,
   },
 
   props: {

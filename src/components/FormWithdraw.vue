@@ -33,13 +33,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
 
 export default {
   name: "FormWithdraw",
 
   components: {
-    UIModal,
   },
 
   props: {

@@ -10,14 +10,10 @@
 </template>
 
 <script>
-import UIBadge from "@/components/UIBadge.vue";
-
 export default {
   name: "CMFineChargeStatus",
 
-  components: {
-    UIBadge,
-  },
+  components: {},
 
   props: {
     charged: {

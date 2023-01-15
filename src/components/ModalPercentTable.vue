@@ -32,8 +32,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-
 const _companyObject = {
   id: null,
   term: null,
@@ -43,9 +41,7 @@ const _companyObject = {
 export default {
   name: "ModalPercentTable",
 
-  components: {
-    UIModal,
-  },
+  components: {},
 
   props: {
     active: {

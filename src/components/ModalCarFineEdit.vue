@@ -109,9 +109,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextAria from "@/components/UITextAria.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
 import CMFinePayStatus from "@/components/CMFinePayStatus.vue";
 import CMFineChargeStatus from "@/components/CMFineChargeStatus.vue";
 import BrowseCars from "@/components/BrowseCars.vue";
@@ -137,9 +134,6 @@ let _carFineObject = {
 export default {
   name: "ModalCarFineEdit",
   components: {
-    UIModal,
-    UITextAria,
-    UIInputSelect,
     CMFinePayStatus,
     CMFineChargeStatus,
     BrowseCars,

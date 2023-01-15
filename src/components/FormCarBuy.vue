@@ -56,21 +56,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-// import UIInputMoney from "@/components/UIInputMoney.vue";
-// import UIInputDate from "@/components/UIInputDate.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "FormCarBuy",
 
-  components: {
-    UIModal,
-    UIInputDropdown,
-    // UITextfield,
-    // UIInputMoney,
-    // UIInputDate,
-  },
+  components: {},
 
   props: {
     active: {

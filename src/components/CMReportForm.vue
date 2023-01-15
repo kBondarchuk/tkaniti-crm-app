@@ -33,17 +33,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 import { getCurrentDate, getCurrentMonthFirstDate, getFirstMonthOfYearDate } from "@/utils/utils.js";
-import UIInputDate from "@/components/UIInputDate.vue";
-import UIButton from "@/components/UIButton.vue";
-import UIInputDropdownMultiple from "@/components/UIInputDropdownMultiple.vue";
 
 export default {
   name: "CMReportForm",
-  components: {
-    UIInputDate,
-    UIButton,
-    UIInputDropdownMultiple,
-  },
+  components: {},
   props: {
     showSave: {
       type: Boolean,

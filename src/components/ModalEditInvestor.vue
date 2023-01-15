@@ -36,7 +36,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIModal from "@/components/UIModal.vue";
 
 const _investorObject = {
   id: null,
@@ -49,9 +48,7 @@ const _investorObject = {
 export default {
   name: "ModalEditInvestor",
 
-  components: {
-    UIModal,
-  },
+  components: {},
 
   model: {
     prop: "active",

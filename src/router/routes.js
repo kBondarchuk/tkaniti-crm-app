@@ -355,12 +355,6 @@ export default [
         name: "registration_requests_list",
         component: () => import("@/views/RegistrationsView.vue"),
       },
-      {
-        name: "registration_request_details",
-        path: ":request_id",
-        props: (route) => ({ request_id: Number(route.params.request_id) }),
-        component: () => import("@/views/RegistrationRequestDetails.vue"),
-      },
     ],
   },
 

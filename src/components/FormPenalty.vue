@@ -29,18 +29,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
-
 export default {
   name: "FormPenalty",
 
-  components: {
-    UIModal,
-    UITextfield,
-    UIInputDate,
-  },
+  components: {},
 
   props: {
     active: {

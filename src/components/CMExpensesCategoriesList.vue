@@ -23,14 +23,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMExpensesCategoriesItem from "@/components/CMExpensesCategoriesItem.vue";
 
 export default {
   name: "CMExpensesCategoriesList",
   components: {
     CMExpensesCategoriesItem,
-    UITableList,
   },
   props: {
     headerStickedAt: {

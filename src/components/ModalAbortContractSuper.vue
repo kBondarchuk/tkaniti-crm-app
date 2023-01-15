@@ -201,16 +201,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "ModalAbortContractSuper",
 
-  components: {
-    UIModal,
-    UIInputDropdown,
-  },
+  components: {},
 
   props: {
     active: {

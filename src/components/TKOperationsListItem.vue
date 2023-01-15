@@ -57,15 +57,15 @@
 <script>
 import TKOperationType from "@/components/TKOperationType.vue";
 import TKLinkOrder from "@/components/TKLinkOrder.vue";
-import UIBadge from "@/components/UIBadge.vue";
 
 export default {
   name: "TKOperationsListItem",
+
   components: {
     TKOperationType,
     TKLinkOrder,
-    UIBadge,
   },
+
   props: {
     item: {
       type: Object,

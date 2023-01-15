@@ -27,14 +27,12 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMTransactionsListItem from "@/components/CMTransactionsListItem.vue";
 
 export default {
   name: "CMTransactionsList",
   components: {
     CMTransactionsListItem,
-    UITableList,
   },
   props: {
     contract_id: {

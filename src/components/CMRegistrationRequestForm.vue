@@ -40,15 +40,9 @@
 import apiService from "@/services/api.service.js";
 // import store from "@/store/store";
 
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "CMRegistrationRequestForm",
-  components: {
-    UITextfield,
-    UIInputDropdown,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

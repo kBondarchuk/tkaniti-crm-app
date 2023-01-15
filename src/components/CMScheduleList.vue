@@ -22,13 +22,10 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMScheduleList",
-  components: {
-    UITableList,
-  },
+  components: {},
   props: {
     price: {
       type: [Number, String],

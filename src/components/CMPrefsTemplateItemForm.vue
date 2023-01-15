@@ -47,12 +47,9 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIInputSelect from "@/components/UIInputSelect.vue";
 
 export default {
   name: "CMPrefsTemplateItemForm",
-
-  components: { UIInputSelect },
 
   props: {
     header: {

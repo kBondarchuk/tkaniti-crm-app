@@ -45,7 +45,6 @@
 import apiService from "@/services/api.service.js";
 import CMPrefsPercentTableitem from "@/components/CMPrefsPercentTableitem.vue";
 import ModalPercentTable from "@/components/ModalPercentTable.vue";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMPrefsPercentTable",
@@ -53,7 +52,6 @@ export default {
   components: {
     CMPrefsPercentTableitem,
     ModalPercentTable,
-    UITableList,
   },
 
   emits: ["eventEdit", "eventDelete"],

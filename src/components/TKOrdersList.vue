@@ -23,14 +23,12 @@
 import apiService from "@/services/api.service.js";
 import { arrayEquals } from "@/utils/utils.js";
 
-import UITableList from "@/components/UITableList.vue";
 import TKOrdersListItem from "@/components/TKOrdersListItem.vue";
 
 export default {
   name: "TKOrdersList",
 
   components: {
-    UITableList,
     TKOrdersListItem,
   },
 

@@ -129,15 +129,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
-
 export default {
   name: "FormAbortContract",
-  components: {
-    UIModal,
-    UIInputMoney,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

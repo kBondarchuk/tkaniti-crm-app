@@ -57,7 +57,6 @@
 import apiService from "@/services/api.service.js";
 
 import FormAddDocument from "@/components/FormAddDocument.vue";
-import UITableList from "@/components/UITableList.vue";
 import CMDocumentsListItem from "@/components/CMDocumentsListItem.vue";
 import CMDocumentsListItemRequired from "@/components/CMDocumentsListItemRequired.vue";
 
@@ -66,7 +65,6 @@ export default {
 
   components: {
     FormAddDocument,
-    UITableList,
     CMDocumentsListItem,
     CMDocumentsListItemRequired,
   },

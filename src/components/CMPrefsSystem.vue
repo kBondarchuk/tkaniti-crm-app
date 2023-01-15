@@ -81,14 +81,10 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-// import UIBadge from "@/components/UIBadge.vue";
-
 export default {
   name: "CMPrefsSystem",
 
-  components: {
-    // UIBadge,
-  },
+  components: {},
 
   data() {
     return {

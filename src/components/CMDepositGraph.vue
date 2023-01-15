@@ -26,7 +26,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMDepositGraphItem from "@/components/CMDepositGraphItem.vue";
 
 export default {
@@ -34,7 +33,6 @@ export default {
 
   components: {
     CMDepositGraphItem,
-    UITableList,
   },
 
   props: {

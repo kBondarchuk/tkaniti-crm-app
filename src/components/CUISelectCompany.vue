@@ -6,14 +6,8 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "CUISelectCompany",
-
-  components: {
-    UIInputDropdown,
-  },
 
   // props: {
   //   filterBranchId: {

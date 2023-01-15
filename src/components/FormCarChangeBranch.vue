@@ -28,15 +28,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "FormCarChangeBranch",
-  components: {
-    UIModal,
-    UIInputDropdown,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

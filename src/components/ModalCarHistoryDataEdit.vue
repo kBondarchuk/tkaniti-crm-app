@@ -42,18 +42,10 @@
 import apiService from "@/services/api.service.js";
 import { getCurrentDate } from "@/utils/utils.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UIInputNumber from "@/components/UIInputNumber.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
-
 export default {
   name: "ModalCarHistoryDataEdit",
 
-  components: {
-    UIModal,
-    UIInputNumber,
-    UIInputDate,
-  },
+  components: {},
 
   props: {
     active: {

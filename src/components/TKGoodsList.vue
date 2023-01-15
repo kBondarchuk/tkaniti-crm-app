@@ -23,7 +23,6 @@
 import apiService from "@/services/api.service.js";
 import { arrayEquals } from "@/utils/utils.js";
 
-import UITableList from "@/components/UITableList.vue";
 import TKGoodsListItem from "@/components/TKGoodsListItem.vue";
 
 export default {

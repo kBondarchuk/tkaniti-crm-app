@@ -38,16 +38,12 @@
 </template>
 
 <script>
-import UIModal from "@/components/UIModal.vue";
 import CMCustomersList from "@/components/TKCustomersList.vue";
-import UITextSearch from "@/components/UITextSearch.vue";
 
 export default {
   name: "BrowseCustomers",
   components: {
-    UIModal,
     CMCustomersList,
-    UITextSearch,
   },
   props: {
     active: {

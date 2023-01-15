@@ -29,17 +29,11 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UITextAria from "@/components/UITextAria.vue";
-// import { Portal } from "@linusborg/vue-simple-portal";
 
 export default {
   name: "CMAdvanceRequestForm",
 
-  components: {
-    UIInputDropdown,
-    UITextAria,
-  },
+  components: {},
 
   props: {
     active: {

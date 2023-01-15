@@ -36,14 +36,12 @@
 </template>
 
 <script>
-import UIMoneyCell from "@/components/UIMoneyCell.vue";
 import TKGoodStatus from "@/components/TKGoodStatus.vue";
 
 export default {
   name: "TKGoodsListItem",
 
   components: {
-    UIMoneyCell,
     TKGoodStatus,
   },
 

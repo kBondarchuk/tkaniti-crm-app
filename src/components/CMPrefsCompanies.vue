@@ -42,18 +42,14 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMPrefsCompaniesListItem from "@/components/CMPrefsCompaniesListItem.vue";
 import ModalCompanyEdit from "@/components/ModalCompanyEdit.vue";
-import UIButton from "@/components/UIButton.vue";
 
 export default {
   name: "CMPrefsCompanies",
   components: {
-    UITableList,
     CMPrefsCompaniesListItem,
     ModalCompanyEdit,
-    UIButton,
   },
   emits: ["eventEdit", "eventDelete"],
   data() {

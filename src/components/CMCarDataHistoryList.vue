@@ -15,13 +15,10 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMCarDataHistoryList",
-  components: {
-    UITableList,
-  },
+  components: {},
   props: {
     car_id: {
       type: Number,

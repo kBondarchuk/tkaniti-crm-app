@@ -23,14 +23,12 @@
 <script>
 // import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
 import TKGoodsList from "@/components/TKGoodsList.vue";
 
 export default {
   name: "BrowseGoods",
 
   components: {
-    UIModal,
     TKGoodsList,
   },
 

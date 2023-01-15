@@ -46,8 +46,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-
 let _payloadObject = {
   amount: "",
   notes: "",
@@ -56,9 +54,7 @@ let _payloadObject = {
 export default {
   name: "ModalHandleInterest",
 
-  components: {
-    UIModal,
-  },
+  components: {},
 
   props: {
     active: {

@@ -48,19 +48,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-
 export default {
   name: "FormAddDocument",
-  components: {
-    UIModal,
-    UITextfield,
-    UIInputSelect,
-    UIInputDropdown,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

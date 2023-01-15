@@ -42,14 +42,15 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMPrefsBranchListItem from "@/components/CMPrefsBranchListItem.vue";
 import FormBranchEdit from "@/components/FormBranchEdit.vue";
-import UIButton from "@/components/UIButton.vue";
 
 export default {
   name: "CMPrefsBranches",
-  components: { UITableList, CMPrefsBranchListItem, FormBranchEdit, UIButton },
+  components: {
+    CMPrefsBranchListItem,
+    FormBranchEdit,
+  },
   emits: ["eventEdit", "eventDelete"],
   data() {
     return {

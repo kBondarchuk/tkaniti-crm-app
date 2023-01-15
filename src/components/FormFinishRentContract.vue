@@ -112,16 +112,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-// import UICheckbox from "@/components/UICheckbox.vue";
-
 export default {
   name: "FormFinishRentContract",
 
-  components: {
-    UIModal,
-    // UICheckbox,
-  },
+  components: {},
 
   props: {
     active: {

@@ -52,14 +52,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-// import UITableList from "@/components/UITableList.vue";
 import UICheckbox from "@/components/UICheckbox.vue";
 
 export default {
   name: "CMCarsDetailsTabPrefs",
 
   components: {
-    // UITableList,
     UICheckbox,
   },
 

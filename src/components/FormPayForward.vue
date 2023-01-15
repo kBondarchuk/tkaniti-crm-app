@@ -171,21 +171,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
-import UIButton from "@/components/UIButton.vue";
-
 export default {
   name: "FormPayForward",
-  components: {
-    UIModal,
-    UITextfield,
-    UIInputDropdown,
-    UIInputMoney,
-    UIButton,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

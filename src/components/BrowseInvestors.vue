@@ -21,13 +21,11 @@
 <script>
 // import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
 import CMInvestorsList from "@/components/CMInvestorsList.vue";
 
 export default {
   name: "BrowseInvestors",
   components: {
-    UIModal,
     CMInvestorsList,
   },
   props: {

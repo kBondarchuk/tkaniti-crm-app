@@ -37,13 +37,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-// import UITableList from "@/components/UITableList.vue";
 import CMRegistrationStagesListItem from "@/components/CMRegistrationStagesListItem.vue";
 
 export default {
   name: "CMRegistrationStagesList",
   components: {
-    // UITableList,
     CMRegistrationStagesListItem,
   },
   props: {

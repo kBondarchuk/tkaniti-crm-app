@@ -24,14 +24,11 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMCarFinesTotalsList",
 
-  components: {
-    UITableList,
-  },
+  components: {},
 
   props: {
     general: {

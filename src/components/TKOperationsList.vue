@@ -34,7 +34,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import TKOperationsListItem from "@/components/TKOperationsListItem.vue";
 
 export default {

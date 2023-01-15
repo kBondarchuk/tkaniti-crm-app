@@ -41,13 +41,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
-
 export default {
   name: "CMExpensesTotalsList",
-  components: {
-    UITableList,
-  },
+  components: {},
   props: {
     investorId: {
       type: Number,

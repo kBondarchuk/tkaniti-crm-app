@@ -63,13 +63,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-
 export default {
   name: "FormFinishContract",
-  components: {
-    UIModal,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

@@ -31,16 +31,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextAria from "@/components/UITextAria.vue";
-// import UIInputMoney from "@/components/UIInputMoney.vue";
-
 export default {
   name: "FormRegistraitionStage",
-  components: {
-    UIModal,
-    UITextAria,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

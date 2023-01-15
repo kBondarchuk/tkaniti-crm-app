@@ -150,12 +150,6 @@ import apiService from "@/services/api.service.js";
 import WPanelContainer from "@/components/WPanelContainer.vue";
 import WPanel from "@/components/WPanel.vue";
 import UIPanelSplash from "@/components/UIPanelSplash.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIButton from "@/components/UIButton.vue";
-import UITextAria from "@/components/UITextAria.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
 import BrowseCustomers from "@/components/BrowseCustomers.vue";
 import CMNotificationReceivers from "@/components/CMNotificationReceivers.vue";
 
@@ -165,13 +159,7 @@ export default {
     WPanelContainer,
     WPanel,
     UIPanelSplash,
-    UITextfield,
-    UIButton,
-    UITextAria,
     CMNotificationReceivers,
-    UIInputDropdown,
-    UIInputSelect,
-    UIInputDate,
     BrowseCustomers,
   },
   props: {

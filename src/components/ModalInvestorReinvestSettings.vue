@@ -83,9 +83,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UISlider from "@/components/UISlider.vue";
-
 // let _payloadObject = {
 //   percent: "50.0",
 //   notes: "",
@@ -94,10 +91,7 @@ import UISlider from "@/components/UISlider.vue";
 export default {
   name: "ModalInvestorReinvestSettings",
 
-  components: {
-    UIModal,
-    UISlider,
-  },
+  components: {},
 
   props: {
     active: {

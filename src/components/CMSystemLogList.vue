@@ -37,16 +37,11 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
-import UIBadge from "@/components/UIBadge.vue";
 
 export default {
   name: "CMSystemLogList",
 
-  components: {
-    UITableList,
-    UIBadge,
-  },
+  components: {},
 
   props: {
     carId: {

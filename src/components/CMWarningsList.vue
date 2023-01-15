@@ -21,14 +21,12 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMWarningsListItem from "@/components/CMWarningsListItem.vue";
 
 export default {
   name: "CMWarningsList",
 
   components: {
-    UITableList,
     CMWarningsListItem,
   },
 

@@ -50,8 +50,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIModal from "@/components/UIModal.vue";
-import UICheckbox from "@/components/UICheckbox.vue";
 
 let _object = {
   check1: false,
@@ -65,10 +63,7 @@ let _object = {
 export default {
   name: "ModalFinishCarService",
 
-  components: {
-    UIModal,
-    UICheckbox,
-  },
+  components: {},
 
   props: {
     active: {

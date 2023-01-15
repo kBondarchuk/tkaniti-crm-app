@@ -177,12 +177,6 @@
 import apiService from "@/services/api.service.js";
 // import store from "@/store/store";
 
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIButton from "@/components/UIButton.vue";
 import BrowseExpenseCategories from "@/components/BrowseExpenseCategories.vue";
 import BrowseCars from "@/components/BrowseCars.vue";
 import UITransition from "@/components/UITransition.vue";
@@ -190,12 +184,6 @@ import UITransition from "@/components/UITransition.vue";
 export default {
   name: "CMBudgetRequestForm",
   components: {
-    UITextfield,
-    UIInputMoney,
-    UIInputDate,
-    UIInputSelect,
-    UIInputDropdown,
-    UIButton,
     BrowseExpenseCategories,
     BrowseCars,
     UITransition,

@@ -77,19 +77,11 @@
 import apiService from "@/services/api.service.js";
 
 import WPanel from "@/components/WPanel.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIButton from "@/components/UIButton.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
 
 export default {
   name: "CMPromoActionIndicators",
   components: {
     WPanel,
-    UITextfield,
-    UIButton,
-    UIInputDropdown,
-    UIInputMoney,
   },
   props: {
     actionId: {

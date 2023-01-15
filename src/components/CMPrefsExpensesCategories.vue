@@ -43,7 +43,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMPrefsExpensesCategoriesListItem from "@/components/CMPrefsExpensesCategoriesListItem.vue";
 import ModalExpenseCategoryEdit from "@/components/ModalExpenseCategoryEdit.vue";
 
@@ -51,7 +50,6 @@ export default {
   name: "CMPrefsExpensesCategories",
 
   components: {
-    UITableList,
     CMPrefsExpensesCategoriesListItem,
     ModalExpenseCategoryEdit,
   },

@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import UIButton from "@/components/UIButton.vue";
 import CMDTPList from "@/components/CMDTPList.vue";
 import FormCarDtpEdit from "@/components/FormCarDtpEdit.vue";
 
@@ -42,7 +41,6 @@ export default {
   name: "CMCarsDetailsTabAccidents",
 
   components: {
-    UIButton,
     CMDTPList,
     FormCarDtpEdit,
   },

@@ -121,15 +121,9 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITextAria from "./UITextAria.vue";
 
 export default {
   name: "CMPrefsUsers",
-  components: { UITextAria },
-  // components: {
-  //   // UITextfield,
-  //   // UITextAria,
-  // },
   data() {
     return {
       users: [],

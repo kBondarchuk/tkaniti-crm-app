@@ -11,14 +11,10 @@
 </template>
 
 <script>
-import UIBadge from "@/components/UIBadge.vue";
-
 export default {
   name: "CMFinePayStatus",
 
-  components: {
-    UIBadge,
-  },
+  components: {},
 
   props: {
     payed: {

@@ -16,7 +16,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
 
 export default {
@@ -24,7 +23,6 @@ export default {
 
   components: {
     TKOrderStatus,
-    UITableList,
   },
 
   props: {

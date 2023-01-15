@@ -104,10 +104,6 @@ import apiService from "@/services/api.service.js";
 
 import WPanel from "@/components/WPanel.vue";
 import WPanelContainer from "@/components/WPanelContainer.vue";
-import UIPanelSplash from "@/components/UIPanelSplash.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIButton from "@/components/UIButton.vue";
 import CMPromoActionRules from "@/components/CMPromoActionRules.vue";
 import CMPromoActionMessage from "@/components/CMPromoActionMessage.vue";
 // import { Fragment } from "vue-fragment";
@@ -119,10 +115,6 @@ export default {
   components: {
     WPanelContainer,
     WPanel,
-    UIPanelSplash,
-    UIInputDate,
-    UITextfield,
-    UIButton,
     CMPromoActionRules,
     CMPromoActionResults,
     CMPromoActionIndicators,

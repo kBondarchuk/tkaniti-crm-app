@@ -29,13 +29,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMSalesListItem from "@/components/CMSalesListItem.vue";
 
 export default {
   name: "CMSalesList",
   components: {
-    UITableList,
     CMSalesListItem,
   },
   props: {

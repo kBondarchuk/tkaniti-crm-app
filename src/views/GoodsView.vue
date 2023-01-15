@@ -35,7 +35,6 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
-import UITextSearch from "@/components/UITextSearch.vue";
 import TKGoodsList from "@/components/TKGoodsList.vue";
 
 export default {
@@ -43,7 +42,6 @@ export default {
 
   components: {
     TKGoodsList,
-    UITextSearch,
     LayoutPage,
   },
 

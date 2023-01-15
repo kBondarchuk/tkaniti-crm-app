@@ -108,7 +108,6 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
 
-import UITextAria from "@/components/UITextAria.vue";
 import CUISelectCustomer from "@/components/CUISelectCustomer.vue";
 
 import OrderObject from "@/objects/Order";

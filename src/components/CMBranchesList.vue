@@ -21,14 +21,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMBranchesListItem from "@/components/CMBranchesListItem.vue";
 
 export default {
   name: "CMBranchesList",
 
   components: {
-    UITableList,
     CMBranchesListItem,
   },
 

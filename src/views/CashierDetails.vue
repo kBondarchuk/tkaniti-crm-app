@@ -39,14 +39,12 @@
 import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import LayoutPage from "@/components/LayoutPage.vue";
-import UIButton from "@/components/UIButton.vue";
 import CMAcquiringTransactionsDetails from "@/components/CMAcquiringTransactionsDetails.vue";
 
 export default {
   name: "CashierDetails",
   components: {
     LayoutPage,
-    UIButton,
     CMAcquiringTransactionsDetails,
   },
   mixins: [viewMixin],

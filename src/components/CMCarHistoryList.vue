@@ -18,13 +18,11 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMCarStatusBadge from "@/components/CMCarStatusBadge.vue";
 
 export default {
   name: "CMCarHistoryList",
   components: {
-    UITableList,
     CMCarStatusBadge,
   },
   props: {

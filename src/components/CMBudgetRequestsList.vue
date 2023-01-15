@@ -27,7 +27,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMBudgetRequestsListItem from "@/components/CMBudgetRequestsListItem.vue";
 
 export default {
@@ -35,7 +34,6 @@ export default {
 
   components: {
     CMBudgetRequestsListItem,
-    UITableList,
   },
 
   props: {

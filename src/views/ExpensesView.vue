@@ -89,25 +89,18 @@
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
-import UIButton from "@/components/UIButton.vue";
 import CMExpensesList from "@/components/CMExpensesList.vue";
 import CMExpensesTotalsList from "@/components/CMExpensesTotalsList.vue";
 // import FormExpense from "@/components/FormExpense.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
 import BrowseCars from "@/components/BrowseCars.vue";
 
 export default {
   name: "ExpensesView",
   components: {
     LayoutPage,
-    UIButton,
     CMExpensesList,
     CMExpensesTotalsList,
     // FormExpense,
-    UIInputDropdown,
-    // UIInputNumber,
-    UIInputSelect,
     BrowseCars,
   },
   mixins: [viewMixin],

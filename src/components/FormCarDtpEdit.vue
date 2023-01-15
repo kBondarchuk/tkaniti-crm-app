@@ -75,9 +75,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextAria from "@/components/UITextAria.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
 import CMPhotoGallery from "@/components/CMPhotoGallery.vue";
 import BrowseCars from "@/components/BrowseCars.vue";
 
@@ -101,10 +98,7 @@ export default {
   name: "FormCarDtpEdit",
 
   components: {
-    UIModal,
-    UITextAria,
     CMPhotoGallery,
-    UIInputSelect,
     BrowseCars,
   },
 

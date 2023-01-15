@@ -29,18 +29,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
-
 export default {
   name: "FormCarSell",
-  components: {
-    UIModal,
-    // UITextfield,
-    UIInputMoney,
-    UIInputDate,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

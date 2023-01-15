@@ -61,18 +61,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-// import UITextfield from "@/components/UITextfield.vue";
-import UIInputMoney from "@/components/UIInputMoney.vue";
-
 export default {
   name: "FormPledgeRentContract",
 
-  components: {
-    UIModal,
-    // UITextfield,
-    UIInputMoney,
-  },
+  components: {},
 
   props: {
     active: {

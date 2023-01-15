@@ -34,7 +34,6 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMInvestorsListItem from "@/components/CMInvestorsListItem.vue";
 
 export default {

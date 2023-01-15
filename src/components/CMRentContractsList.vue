@@ -21,13 +21,11 @@
 import apiService from "@/services/api.service.js";
 import { arrayEquals } from "@/utils/utils.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMRentContractsListItem from "@/components/CMRentContractsListItem.vue";
 
 export default {
   name: "CMRentContractsList",
   components: {
-    UITableList,
     CMRentContractsListItem,
   },
   props: {

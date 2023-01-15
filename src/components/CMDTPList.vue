@@ -19,7 +19,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 import CMDTPListItem from "@/components/CMDTPListItem.vue";
 
 export default {
@@ -27,7 +26,6 @@ export default {
 
   components: {
     CMDTPListItem,
-    UITableList,
   },
 
   props: {

@@ -27,14 +27,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMRegistrationRequestsListItem from "@/components/CMRegistrationRequestsListItem.vue";
 
 export default {
   name: "CMRegistrationRequestsList",
   components: {
     CMRegistrationRequestsListItem,
-    UITableList,
   },
   props: {
     headerStickedAt: {

@@ -26,13 +26,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 import CMAcquiringTransactionsListItem from "@/components/CMAcquiringTransactionsListItem.vue";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMAcquiringTransactionsList",
   components: {
     CMAcquiringTransactionsListItem,
-    UITableList,
   },
   props: {
     filterDate: {

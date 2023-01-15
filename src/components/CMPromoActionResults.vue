@@ -34,7 +34,6 @@
 import apiService from "@/services/api.service.js";
 
 import WPanel from "@/components/WPanel.vue";
-import UIButton from "@/components/UIButton.vue";
 import UIPanelSplash from "@/components/UIPanelSplash.vue";
 
 export default {
@@ -42,7 +41,6 @@ export default {
   components: {
     WPanel,
     UIPanelSplash,
-    UIButton,
   },
   props: {
     actionId: {

@@ -150,7 +150,6 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
-import UIInputDropdownMultiple from "@/components/UIInputDropdownMultiple.vue";
 import CMStatisticsCell from "@/components/CMStatisticsCell.vue";
 import CMStatisticsGraphCell from "@/components/CMStatisticsGraphCell.vue";
 // import CMChart from "@/components/CMChart.vue";
@@ -365,7 +364,6 @@ export default {
   components: {
     LayoutPage,
     CMStatisticsCell,
-    UIInputDropdownMultiple,
     CMStatisticsGraphCell,
   },
   mixins: [viewMixin],

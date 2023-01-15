@@ -45,17 +45,9 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
-
 export default {
   name: "FormAddPhoto",
-  components: {
-    UIModal,
-    UITextfield,
-    UIInputSelect,
-  },
+  components: {},
   props: {
     active: {
       type: Boolean,

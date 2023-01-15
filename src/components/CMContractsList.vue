@@ -25,7 +25,6 @@
 import apiService from "@/services/api.service.js";
 import { arrayEquals } from "@/utils/utils.js";
 
-import UITableList from "@/components/UITableList.vue";
 import CMContractsListItem from "@/components/CMContractsListItem.vue";
 import CMContractsListCardItem from "@/components/CMContractsListCardItem.vue";
 
@@ -58,7 +57,6 @@ export default {
   name: "CMContractsList",
 
   components: {
-    UITableList,
     CMContractsListItem,
     CMContractsListCardItem,
   },

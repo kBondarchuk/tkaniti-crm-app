@@ -22,13 +22,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITableList from "@/components/UITableList.vue";
 import TKCustomersListItem from "@/components/TKCustomersListItem.vue";
 
 export default {
   name: "TKCMCustomersList",
   components: {
-    UITableList,
     TKCustomersListItem,
   },
   props: {

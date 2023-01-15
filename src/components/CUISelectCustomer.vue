@@ -19,14 +19,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIInputSelect from "@/components/UIInputSelect.vue";
 import BrowseCustomers from "@/components/BrowseCustomers.vue";
 
 export default {
   name: "CUISelectCustomer",
 
   components: {
-    UIInputSelect,
     BrowseCustomers,
   },
 

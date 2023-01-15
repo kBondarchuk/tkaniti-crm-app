@@ -91,8 +91,6 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 import CMSalesList from "@/components/CMSalesList.vue";
 import CMSalesTotalsList from "@/components/CMSalesTotalsList.vue";
 // import FormExpense from "@/components/FormExpense.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputSelect from "@/components/UIInputSelect.vue";
 import BrowseCars from "@/components/BrowseCars.vue";
 
 export default {
@@ -100,8 +98,6 @@ export default {
   components: {
     CMSalesList,
     CMSalesTotalsList,
-    UIInputDropdown,
-    UIInputSelect,
     BrowseCars,
   },
   mixins: [viewMixin],

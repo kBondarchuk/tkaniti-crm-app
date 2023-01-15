@@ -33,17 +33,11 @@
 import apiService from "@/services/api.service.js";
 
 import WPanel from "@/components/WPanel.vue";
-import UITextfield from "@/components/UITextfield.vue";
-import UIButton from "@/components/UIButton.vue";
-import UITextAria from "@/components/UITextAria.vue";
 
 export default {
   name: "CMPromoActionMessage",
   components: {
     WPanel,
-    UITextfield,
-    UIButton,
-    UITextAria,
   },
   props: {
     actionId: {

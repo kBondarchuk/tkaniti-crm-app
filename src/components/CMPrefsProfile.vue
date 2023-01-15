@@ -79,14 +79,9 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIBadge from "@/components/UIBadge.vue";
 
 export default {
   name: "CMPrefsProfile",
-
-  components: {
-    UIBadge,
-  },
 
   data() {
     return {

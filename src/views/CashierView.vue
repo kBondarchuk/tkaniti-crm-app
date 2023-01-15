@@ -56,18 +56,12 @@
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import LayoutPage from "@/components/LayoutPage.vue";
 import CMAcquiringTransactionsList from "@/components/CMAcquiringTransactionsList.vue";
-import UIButton from "@/components/UIButton.vue";
-import UIInputDropdown from "@/components/UIInputDropdown.vue";
-import UIInputDate from "@/components/UIInputDate.vue";
 
 export default {
   name: "CashierView",
   components: {
     LayoutPage,
     CMAcquiringTransactionsList,
-    UIButton,
-    UIInputDropdown,
-    UIInputDate,
   },
   mixins: [viewMixin],
   data() {

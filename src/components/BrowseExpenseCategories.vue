@@ -20,14 +20,12 @@
 </template>
 
 <script>
-import UIModal from "@/components/UIModal.vue";
 import CMExpensesCategoriesList from "@/components/CMExpensesCategoriesList.vue";
 
 export default {
   name: "BrowseExpenseCategories",
 
   components: {
-    UIModal,
     CMExpensesCategoriesList,
   },
 

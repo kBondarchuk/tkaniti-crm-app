@@ -33,14 +33,10 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UIModal from "@/components/UIModal.vue";
-
 export default {
   name: "ModalOrderDeposit",
 
-  components: {
-    UIModal,
-  },
+  components: {},
 
   props: {
     active: {

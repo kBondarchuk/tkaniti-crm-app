@@ -47,7 +47,6 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UIModal from "@/components/UIModal.vue";
 
 let _billingObject = {
   // id: null,
@@ -64,9 +63,7 @@ let _billingObject = {
 export default {
   name: "ModalNewBillingPlan",
 
-  components: {
-    UIModal,
-  },
+  components: {},
 
   // model: {
   //   prop: "active",

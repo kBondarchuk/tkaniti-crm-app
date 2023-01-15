@@ -20,14 +20,11 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import UITableList from "@/components/UITableList.vue";
 
 export default {
   name: "CMDraftRequestsList",
 
-  components: {
-    UITableList,
-  },
+  components: {},
 
   props: {
     carId: {

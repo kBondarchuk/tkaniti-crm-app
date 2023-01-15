@@ -3,14 +3,8 @@
 </template>
 
 <script>
-import UIBadge from "@/components/UIBadge.vue";
-
 export default {
   name: "TKOrderStatus",
-
-  components: {
-    UIBadge,
-  },
 
   props: {
     value: {
