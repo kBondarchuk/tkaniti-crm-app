@@ -28,6 +28,7 @@ export default defineConfig(({ command, mode }) => {
         "@": path.resolve(__dirname, "./src"),
         // vue: "@vue/compat",
       },
+      dedupe: ["vue"],
     },
     build: {
       cssCodeSplit: false,
