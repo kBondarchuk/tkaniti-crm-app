@@ -4,6 +4,9 @@ import UITextfieldHinted from "@/components/UITextfieldHinted.vue";
 import UITableRow from "@/components/UITableRow.vue";
 import UITableDividerRow from "@/components/UITableDividerRow.vue";
 import UIStaticTable from "@/components/UIStaticTable.vue";
+import UIList from "@/components/UIList.vue";
+import UIListItem from "@/components/UIListItem.vue";
+import UIListSection from "@/components/UIListSection.vue";
 
 const register = (app) => {
   app.component("LayoutPage", LayoutPage);
@@ -12,6 +15,9 @@ const register = (app) => {
   app.component("UITableRow", UITableRow);
   app.component("UITableDividerRow", UITableDividerRow);
   app.component("UIStaticTable", UIStaticTable);
+  app.component("UIList", UIList);
+  app.component("UIListItem", UIListItem);
+  app.component("UIListSection", UIListSection);
   // app.component("UITextSearch", UITextSearch);
 };
 
