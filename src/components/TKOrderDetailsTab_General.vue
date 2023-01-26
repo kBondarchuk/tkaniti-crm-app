@@ -14,6 +14,7 @@
 <script>
 import TKOrderDetails from "@/components/TKOrderDetails.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
+// import UILayoutColumns from "@/components/UILayoutColumns.vue";
 
 export default {
   name: "TKOrderDetailsTabGeneral",
@@ -21,6 +22,7 @@ export default {
   components: {
     TKOrderDetails,
     TKOrderBasket,
+    // UILayoutColumns,
   },
 
   props: {
