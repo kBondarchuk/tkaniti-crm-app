@@ -1,16 +1,30 @@
 <template>
   <!--  -->
-  <UIStaticTable>
-    <!--  -->
-    <!-- <UITableDividerRow /> -->
-    <UITableRow name="ФИО" :value="customer.last_name + ' ' + customer.first_name + ' ' + customer.second_name" />
+  <!-- <UIStaticTable> -->
+  <!--  -->
+  <!-- <UITableDividerRow /> -->
+  <!-- <UITableRow name="ФИО" :value="customer.last_name + ' ' + customer.first_name + ' ' + customer.second_name" />
     <UITableRow name="Телефон" :value="customer.phone" type="phone" />
     <UITableRow name="Email" :value="customer.email" />
     <UITableRow name="Адрес фактический" :value="address_fact" />
     <UITableDividerRow />
-    <UITableRow name="Комментарий" :value="customer.notes" />
-    <!--  -->
-  </UIStaticTable>
+    <UITableRow name="Комментарий" :value="customer.notes" /> -->
+  <!--  -->
+  <!-- </UIStaticTable> -->
+
+  <UIList class="not-grouped1">
+    <UIListSection>
+      <UIListItem name="ФИО" :value="customer.last_name + ' ' + customer.first_name + ' ' + customer.second_name" />
+      <UIListItem name="Телефон" :value="customer.phone" type="phone" />
+      <UIListItem name="Email" :value="customer.email" />
+    </UIListSection>
+    <UIListSection header="Адреса">
+      <UIListItem name="Адрес фактический" :value="address_fact" />
+    </UIListSection>
+    <UIListSection header="Комментарий">
+      <UIListItem name="Комментарий" :value="customer.notes" />
+    </UIListSection>
+  </UIList>
 
   <!-- <UITableRow name="Дата рождения" :value="customer.date_of_birth" type="date" />
   <UITableRow name="Пол" :value="customer.gender_name" /> -->
