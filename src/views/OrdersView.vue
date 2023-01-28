@@ -7,6 +7,9 @@
         <span v-else>Показать</span>
       </UIButton>
       <!--  -->
+      <UIButton icon="refresh" type="icon basic" title="Обновить список" @click="reload" />
+
+      <!--  -->
       <UISpacer />
       <!-- Поиск -->
       <UITextSearch v-model="searchString" placeholder="Поиск..." />
@@ -25,6 +28,7 @@
       :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
+      :seq="seq"
       @event-details="handleDetails"
     />
   </LayoutPage>
@@ -64,6 +68,8 @@ export default {
         { id: 6, name: "Отменён", icon: "times circle" },
       ],
       menuSelectedId: 999,
+      // UI
+      seq: 0,
     };
   },
 
@@ -113,6 +119,10 @@ export default {
     toggleSideMenu() {
       this.showSideMenu = !this.showSideMenu;
       localStorage.setItem(this.$options.name + ".list.show_side_menu", this.showSideMenu);
+    },
+    reload() {
+      this.seq++;
+      this.fetchOrdersCount();
     },
     async fetchOrdersCount() {
       try {
