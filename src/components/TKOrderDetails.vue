@@ -74,7 +74,7 @@
     <UIListSection header="Получатель">
       <UIListItem name="ФИО получателя" :value="order?.customer_fio" />
       <UIListItem name="Телефон получателя" :value="order?.customer_phone" type="phone" />
-      <UIListItem name="Комментарий клиента" :value="order?.notes" />
+      <UIListItem name="Комментарий клиента" :value="order?.customer_notes" />
     </UIListSection>
 
     <UIListSection header="Доставка">
@@ -86,6 +86,10 @@
       <UIListItem name="Адрес доставки" :value="order?.delivery_address" />
       <!-- Отложенная отправка -->
       <UIListItem name="Отложить до" :value="order?.delivery_date" type="date" />
+    </UIListSection>
+
+    <UIListSection header="Комментарий сотрудника">
+      <UIListItem :value="order?.notes" />
     </UIListSection>
 
     <!--  -->

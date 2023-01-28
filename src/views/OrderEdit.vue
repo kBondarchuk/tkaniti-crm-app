@@ -36,6 +36,11 @@
             <!-- <UITextfield v-model="order.delivery_address" label="Адрес доставки" /> -->
           </div>
 
+          <div class="one field">
+            <!-- Комментарий -->
+            <UITextAria v-model="order.customer_notes" label="Комментарий покупателя" rows="3" />
+          </div>
+
           <div class="ui hidden divider"></div>
 
           <div class="two fields">
@@ -74,7 +79,7 @@
 
           <div class="one field">
             <!-- Комментарий -->
-            <UITextAria v-model="order.notes" label="Комментарий" rows="5" />
+            <UITextAria v-model="order.notes" label="Комментарий сотрудника" rows="5" />
           </div>
 
           <div class="ui error message"></div>

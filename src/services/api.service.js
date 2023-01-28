@@ -1559,6 +1559,7 @@ class APIService extends APIServiceCore {
       customer_id: parseInt(order.customer_id),
       customer_fio: order.customer_fio,
       customer_phone: order.customer_phone,
+      customer_notes: order.customer_notes,
       delivery_address: order.delivery_address,
       delivery_method_id: order.delivery_method_id,
       delivery_method_other: order.delivery_method_other,
