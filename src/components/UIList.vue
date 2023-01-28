@@ -5,8 +5,17 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   name: "UIList",
+
+  provide() {
+    return {
+      // isLoading: computed(() => this.isLoading),
+      isLoading: computed(() => this.isLoading),
+    };
+  },
 
   props: {
     isLoading: {

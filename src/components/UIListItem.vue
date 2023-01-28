@@ -5,10 +5,11 @@
         {{ name }}
       </td>
       <div class="value">
-        <slot></slot>
-        <template v-if="(value == null || value === '') && $slots.default == nul"
-          ><span class="color-secondary">—</span></template
-        >
+        <slot v-if="!isLoading"></slot>
+        <template v-if="isLoading"><UITextLoader /></template>
+        <template v-else-if="(value == null || value === '') && $slots.default == null">
+          <span class="color-secondary">—</span>
+        </template>
         <template v-else>
           {{ type ? $filters[type](value) : value }}
         </template>
@@ -20,6 +21,8 @@
 <script>
 export default {
   name: "UIListItem",
+
+  inject: ["isLoading"],
 
   props: {
     name: {

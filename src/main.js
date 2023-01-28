@@ -16,6 +16,7 @@ const router = createRouter();
 const store = createStore(router, import.meta.env);
 
 const app = createApp(App);
+app.config.unwrapInjectedRef = true;
 
 // Store
 app.use(store);

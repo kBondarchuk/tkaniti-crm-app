@@ -2,7 +2,7 @@
   <!-- Grid -->
   <LayoutTwoColumns>
     <!-- First column -->
-    <TKOrderDetails :order="order" />
+    <TKOrderDetails :order="order" :is-loading="order == null" />
     <!-- Second column -->
     <template #second>
       <TKOrderBasket :order="order" />

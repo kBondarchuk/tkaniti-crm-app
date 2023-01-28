@@ -1,7 +1,7 @@
 <template>
   <!-- Grid -->
   <!-- First column -->
-  <TKGoodDetails :good="good" />
+  <TKGoodDetails :good="good" :is-loading="good == null" />
   <!--  -->
 </template>
 

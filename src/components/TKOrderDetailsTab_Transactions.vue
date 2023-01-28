@@ -11,7 +11,7 @@
       /> -->
       <!-- Оплата -->
       <UIButton
-        :disabled="order.status_id < 1"
+        :disabled="order?.status_id < 1"
         text="Внести оплату"
         icon="ruble sign"
         type="right labeled"
@@ -22,18 +22,18 @@
     <!-- /Toolbar -->
 
     <!-- Results -->
-    <TKOrderTransactionsResults v-if="order.id" :key="keys.update" :order-id="order.id" />
+    <TKOrderTransactionsResults v-if="order?.id" :key="keys.update" :order-id="order?.id" />
 
     <!-- Operations -->
     <TKOperationsList
       :key="keys.update"
       operations-type="orders"
-      :operations-subject-id="order.id"
+      :operations-subject-id="order?.id"
       :show-basis="false"
     />
     <!--  -->
     <!-- Deposit Modal -->
-    <ModalOrderDeposit v-model:active="modals.deposit" :order-id="order.id" @created="depositCreated" />
+    <ModalOrderDeposit v-model:active="modals.deposit" :order-id="order?.id" @created="depositCreated" />
   </div>
 </template>
 

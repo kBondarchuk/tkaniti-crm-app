@@ -9,16 +9,16 @@
       <!--  -->
       <!-- Когда Новый -->
       <UIButton
-        v-if="order.status_id == 0"
+        v-if="order?.status_id == 0"
         text="Подтвердить"
         icon="thumbs up"
         type="right labeled"
-        :class="{ disabled: !(order.basket.length > 0) }"
+        :class="{ disabled: !(order?.basket.length > 0) }"
         @click="actionSetStatus(1)"
       />
       <!-- Когда Проверен -->
       <UIButton
-        v-if="order.status_id == 1"
+        v-if="order?.status_id == 1"
         text="В подготовку"
         icon="box open"
         type="right labeled"
@@ -26,7 +26,7 @@
       />
       <!-- Когда В подготовке -->
       <UIButton
-        v-if="order.status_id == 2"
+        v-if="order?.status_id == 2"
         text="К отправке"
         icon="box"
         type="right labeled"
@@ -34,7 +34,7 @@
       />
       <!-- Когда К отправке -->
       <UIButton
-        v-if="order.status_id == 3"
+        v-if="order?.status_id == 3"
         text="Отправлен"
         icon="truck"
         type="right labeled"
@@ -42,7 +42,7 @@
       />
       <!-- Когда Отправлен -->
       <UIButton
-        v-if="order.status_id == 4"
+        v-if="order?.status_id == 4"
         text="Заказ получен"
         icon="grin stars"
         type="right labeled"
@@ -53,7 +53,7 @@
       <UISpacer />
       <!-- Всегда? -->
       <UIButton
-        v-if="order.status_id != 6"
+        v-if="order?.status_id != 6"
         text="Отменить"
         color=""
         icon="red times circle"
@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       // Model
-      order: {},
+      order: null,
       // View
       view: { title: "Заказ", subTitle: "Детализация заказа" },
       // Tabs
@@ -126,7 +126,7 @@ export default {
   computed: {
     validateEdit() {
       //
-      return this.checkAuthRole("store") && [0, 1, 2, 3, 4, 5].includes(this.order.status_id);
+      return this.checkAuthRole("store") && [0, 1, 2, 3, 4, 5].includes(this.order?.status_id);
     },
   },
 

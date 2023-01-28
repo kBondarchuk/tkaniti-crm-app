@@ -17,7 +17,7 @@
     <!--  -->
     <tbody>
       <!--  -->
-      <tr v-for="item in order.basket" :key="item.id">
+      <tr v-for="item in order?.basket" :key="item.id">
         <td><TKLink :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
         <td class="right aligned">{{ item.remains }}</td>
         <td class="right aligned">{{ item.good_quantity }}</td>
@@ -31,9 +31,9 @@
       <tr>
         <th></th>
         <th></th>
-        <th class="right aligned text-bold">{{ $filters.money(order.total_quantity) }}</th>
+        <th class="right aligned text-bold">{{ $filters.money(order?.total_quantity) }}</th>
         <th></th>
-        <th class="right aligned text-bold">{{ $filters.money(order.total_price) }}</th>
+        <th class="right aligned text-bold">{{ $filters.money(order?.total_price) }}</th>
       </tr>
     </tfoot>
   </table>
@@ -56,13 +56,10 @@ export default {
       type: Object,
       default: null,
     },
-  },
-
-  data() {
-    return {
-      // UI
-      isLoading: false,
-    };
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

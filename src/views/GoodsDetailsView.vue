@@ -8,15 +8,15 @@
       <UISpacer />
       <!-- Statuses -->
       <div class="ui compact buttons">
-        <button class="ui button" :class="{ active: good.status_id == 0 }" @click="actionSetStatus(0)">Новый</button>
-        <button class="ui button" :class="{ active: good.status_id == 1 }" @click="actionSetStatus(1)">
+        <button class="ui button" :class="{ active: good?.status_id == 0 }" @click="actionSetStatus(0)">Новый</button>
+        <button class="ui button" :class="{ active: good?.status_id == 1 }" @click="actionSetStatus(1)">
           На складе
         </button>
-        <button class="ui button" :class="{ active: good.status_id == 2 }" @click="actionSetStatus(2)">
+        <button class="ui button" :class="{ active: good?.status_id == 2 }" @click="actionSetStatus(2)">
           <!-- <i class="circle icon" :class="{ green: good.status_id == 2 }"></i> -->
           В продаже
         </button>
-        <button class="ui button" :class="{ active: good.status_id == 3 }" @click="actionSetStatus(3)">Продано</button>
+        <button class="ui button" :class="{ active: good?.status_id == 3 }" @click="actionSetStatus(3)">Продано</button>
       </div>
       <!--  -->
       <UISpacer />
@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       // Models
-      good: {},
+      good: null,
       // Modals
       // modals: {
       //   buy: false,
@@ -112,7 +112,7 @@ export default {
       return paths[paths.length - 1] == name;
     },
     setTitle() {
-      this.view.title = this.good.name + " " + "(" + this.goodId + ")";
+      this.view.title = this.good?.name + " " + "(" + this.goodId + ")";
       // this.view.subTitle = this.car.car_status;
     },
     // ---
