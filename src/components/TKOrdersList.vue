@@ -45,6 +45,10 @@ export default {
       type: String,
       default: null,
     },
+    seq: {
+      type: Number,
+      default: 0,
+    },
   },
 
   emits: ["eventDetails", "eventEdit", "eventDelete"],
@@ -69,6 +73,7 @@ export default {
       filter: {},
     };
   },
+
   watch: {
     filterStatus(newValue, oldValue) {
       // console.log(newValue, oldValue, arrayEquals(newValue, oldValue));
@@ -79,7 +84,12 @@ export default {
     searchString() {
       this.refetch(this.filter);
     },
+    // Just reload
+    seq() {
+      this.refetch(this.filter);
+    },
   },
+
   methods: {
     handleHeaderSort(item) {
       this.filter = item;
