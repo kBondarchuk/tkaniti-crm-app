@@ -12,6 +12,10 @@
     <td>
       {{ $filters.date(item.date) }}
     </td>
+    <!-- Отложено до -->
+    <td>
+      {{ $filters.date(item.delivery_date) }}
+    </td>
     <!--  -->
     <td>
       {{ item.goods_count }}
@@ -22,6 +26,10 @@
     </td>
     <!--  -->
     <UIMoneyCell :value="item.total_price" class="text-bold" />
+    <!-- Клиент -->
+    <td>
+      {{ item.real_customer_fio }}
+    </td>
     <!--  -->
     <td>
       {{ item.customer_fio }}
