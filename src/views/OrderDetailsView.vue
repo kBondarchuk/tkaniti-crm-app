@@ -7,6 +7,15 @@
       <!--  -->
       <UISpacer />
       <!--  -->
+      <!-- Откатить -->
+      <!-- Если не оплачен -->
+      <UIButton
+        v-if="order?.status_id != 0"
+        type="basic"
+        text="Откатить"
+        :class="{ disabled: order?.payment_status_id != 0 }"
+        @click="actionRevertStatus"
+      />
       <!-- Когда Новый -->
       <UIButton
         v-if="order?.status_id == 0"
@@ -162,26 +171,6 @@ export default {
       if (!this.checkAuthRole("operations")) {
         this.tabs = this.tabs.filter((item) => item.id !== "transactions");
       }
-
-      if (!this.checkAuthRole("docs.view")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "documents");
-      }
-
-      if (!this.checkAuthRole("manager")) {
-        this.tabs = this.tabs.filter(
-          (item) => item.id !== "accidents" && item.id !== "car_fines" && item.id !== "history"
-        );
-      }
-
-      if (!this.checkAuthRole("photo_reports")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "photo_reports");
-      }
-
-      if (!this.checkAuthRole("corp_director")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "prefs");
-      }
-
-      // console.log(">>>", this.tabs);
     },
 
     // Tabs
@@ -221,6 +210,19 @@ export default {
         this.postSetStatus(this.orderId, status);
       }
     },
+    actionRevertStatus() {
+      //
+      if (this.order?.status_id == 0) return;
+
+      const newStatus = this.order?.status_id - 1;
+
+      const text = "Вы действительно хотите откатить заказ предыдущую стадию?";
+      var confirmed = confirm(text);
+      if (confirmed) {
+        this.postSetStatus(this.orderId, newStatus);
+      }
+    },
+
     // Events
     refetchOrder() {
       this.fetchOrder(this.orderId);
