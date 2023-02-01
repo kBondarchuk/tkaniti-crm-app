@@ -52,6 +52,7 @@
         <TKOrderStatus :value="order?.status_id" />
       </UIListItem>
       <UIListItem name="Дата, время заказа" :value="order?.date" type="date" />
+      <UIListItem name="Адрес для клиента" :value="'https://store.tkaniti.ru/orders/' + order?.uuid" />
     </UIListSection>
 
     <!--  -->
