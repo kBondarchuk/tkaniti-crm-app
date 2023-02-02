@@ -1,9 +1,9 @@
 <template>
   <div class="ui-list-row" :class="{ stack: stack }">
     <div class="inner-content">
-      <td v-if="name" class="label">
+      <div v-if="name" class="label">
         {{ name }}
-      </td>
+      </div>
       <div class="value">
         <slot v-if="!isLoading"></slot>
         <template v-if="isLoading"><UITextLoader /></template>
