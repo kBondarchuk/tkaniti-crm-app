@@ -51,11 +51,13 @@
           </div>
 
           <div class="two fields">
-            <UITextAria v-model.trim.lazy="customer.notes" label="Заметки" rows="3" />
+            <!-- Адрес -->
+            <UITextAria v-model="customer.address_fact" label="Адрес" rows="4" />
           </div>
 
-          <!-- Адрес -->
-          <!-- <UITextfield v-model.trim.lazy="customer.contact_address" label="Адрес" /> -->
+          <div class="two fields">
+            <UITextAria v-model="customer.notes" label="Заметки" rows="3" />
+          </div>
 
           <!--  -->
           <div class="ui error message"></div>
