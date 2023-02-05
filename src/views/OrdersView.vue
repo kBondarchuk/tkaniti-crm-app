@@ -60,8 +60,8 @@ export default {
       menu: [
         { id: null, name: "Все", icon: "folder" },
         { id: 0, name: "Новый", icon: "shopping cart" },
-        { id: 1, name: "Проверен", icon: "thumbs up", label: "" },
-        { id: 2, name: "Подготовка", icon: "box open" },
+        { id: 1, name: "Проверка", icon: "check square", label: "" },
+        { id: 2, name: "Оплата", icon: "dollar sign" },
         { id: 3, name: "К отправке", icon: "box" },
         { id: 4, name: "Отправлен", icon: "truck" },
         { id: 5, name: "Получен", icon: "grin stars" },

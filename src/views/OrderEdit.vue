@@ -89,7 +89,7 @@
         <div class="ten wide second column">
           <!-- Список товаров (корзина) -->
           <TKOrderBasketEdit
-            v-if="[0].includes(order.status_id)"
+            v-if="[1].includes(order.status_id)"
             v-model="order.basket"
             :order="order"
             @basket="basketChanged"

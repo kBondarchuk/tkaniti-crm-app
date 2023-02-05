@@ -19,24 +19,19 @@
       <!-- Когда Новый -->
       <UIButton
         v-if="order?.status_id == 0"
-        text="Подтвердить"
+        text="В работу"
         icon="thumbs up"
         type="right labeled"
         :class="{ disabled: !(order?.basket.length > 0) }"
         @click="actionSetStatus(1)"
       />
       <!-- Когда Проверен -->
-      <UIButton
-        v-if="order?.status_id == 1"
-        text="В подготовку"
-        icon="box open"
-        type="right labeled"
-        @click="actionSetStatus(2)"
-      />
+      <UIButton v-if="order?.status_id == 1" text="Утвердить заказ" @click="actionSetStatus(2)" />
+      <!-- icon="box open" type="right labeled"-->
       <!-- Когда В подготовке -->
       <UIButton
         v-if="order?.status_id == 2"
-        text="К отправке"
+        text="В подготовку"
         icon="box"
         type="right labeled"
         @click="actionSetStatus(3)"
@@ -135,7 +130,7 @@ export default {
   computed: {
     validateEdit() {
       //
-      return this.checkAuthRole("store") && [0, 1, 2, 3, 4, 5].includes(this.order?.status_id);
+      return this.checkAuthRole("store") && [1, 2, 3].includes(this.order?.status_id);
     },
   },
 
@@ -184,13 +179,13 @@ export default {
       var text;
       switch (status) {
         case 1:
-          text = "Вы действительно хотите подтвердить заказ?";
+          text = "Вы действительно хотите редактировать заказ?";
           break;
         case 2:
-          text = "Вы действительно хотите отправить заказ на подготовку?";
+          text = "Вы действительно хотите утвердить заказ?";
           break;
         case 3:
-          text = "Вы действительно хотите отправить заказ на отправку?";
+          text = "Вы действительно хотите отправить заказ на подготовку?";
           break;
         case 4:
           text = "Заказ отправлен?";
