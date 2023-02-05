@@ -19,7 +19,7 @@
       <UIListItem name="Email" :value="customer.email" />
     </UIListSection>
     <UIListSection header="Адреса">
-      <UIListItem name="Адрес фактический" :value="address_fact" />
+      <UIListItem name="Адрес основной" :value="address_fact" />
     </UIListSection>
     <UIListSection header="Комментарий">
       <UIListItem name="Комментарий" :value="customer.notes" />
