@@ -57,7 +57,7 @@
 
     <!--  -->
     <UIListSection>
-      <UIListItem name="Клиент" :value="order?.real_customer_fio">
+      <UIListItem name="Клиент" :value="order?.real_customer_fio" placeholder="Не привязан">
         <TKLink v-if="order?.customer_id" :id="order?.customer_id" path-name="customers_details" />
       </UIListItem>
     </UIListSection>
