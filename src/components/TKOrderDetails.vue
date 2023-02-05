@@ -52,7 +52,7 @@
         <TKOrderStatus :value="order?.status_id" />
       </UIListItem>
       <UIListItem name="Дата, время заказа" :value="order?.date" type="date" />
-      <UIListItem name="Адрес для клиента" :value="'https://store.tkaniti.ru/orders/' + order?.uuid" />
+      <UIListItem name="Ссылка для клиента" :value="'https://store.tkaniti.ru/orders/' + order?.uuid" />
     </UIListSection>
 
     <!--  -->
@@ -60,6 +60,7 @@
       <UIListItem name="Клиент" :value="order?.real_customer_fio" placeholder="Не привязан">
         <TKLink v-if="order?.customer_id" :id="order?.customer_id" path-name="customers_details" />
       </UIListItem>
+      <UIListItem v-if="order?.customer_id" name="Адрес клиента" :value="order?.customer_address" />
     </UIListSection>
 
     <!-- Customer -->
