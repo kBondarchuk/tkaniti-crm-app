@@ -1642,6 +1642,16 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async setOrderPreviousStatus(order_id) {
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/previous");
+    return response.data.data;
+  }
+
+  async cancelOrder(order_id) {
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/cancel");
+    return response.data.data;
+  }
+
   async getOrderHistory(order_id) {
     let response = await this.service.get(REQUESTS.ORDERS + "/" + order_id + "/history");
     return response.data.data;
@@ -1676,43 +1686,12 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
-  async buyCar(car_id, price, date, request_type, recipient_user_id) {
+  async orderRefund(order_id, amount, notes) {
     const params = {
-      price: price,
-      date: date,
-      request_type: request_type,
-      recipient_user_id: recipient_user_id,
+      amount: amount,
+      notes: notes,
     };
-    let response = await this.service.post(REQUESTS.CARS + "/" + car_id + "/buy", params);
-    return response.data.data;
-  }
-
-  async sellCar(car_id, price, date) {
-    const params = {
-      price: price,
-      date: date,
-    };
-    let response = await this.service.post(REQUESTS.CARS + "/" + car_id + "/sell", params);
-    return response.data.data;
-  }
-
-  async getTotalIncomeForCar(car_id) {
-    let response = await this.service.get(REQUESTS.CARS + "/" + car_id + "/income");
-    return response.data.data;
-  }
-
-  async getTotalSalesForCar(car_id) {
-    let response = await this.service.get(REQUESTS.CARS + "/" + car_id + "/sales");
-    return response.data.data;
-  }
-
-  async getTotalForCar(car_id) {
-    let response = await this.service.get(REQUESTS.CARS + "/" + car_id + "/totals");
-    return response.data.data;
-  }
-
-  async getCarPhotos(car_id) {
-    let response = await this.service.get(REQUESTS.IMAGES, { params: { car_id: car_id } });
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/refund", params);
     return response.data.data;
   }
 
