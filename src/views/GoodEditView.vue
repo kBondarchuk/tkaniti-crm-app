@@ -87,13 +87,7 @@
       />-->
     </form>
     <!-- /Form -->
-    <!-- New Investors Browser -->
-    <!-- <BrowseInvestors
-      component="CMInvestorsList"
-      :active="modals.browseInvestors"
-      @hide="modals.browseInvestors = false"
-      @selected="investorSelected"
-    /> -->
+
     <!------->
   </LayoutPage>
 </template>
@@ -102,7 +96,7 @@
 import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
-// import BrowseInvestors from "@/components/BrowseInvestors.vue";
+import GoodObject from "@/objects/Good";
 
 export default {
   name: "GoodEditView",
@@ -111,41 +105,23 @@ export default {
 
   mixins: [viewMixin],
 
+  props: {
+    goodId: {
+      type: Number,
+      default: null,
+    },
+  },
+
   data() {
     return {
+      // model data
+      good: Object.assign({}, GoodObject),
       // view
       view: {
         title: "Товар",
         subTitle: "Редактирование товара",
       },
-      // model data
-      good: {
-        // company_id: null,
-      },
-      investor: undefined,
-      paramId: null,
       isLoading: false,
-      // Modals
-      modals: {
-        browseInvestors: false,
-      },
-      // Branches
-      branches: [],
-      // Companies
-      companies: [],
-      // Format
-      plate_format: {
-        blocks: [6, 3],
-        delimiter: " ",
-        uppercase: true,
-        // numericOnly: false,
-      },
-      pts_format: {
-        blocks: [4, 11],
-        delimiter: " ",
-        uppercase: true,
-        // numericOnly: false,
-      },
     };
   },
 
@@ -204,42 +180,24 @@ export default {
     //     error: this.car.chassis_no ? !check : false,
     //   };
     // },
-    // validateSubmit() {
-    //   return {
-    //     disabled:
-    //       this.car.branch_id === null ||
-    //       this.car.branch_id === undefined ||
-    //       !this.car.model ||
-    //       !this.car.brand ||
-    //       this.car.year_of_issue.toString().length != 4,
-    //   };
-    // },
-    // validateBranch() {
-    //   return {
-    //     success: this.car.branch_id != null && this.car.branch_id >= 0,
-    //     error: this.car.branch_id === null || this.car.branch_id === undefined,
-    //     // disabled: this.paramId != null,
-    //     disabled: this.car.ref_car_status != 0 && this.paramId != null,
-    //   };
-    // },
-    // validateCompany() {
-    //   return {
-    //     success: this.car.company_id && this.car.company_id > 0,
-    //     error: !this.car.company_id,
-    //   };
-    // },
+    validateSubmit() {
+      return {
+        disabled: false,
+      };
+    },
   },
 
   created() {
     console.log("Created Params.id: " + this.$route.params);
     // Get ID from params
-    this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
+    // this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
+    this.reset();
+    this.setTitle();
   },
 
   mounted() {
-    this.setTitle();
-    if (this.paramId) {
-      this.fetchBranchesThenItem(this.paramId);
+    if (this.goodId) {
+      this.fetchBranchesThenItem(this.goodId);
     } else {
       // this.fetchBranches();
       // this.fetchCompanies();
@@ -248,21 +206,22 @@ export default {
 
   methods: {
     setTitle() {
-      if (this.paramId === null) {
+      if (this.goodId === null) {
         this.view.title = "Новый товар";
         this.view.subTitle = "Создание нового товара";
       } else {
-        this.view.title = "Товар" + " " + this.paramId;
+        this.view.title = "Товар" + " " + this.goodId;
       }
     },
     // ---
-    set() {
-      // item
-      // this.investor.id = item.id;
+    reset() {
+      if (this.goodId === null) {
+        this.good.name = "Ткань ";
+      }
     },
     back() {
-      if (this.paramId) {
-        this.$router.push({ name: "goods_details", id: this.paramId });
+      if (this.goodId) {
+        this.$router.push({ name: "goods_details", id: this.goodId });
       } else {
         this.$router.push({ name: "goods" });
       }
