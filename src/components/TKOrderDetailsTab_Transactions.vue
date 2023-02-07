@@ -2,21 +2,15 @@
   <div>
     <!-- Toolbar -->
     <div class="ui-tool-bar-local">
-      <!-- <UIButton
-        type="right labeled"
-        text="Внести расход"
-        icon="right chevron"
-        :class="{ disabled: car.ref_car_status != 1 && car.ref_car_status != 2 && car.ref_car_status < 5 }"
-        @click="actionNewExpense"
-      /> -->
       <!-- Оплата -->
       <UIButton
-        :disabled="order?.status_id < 1"
+        :disabled="order?.status_id < OrderStatusEnum.Payment"
         text="Внести оплату"
         icon="ruble sign"
         type="right labeled"
         @click="actionDeposit"
       />
+      <UIButton :disabled="order?.status_id < OrderStatusEnum.Payment" text="Возврат" @click="actionRefund" />
     </div>
     <div class="ui divider"></div>
     <!-- /Toolbar -->
@@ -34,6 +28,9 @@
     <!--  -->
     <!-- Deposit Modal -->
     <ModalOrderDeposit v-model:active="modals.deposit" :order-id="order?.id" @created="depositCreated" />
+    <!-- Refund Modal -->
+    <ModalOrderRefund v-model:active="modals.refund" :order-id="order?.id" @created="depositCreated" />
+    <!--  -->
   </div>
 </template>
 
@@ -41,6 +38,9 @@
 import TKOperationsList from "@/components/TKOperationsList.vue";
 import TKOrderTransactionsResults from "@/components/TKOrderTransactionsResults.vue";
 import ModalOrderDeposit from "@/components/ModalOrderDeposit.vue";
+import ModalOrderRefund from "@/components/ModalOrderRefund.vue";
+
+import { OrderStatusEnum } from "@/enums/index";
 
 export default {
   name: "TKOrderDetailsTabTransactions",
@@ -49,6 +49,7 @@ export default {
     TKOperationsList,
     TKOrderTransactionsResults,
     ModalOrderDeposit,
+    ModalOrderRefund,
   },
 
   props: {
@@ -67,13 +68,19 @@ export default {
       },
       modals: {
         deposit: false,
+        refund: false,
       },
+      OrderStatusEnum,
     };
   },
 
   methods: {
     actionDeposit() {
       this.modals.deposit = true;
+      //
+    },
+    actionRefund() {
+      this.modals.refund = true;
       //
     },
     depositCreated() {

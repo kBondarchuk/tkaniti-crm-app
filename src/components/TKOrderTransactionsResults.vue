@@ -18,7 +18,7 @@
         <td class="gray_bg right aligned">Оплата заказов</td>
         <!-- <UIMoneyCell :value="accounts.payment_credit" /> -->
         <UIMoneyCell :value="accounts.order_price" />
-        <UIMoneyCell :value="accounts.payment_debet" />
+        <UIMoneyCell :value="accounts.payment_balance" />
         <!-- <UIMoneyCell :value="accounts.payment_debt_to_pay" /> -->
         <UIMoneyCell :value="accounts.order_balance" colored />
       </tr>
