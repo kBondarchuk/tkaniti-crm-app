@@ -10,33 +10,28 @@
       <!-- Откатить -->
       <!-- Если не оплачен -->
       <UIButton
-        v-if="order?.status_id != 0"
+        v-if="![0, 6].includes(order?.status_id)"
         type="basic"
         text="Откатить"
-        :class="{ disabled: order?.payment_status_id != 0 }"
+        :class="{ disabled: order?.payment_status_id != 0 || [0, 1].includes(order?.status_id) }"
         @click="actionRevertStatus"
       />
       <!-- Когда Новый -->
       <UIButton
         v-if="order?.status_id == 0"
-        text="Подтвердить"
+        text="Взять в работу"
         icon="thumbs up"
         type="right labeled"
         :class="{ disabled: !(order?.basket.length > 0) }"
         @click="actionSetStatus(1)"
       />
       <!-- Когда Проверен -->
-      <UIButton
-        v-if="order?.status_id == 1"
-        text="В подготовку"
-        icon="box open"
-        type="right labeled"
-        @click="actionSetStatus(2)"
-      />
+      <UIButton v-if="order?.status_id == 1" text="Утвердить заказ" @click="actionSetStatus(2)" />
+      <!-- icon="box open" type="right labeled"-->
       <!-- Когда В подготовке -->
       <UIButton
         v-if="order?.status_id == 2"
-        text="К отправке"
+        text="В подготовку"
         icon="box"
         type="right labeled"
         @click="actionSetStatus(3)"
@@ -67,7 +62,7 @@
         color=""
         icon="red times circle"
         type="basic labeled"
-        @click="actionSetStatus(6)"
+        @click="actionCancelOrder"
       />
       <!--  -->
       <UIButton type="basic labeled" text="Изменить" icon="edit" :class="{ disabled: !validateEdit }" @click="edit" />
@@ -100,6 +95,7 @@
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
+import { OrderStatusEnum } from "@/enums/index";
 
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
@@ -135,7 +131,7 @@ export default {
   computed: {
     validateEdit() {
       //
-      return this.checkAuthRole("store") && [0, 1, 2, 3, 4, 5].includes(this.order?.status_id);
+      return this.checkAuthRole("store") && [1, 2, 3].includes(this.order?.status_id);
     },
   },
 
@@ -184,13 +180,13 @@ export default {
       var text;
       switch (status) {
         case 1:
-          text = "Вы действительно хотите подтвердить заказ?";
+          text = "Вы действительно хотите редактировать заказ?";
           break;
         case 2:
-          text = "Вы действительно хотите отправить заказ на подготовку?";
+          text = "Вы действительно хотите утвердить заказ?";
           break;
         case 3:
-          text = "Вы действительно хотите отправить заказ на отправку?";
+          text = "Вы действительно хотите отправить заказ на подготовку?";
           break;
         case 4:
           text = "Заказ отправлен?";
@@ -212,14 +208,22 @@ export default {
     },
     actionRevertStatus() {
       //
-      if (this.order?.status_id == 0) return;
+      if (this.order?.status_id == OrderStatusEnum.New) return;
+      if (this.order?.status_id == OrderStatusEnum.Check) return;
+      if (this.order?.status_id == OrderStatusEnum.Canceled) return;
 
-      const newStatus = this.order?.status_id - 1;
-
-      const text = "Вы действительно хотите откатить заказ предыдущую стадию?";
+      const text = "Вы действительно хотите откатить заказ на предыдущую стадию?";
       var confirmed = confirm(text);
       if (confirmed) {
-        this.postSetStatus(this.orderId, newStatus);
+        this.setOrderPreviousStatus(this.orderId);
+      }
+    },
+    actionCancelOrder() {
+      //
+      const text = "Вы действительно хотите отменить заказ?";
+      var confirmed = confirm(text);
+      if (confirmed) {
+        this.cancelOrder(this.orderId);
       }
     },
 
@@ -250,6 +254,36 @@ export default {
         await apiService.setOrderStatus(order_id, status);
 
         this.$UIService.showSuccess(`Заказ сменил статус!`);
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      } finally {
+        this.isLoading = false;
+      }
+
+      this.fetchOrder(order_id);
+    },
+    async setOrderPreviousStatus(order_id) {
+      this.isLoading = true;
+
+      try {
+        await apiService.setOrderPreviousStatus(order_id);
+
+        this.$UIService.showSuccess(`Заказ сменил статус!`);
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      } finally {
+        this.isLoading = false;
+      }
+
+      this.fetchOrder(order_id);
+    },
+    async cancelOrder(order_id) {
+      this.isLoading = true;
+
+      try {
+        await apiService.cancelOrder(order_id);
+
+        this.$UIService.showSuccess(`Заказ отменён!`);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {

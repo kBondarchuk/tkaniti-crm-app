@@ -51,12 +51,14 @@ export default [
       {
         path: "new",
         name: "order_new",
+        props: (route) => ({ orderId: null }),
         meta: { ignoreHistory: true },
         component: () => import("@/views/OrderEdit.vue"),
       },
       {
         path: ":id/edit",
         name: "order_edit",
+        props: (route) => ({ orderId: Number(route.params.id) }),
         meta: { ignoreHistory: true },
         component: () => import("@/views/OrderEdit.vue"),
       },
@@ -70,12 +72,6 @@ export default [
         path: "",
         name: "goods",
         component: () => import("@/views/GoodsView.vue"),
-      },
-      {
-        path: "new",
-        name: "good_new",
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/GoodEditView.vue"),
       },
       {
         path: ":id",
@@ -104,8 +100,16 @@ export default [
         ],
       },
       {
+        path: "new",
+        name: "good_new",
+        // props: (route) => ({ goodId: null }),
+        meta: { ignoreHistory: true },
+        component: () => import("@/views/GoodEditView.vue"),
+      },
+      {
         path: ":id/edit",
         name: "good_edit",
+        props: (route) => ({ goodId: Number(route.params.id) }),
         meta: { ignoreHistory: true },
         component: () => import("@/views/GoodEditView.vue"),
       },

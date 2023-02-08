@@ -93,13 +93,16 @@ export default {
   },
 
   watch: {
-    modelValue(newVal, oldVal) {
-      console.warn("Order changed!");
-      // console.warn(toRaw(newVal), toRaw(this.basket));
-      // console.warn("arrayEquals: ", arrayEquals(toRaw(newVal), toRaw(this.basket)));
-      if (!arrayEquals(toRaw(newVal), toRaw(this.basket))) {
-        this.copyBasket();
-      }
+    modelValue: {
+      handler(newVal, oldVal) {
+        console.warn("Order changed!");
+        // console.warn(toRaw(newVal), toRaw(this.basket));
+        // console.warn("arrayEquals: ", arrayEquals(toRaw(newVal), toRaw(this.basket)));
+        if (!arrayEquals(toRaw(newVal), toRaw(this.basket))) {
+          this.copyBasket();
+        }
+      },
+      immediate: true,
     },
     basket: {
       handler(val, oldVal) {

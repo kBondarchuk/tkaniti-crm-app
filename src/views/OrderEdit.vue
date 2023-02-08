@@ -89,7 +89,7 @@
         <div class="ten wide second column">
           <!-- Список товаров (корзина) -->
           <TKOrderBasketEdit
-            v-if="[0].includes(order.status_id)"
+            v-if="[1].includes(order.status_id)"
             v-model="order.basket"
             :order="order"
             @basket="basketChanged"
@@ -128,6 +128,13 @@ export default {
 
   mixins: [viewMixin],
 
+  props: {
+    orderId: {
+      type: Number,
+      default: null,
+    },
+  },
+
   data() {
     return {
       // view
@@ -140,8 +147,8 @@ export default {
       //   // company_id: null,
       // },
       order: Object.assign({}, OrderObject),
-      investor: undefined,
-      paramId: null,
+      // investor: undefined,
+      // paramId: null,
       isLoading: false,
       // Modals
       modals: {
@@ -187,13 +194,14 @@ export default {
   created() {
     console.log("[OrderEdit]: Created Params.id: " + this.$route.params);
     // Get ID from params
-    this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
+    // this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
+    this.reset();
+    this.setTitle();
   },
 
   mounted() {
-    this.setTitle();
-    if (this.paramId) {
-      this.fetchBranchesThenItem(this.paramId);
+    if (this.orderId) {
+      this.fetchBranchesThenItem(this.orderId);
     } else {
       this.fetchPaymentMethods();
       this.fetchDeliveryMethods();
@@ -202,23 +210,26 @@ export default {
 
   methods: {
     setTitle() {
-      if (this.paramId === null) {
+      if (this.orderId === null) {
         this.view.title = "Новый заказ";
         this.view.subTitle = "Создание нового заказа";
       } else {
-        this.view.title = "Заказ" + " " + this.paramId;
+        this.view.title = "Заказ" + " " + this.orderId;
       }
     },
     // ---
-    set() {
+    reset() {
+      if (this.orderId === null) {
+        this.order.status_id = 1;
+      }
       // item
       // this.investor.id = item.id;
     },
     back() {
-      if (this.paramId) {
-        this.$router.push({ name: "order_details", id: this.paramId });
+      if (this.orderId) {
+        this.$router.push({ name: "order_details", id: this.orderId });
       } else {
-        this.$router.push({ name: "order" });
+        this.$router.push({ name: "orders" });
       }
     },
     basketChanged(basket) {

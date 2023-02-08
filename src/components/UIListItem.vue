@@ -1,18 +1,24 @@
 <template>
   <div class="ui-list-row" :class="{ stack: stack }">
     <div class="inner-content">
-      <td v-if="name" class="label">
+      <div v-if="name" class="label">
         {{ name }}
-      </td>
+      </div>
       <div class="value">
-        <slot v-if="!isLoading"></slot>
+        <!-- Default Slot when not Loading -->
+        <slot v-if="!isLoading"
+          ><span v-if="value == null || value === ''" class="color-secondary">{{ placeholder }}</span></slot
+        >
+        <!-- Loading state: -->
         <template v-if="isLoading"><UITextLoader /></template>
-        <template v-else-if="(value == null || value === '') && $slots.default == null">
-          <span class="color-secondary">—</span>
-        </template>
-        <template v-else>
-          {{ type ? $filters[type](value) : value }}
-        </template>
+        <!-- value is empty state -->
+        <!-- <template
+          v-else-if="(value == null || value === '') && ($slots.default == null || $slots.default == undefined)"
+        >
+          <span class="color-secondary">{{ placeholder }}</span>
+        </template> -->
+        <!-- value not empty and not loading -->
+        <template v-else> {{ type ? $filters[type](value) : value }} </template>
       </div>
     </div>
   </div>
@@ -49,6 +55,10 @@ export default {
       type: String,
       default: null,
     },
+    placeholder: {
+      type: String,
+      default: "—",
+    },
   },
 
   computed: {
@@ -69,5 +79,9 @@ export default {
       }
     },
   },
+
+  // mounted() {
+  //   console.warn(this.name, slots.default);
+  // },
 };
 </script>

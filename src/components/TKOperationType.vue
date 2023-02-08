@@ -22,6 +22,11 @@ export default {
           icon: "check",
           name: "Оплата наличными",
         },
+        "Op.OrderRefund": {
+          color: "red",
+          icon: "undo alternate",
+          name: "Возврат наличными",
+        },
         "contract_leasing.ChargeDebt": {
           color: "yellow",
           icon: "dollar sign",
