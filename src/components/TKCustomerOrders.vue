@@ -5,8 +5,8 @@
     :headers="headers"
     :items-count="orders.length"
     :is-loading="isLoading"
-    no-sort
     bordered
+    @header:sort="handleHeaderSort"
   >
     <!-- Items -->
     <TKOrdersListItem
@@ -47,9 +47,11 @@ export default {
         { id: "status_id", name: "Статус", class: "" },
         { id: "payment_status_id", name: "Оплата", class: "" },
         { id: "date", name: "Дата заказа", class: "" },
+        { id: "delivery_date", name: "Отправка", class: "" },
         { id: "goods_count", name: "Товаров", class: "" },
         { id: "total_quantity", name: "Кол-во", class: "" },
         { id: "total_price", name: "Стоимость", class: "right aligned" },
+        { id: "real_customer_fio", name: "Клиент", class: "" },
         { id: "customer_fio", name: "ФИО", class: "" },
         { id: "customer_phone", name: "Номер телефона", class: "" },
         { id: "notes", name: "Комментарий", class: "" },
@@ -58,6 +60,7 @@ export default {
       orders: [],
       // UI
       isLoading: false,
+      filter: {},
     };
   },
 
@@ -72,11 +75,15 @@ export default {
         params: { id: id },
       });
     },
+    handleHeaderSort(item) {
+      this.filter = item;
+      this.refetch(item);
+    },
     // Networking
-    async refetch() {
+    async refetch(filter) {
       this.isLoading = true;
       try {
-        this.orders = await apiService.getOrdersForCustomer({ customer_id: this.customerId });
+        this.orders = await apiService.getOrdersForCustomer({ customer_id: this.customerId, filter: filter });
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {

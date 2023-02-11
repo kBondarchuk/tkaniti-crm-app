@@ -1,6 +1,6 @@
 <template>
   <UITableList
-    id="TKOrdersList"
+    id="$options.name"
     :headers="headers"
     :header-sticked-at="headerStickedAt"
     :items-count="items.length"
