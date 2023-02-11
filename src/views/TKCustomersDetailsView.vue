@@ -66,7 +66,7 @@
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
 
-import TKCustomerDetails from "@/components/TKCustomerDetails.vue";
+// import TKCustomerDetails from "@/components/TKCustomerDetails.vue";
 
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
@@ -87,7 +87,7 @@ export default {
 
   data() {
     return {
-      customer: {},
+      customer: null,
       paramId: null,
       // UI
       view: {
@@ -126,14 +126,16 @@ export default {
 
   methods: {
     setTitle() {
-      // this.view.title = "Клиент " + this.customerId;
+      this.view.title = "Клиент " + this.customerId;
+
+      if (this.customer === null) return;
 
       this.view.title =
-        this.customer.last_name +
+        this.customer?.last_name +
         " " +
-        this.customer.first_name +
+        this.customer?.first_name +
         " " +
-        this.customer.second_name +
+        this.customer?.second_name +
         " " +
         "(" +
         this.customerId +

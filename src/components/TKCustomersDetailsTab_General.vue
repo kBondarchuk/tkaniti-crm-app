@@ -3,7 +3,7 @@
   <!-- Grid -->
   <LayoutTwoColumns>
     <!-- First column -->
-    <TKCustomerDetails :customer="customer" />
+    <TKCustomerDetails :customer="customer" :is-loading="customer == null" />
     <!-- second column -->
   </LayoutTwoColumns>
   <!--  -->
