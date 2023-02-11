@@ -57,7 +57,7 @@ export default {
         { id: "last_name", name: "ФИО", class: "" },
         { id: "phone", name: "Телефон", class: "" },
         { id: "email", name: "Email", class: "" },
-        { id: "address_fact", name: "Город", class: "" },
+        { id: "address_fact", name: "Адрес", class: "" },
         { id: "notes", name: "Примечание", class: "" },
       ],
       items: [],
