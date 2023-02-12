@@ -2,7 +2,7 @@
   <!-- Grid -->
   <!-- <LayoutTwoColumns> -->
   <!-- First column -->
-  <TKGoodOrders v-if="good.id" :good-id="good.id" />
+  <TKGoodOrders v-if="good?.id" :good-id="good?.id" />
   <!-- </LayoutTwoColumns> -->
   <!--  -->
 </template>
