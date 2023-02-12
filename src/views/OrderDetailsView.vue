@@ -14,6 +14,7 @@
         type="basic"
         text="Откатить"
         :class="{ disabled: order?.payment_status_id != 0 || [0, 1].includes(order?.status_id) }"
+        :disabled="!checkAuthRevertOrder"
         @click="actionRevertStatus"
       />
       <!-- Когда Новый -->
@@ -23,10 +24,16 @@
         icon="thumbs up"
         type="right labeled"
         :class="{ disabled: !(order?.basket.length > 0) }"
+        :disabled="!checkAuthForwardOrder"
         @click="actionSetStatus(1)"
       />
       <!-- Когда Проверен -->
-      <UIButton v-if="order?.status_id == 1" text="Утвердить заказ" @click="actionSetStatus(2)" />
+      <UIButton
+        v-if="order?.status_id == 1"
+        text="Утвердить заказ"
+        :disabled="!checkAuthForwardOrder"
+        @click="actionSetStatus(2)"
+      />
       <!-- icon="box open" type="right labeled"-->
       <!-- Когда В подготовке -->
       <UIButton
@@ -34,6 +41,7 @@
         text="В подготовку"
         icon="box"
         type="right labeled"
+        :disabled="!checkAuthForwardOrder"
         @click="actionSetStatus(3)"
       />
       <!-- Когда К отправке -->
@@ -42,6 +50,7 @@
         text="Отправлен"
         icon="truck"
         type="right labeled"
+        :disabled="!checkAuthForwardOrder"
         @click="actionSetStatus(4)"
       />
       <!-- Когда Отправлен -->
@@ -50,6 +59,7 @@
         text="Заказ получен"
         icon="grin stars"
         type="right labeled"
+        :disabled="!checkAuthForwardOrder"
         @click="actionSetStatus(5)"
       />
       <!--  -->
@@ -62,6 +72,7 @@
         color=""
         icon="red times circle"
         type="basic labeled"
+        :disabled="!checkAuthCancelOrder"
         @click="actionCancelOrder"
       />
       <!--  -->
@@ -71,17 +82,7 @@
     <!-- /Toolbar -->
 
     <!-- Tabs -->
-    <div class="ui top tabular menu" style="padding-top: 1em; padding-left: 1.5em">
-      <div
-        v-for="tab in tabs"
-        :key="tab.id"
-        class="item"
-        :class="{ active: tabIsActive(tab.id) }"
-        @click="tabLink(tab.id)"
-      >
-        {{ tab.name }}
-      </div>
-    </div>
+    <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
@@ -93,8 +94,12 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
+
+import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import { TabsMixin } from "@/mixins/TabsMixin.js";
+
 import { OrderStatusEnum } from "@/enums/index";
 
 const kTABS = [
@@ -108,7 +113,7 @@ export default {
 
   components: {},
 
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
   props: {
     orderId: {
@@ -131,13 +136,13 @@ export default {
   computed: {
     validateEdit() {
       //
-      return this.checkAuthRole("store") && [1, 2, 3].includes(this.order?.status_id);
+      return this.checkAuthEditOrder && [1, 2, 3].includes(this.order?.status_id);
     },
   },
 
   created() {
     // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-    this.createTabs();
+    this.createTabs(kTABS);
     //
     if (this.orderId !== undefined) {
       this.fetchOrder(this.orderId);
@@ -145,10 +150,6 @@ export default {
   },
 
   methods: {
-    tabIsActive(name) {
-      const paths = this.$route.path.split("/");
-      return paths[paths.length - 1] == name;
-    },
     setTitle() {
       this.view.title = "Заказ " + this.orderId + " ";
       // this.view.subTitle = this.car.car_status;
@@ -158,22 +159,9 @@ export default {
       this.$router.push({ name: "order_edit" });
     },
 
-    createTabs() {
-      //
-      // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-
-      this.tabs = kTABS;
-
-      if (!this.checkAuthRole("operations")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "transactions");
-      }
-    },
-
     // Tabs
     tabLink(name) {
-      if (!this.tabIsActive(name)) {
-        this.$router.push({ name: `order_details_${name}`, params: { id: this.orderId } });
-      }
+      this.$router.push({ name: `order_details_${name}`, params: { id: this.orderId } });
     },
     // Actions
     actionSetStatus(status) {
@@ -241,7 +229,7 @@ export default {
         console.warn(result);
 
         this.setTitle();
-        this.createTabs();
+        this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }

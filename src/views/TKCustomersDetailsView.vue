@@ -6,35 +6,11 @@
       <UIButton text="Назад" icon="left arrow" type="basic labeled" color="white" @click="back('customers')" />
       <UISpacer />
       <!--  -->
-      <!-- <UIButton icon="right chevron" type="basic right labeled" @click="actionPasswordModal">
-        Установить пароль в ЛК
-      </UIButton>
-      <UIButton icon="right chevron" type="basic right labeled" @click="actionBonusModal">Начислить премию</UIButton> -->
-      <!--  -->
-      <!-- <UISpacer /> -->
-      <UIButton
-        v-if="checkAuthRole('customers')"
-        type="basic labeled"
-        icon="edit"
-        text="Изменить"
-        :class="{ disabled: !checkAuthRole('customers') }"
-        @click="edit"
-      />
+      <UIButton :disabled="!checkAuthEditCustomer" type="basic labeled" icon="edit" text="Изменить" @click="edit" />
     </template>
     <!-- /Toolbar -->
     <!-- Tabs -->
-    <!-- Tabs -->
-    <div class="ui top tabular menu" style="padding-top: 1em; padding-left: 1.5em">
-      <div
-        v-for="tab in tabs"
-        :key="tab.id"
-        class="item"
-        :class="{ active: tabIsActive(tab.id) }"
-        @click="tabLink(tab.id)"
-      >
-        {{ tab.name }}
-      </div>
-    </div>
+    <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
@@ -63,20 +39,23 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
 
-import TKCustomerDetails from "@/components/TKCustomerDetails.vue";
+import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import { TabsMixin } from "@/mixins/TabsMixin.js";
+
+import { AccessRightsEnum } from "@/enums/index";
 
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
-  { name: "ЗАКАЗЫ", id: "orders" },
+  { name: "ЗАКАЗЫ", id: "orders", access: AccessRightsEnum.OrdersView },
 ];
 
 export default {
   name: "TKCustomersDetailsView",
 
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
   props: {
     customerId: {
@@ -87,7 +66,7 @@ export default {
 
   data() {
     return {
-      customer: {},
+      customer: null,
       paramId: null,
       // UI
       view: {
@@ -106,18 +85,10 @@ export default {
       },
     };
   },
-  // watch: {
-  // $route(to) {
-  //   // to, from
-  //   if (to.name == "customers_details") {
-  //     this.customerId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
-  //     this.reload();
-  //   }
-  // },
-  // },
+
   created() {
     // console.log("Created Params.id: " + this.$route.params.id);
-    this.createTabs();
+    this.createTabs(kTABS);
 
     if (this.customerId !== undefined) {
       this.fetchCustomer(this.customerId);
@@ -126,14 +97,16 @@ export default {
 
   methods: {
     setTitle() {
-      // this.view.title = "Клиент " + this.customerId;
+      this.view.title = "Клиент " + this.customerId;
+
+      if (this.customer === null) return;
 
       this.view.title =
-        this.customer.last_name +
+        this.customer?.last_name +
         " " +
-        this.customer.first_name +
+        this.customer?.first_name +
         " " +
-        this.customer.second_name +
+        this.customer?.second_name +
         " " +
         "(" +
         this.customerId +
@@ -152,18 +125,10 @@ export default {
     edit() {
       this.$router.push({ name: "customers_edit" });
     },
-    createTabs() {
-      this.tabs = kTABS;
-    },
+
     // Tabs
-    tabIsActive(name) {
-      const paths = this.$route.path.split("/");
-      return paths[paths.length - 1] == name;
-    },
     tabLink(name) {
-      if (!this.tabIsActive(name)) {
-        this.$router.push({ name: `customers_details_${name}`, params: { id: this.customerId } });
-      }
+      this.$router.push({ name: `customers_details_${name}`, params: { id: this.customerId } });
     },
 
     // Network
@@ -172,7 +137,7 @@ export default {
       try {
         this.customer = await apiService.getCustomer(customer_id);
         this.setTitle();
-        this.createTabs();
+        this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }

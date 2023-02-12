@@ -2,7 +2,7 @@
   <!-- Grid -->
   <!-- <LayoutTwoColumns> -->
   <!-- First column -->
-  <TKCustomerOrders v-if="customer.id" :customer-id="customer.id" />
+  <TKCustomerOrders v-if="customer?.id" :customer-id="customer?.id" />
   <!-- </LayoutTwoColumns> -->
   <!--  -->
 </template>

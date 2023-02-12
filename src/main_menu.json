@@ -5,21 +5,21 @@
             "name": "Клиенты",
             "icon": "user friends",
             "route": "/customers",
-            "access": "customers"
+            "access": "customers.view"
         },
         {
             "id": 2,
             "name": "Товары",
             "icon": "gifts",
             "route": "/goods",
-            "access": "goods"
+            "access": "goods.view"
         },
         {
             "id": 3,
             "name": "Заказы",
             "icon": "shopping cart",
             "route": "/orders",
-            "access": "sales"
+            "access": "orders.view"
         },
 
         {
@@ -27,7 +27,7 @@
             "name": "Эквайринг",
             "icon": "cc visa",
             "route": "/cashier/transactions",
-            "access": "acquiring",
+            "access": "acquiring.hide",
             "divider": "top"
         },
 

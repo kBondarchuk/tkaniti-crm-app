@@ -7,43 +7,41 @@
       <!--  -->
       <UISpacer />
       <!-- Statuses -->
-      <div class="ui compact basic buttons">
-        <button class="ui button" :class="{ active: good?.status_id == 0 }">Новый</button>
-        <button class="ui button" :class="{ active: good?.status_id == 1 }" @click="actionSetStatus(1)">
+      <div class="ui compact basic buttons" :class="{ disabled: !checkAuthEditGood }">
+        <button class="ui button" :class="{ active: good?.status_id == 0, disabled: !checkAuthEditGood }">Новый</button>
+        <button
+          class="ui button"
+          :class="{ active: good?.status_id == 1, disabled: !checkAuthEditGood }"
+          @click="actionSetStatus(1)"
+        >
           На складе
         </button>
-        <button class="ui button" :class="{ active: good?.status_id == 2 }" @click="actionSetStatus(2)">
+        <button
+          class="ui button"
+          :class="{ active: good?.status_id == 2, disabled: !checkAuthEditGood }"
+          @click="actionSetStatus(2)"
+        >
           В продаже
         </button>
-        <button class="ui button" :class="{ active: good?.status_id == 3 }" @click="actionSetStatus(3)">Продано</button>
+        <button
+          class="ui button"
+          :class="{ active: good?.status_id == 3, disabled: !checkAuthEditGood }"
+          @click="actionSetStatus(3)"
+        >
+          Продано
+        </button>
       </div>
       <!--  -->
       <UISpacer />
 
       <!--  -->
-      <UIButton
-        type="basic labeled"
-        text="Изменить"
-        icon="edit"
-        :class="{ disabled: !checkAuthRole('goods') }"
-        @click="edit"
-      />
+      <UIButton type="basic labeled" text="Изменить" icon="edit" :disabled="!checkAuthEditGood" @click="edit" />
       <!--  -->
     </template>
     <!-- /Toolbar -->
 
     <!-- Tabs -->
-    <div class="ui top tabular menu" style="padding-top: 1em; padding-left: 1.5em">
-      <div
-        v-for="tab in tabs"
-        :key="tab.id"
-        class="item"
-        :class="{ active: tabIsActive(tab.id) }"
-        @click="tabLink(tab.id)"
-      >
-        {{ tab.name }}
-      </div>
-    </div>
+    <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
@@ -55,13 +53,18 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
 import apiService from "@/services/api.service.js";
+
+import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import { TabsMixin } from "@/mixins/TabsMixin.js";
+
+import { AccessRightsEnum } from "@/enums/index";
 
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "ФОТО", id: "photos" },
-  { name: "ЗАКАЗЫ", id: "orders" },
+  { name: "ЗАКАЗЫ", id: "orders", access: AccessRightsEnum.OrdersView },
 ];
 
 export default {
@@ -69,7 +72,7 @@ export default {
 
   components: {},
 
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
   props: {
     goodId: {
@@ -82,13 +85,6 @@ export default {
     return {
       // Models
       good: null,
-      // Modals
-      // modals: {
-      //   buy: false,
-      //   sell: false,
-      //   changeBranch: false,
-      //   finishService: false,
-      // },
       // View
       view: { title: "Товар", subTitle: "Детализация" },
       // Tabs
@@ -98,7 +94,7 @@ export default {
 
   created() {
     // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-    this.createTabs();
+    this.createTabs(kTABS);
     //
     if (this.goodId !== undefined) {
       this.fetchGood(this.goodId);
@@ -106,10 +102,6 @@ export default {
   },
 
   methods: {
-    tabIsActive(name) {
-      const paths = this.$route.path.split("/");
-      return paths[paths.length - 1] == name;
-    },
     setTitle() {
       this.view.title = this.good?.name + " " + "(" + this.goodId + ")";
       // this.view.subTitle = this.car.car_status;
@@ -119,43 +111,11 @@ export default {
       this.$router.push({ name: "good_edit" });
     },
 
-    createTabs() {
-      //
-      // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-
-      this.tabs = kTABS;
-
-      if (!this.checkAuthRole("operations")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "transactions");
-      }
-
-      if (!this.checkAuthRole("docs.view")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "documents");
-      }
-
-      if (!this.checkAuthRole("manager")) {
-        this.tabs = this.tabs.filter(
-          (item) => item.id !== "accidents" && item.id !== "car_fines" && item.id !== "history"
-        );
-      }
-
-      if (!this.checkAuthRole("photo_reports")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "photo_reports");
-      }
-
-      if (!this.checkAuthRole("corp_director")) {
-        this.tabs = this.tabs.filter((item) => item.id !== "prefs");
-      }
-
-      // console.log(">>>", this.tabs);
-    },
-
     // Tabs
     tabLink(name) {
-      if (!this.tabIsActive(name)) {
-        this.$router.push({ name: `goods_details_${name}`, params: { id: this.goodId } });
-      }
+      this.$router.push({ name: `goods_details_${name}`, params: { id: this.goodId } });
     },
+
     // Actions
     actionSetStatus(status) {
       this.fetchSetStatus(this.goodId, status);
@@ -190,7 +150,7 @@ export default {
         console.warn(result);
 
         this.setTitle();
-        this.createTabs();
+        this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }

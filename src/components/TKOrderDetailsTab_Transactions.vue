@@ -4,13 +4,17 @@
     <div class="ui-tool-bar-local">
       <!-- Оплата -->
       <UIButton
-        :disabled="order?.status_id < OrderStatusEnum.Payment"
+        :disabled="order?.status_id < OrderStatusEnum.Payment || !checkAuthPaymentsDeposit"
         text="Внести оплату"
         icon="ruble sign"
         type="right labeled"
         @click="actionDeposit"
       />
-      <UIButton :disabled="order?.status_id < OrderStatusEnum.Payment" text="Возврат" @click="actionRefund" />
+      <UIButton
+        :disabled="order?.status_id < OrderStatusEnum.Payment || !checkAuthPaymentsRefund"
+        text="Возврат"
+        @click="actionRefund"
+      />
     </div>
     <div class="ui divider"></div>
     <!-- /Toolbar -->
@@ -35,6 +39,8 @@
 </template>
 
 <script>
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+
 import TKOperationsList from "@/components/TKOperationsList.vue";
 import TKOrderTransactionsResults from "@/components/TKOrderTransactionsResults.vue";
 import ModalOrderDeposit from "@/components/ModalOrderDeposit.vue";
@@ -51,6 +57,8 @@ export default {
     ModalOrderDeposit,
     ModalOrderRefund,
   },
+
+  mixins: [CheckAuthMixin],
 
   props: {
     order: {
@@ -73,6 +81,15 @@ export default {
       OrderStatusEnum,
     };
   },
+
+  // computed: {
+  //   checkAuthPaymentsDeposit() {
+  //     return this.checkAuthRole(AccessRightsEnum.PaymentsDeposit);
+  //   },
+  //   checkAuthPaymentsRefund() {
+  //     return this.checkAuthRole(AccessRightsEnum.PaymentsRefund);
+  //   },
+  // },
 
   methods: {
     actionDeposit() {

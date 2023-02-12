@@ -4,7 +4,13 @@
     <template #toolbar>
       <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
       <UISpacer />
-      <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
+      <UIButton
+        text="Сохранить"
+        type="primary"
+        :class="validateSubmit"
+        :disabled="!checkAuthNewCustomer"
+        @click.prevent="actionsSave"
+      />
     </template>
     <!-- /Toolbar -->
 
@@ -20,7 +26,7 @@
         <!-- fist column -->
         <div class="twelve wide column">
           <!--  -->
-          <div class="three fields" :class="{ disabled: !isEditable }">
+          <div class="three fields">
             <!-- ФИО -->
             <UITextfield v-model="customer.last_name" label="Фамилия" />
             <UITextfield v-model="customer.first_name" label="Имя" />
@@ -82,19 +88,16 @@
 
 <script>
 import apiService from "@/services/api.service.js";
+
 import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
 
 import CustomerObject from "@/objects/Customer";
-// import BrowseCustomers from "@/components/BrowseCustomers.vue";
 
 export default {
   name: "CMCustomersEditView",
 
-  components: {
-    // BrowseCustomers,
-  },
-
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin],
 
   data() {
     return {
@@ -122,9 +125,9 @@ export default {
         error: this.customer.branch_id === null || this.customer.branch_id === undefined,
       };
     },
-    isEditable() {
-      return this.checkAuthRole("customers") || !this.customer.id > 0;
-    },
+    // isEditable() {
+    //   return this.checkAuthRole("customers") || !this.customer.id > 0;
+    // },
   },
 
   created() {

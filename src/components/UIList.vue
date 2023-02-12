@@ -204,4 +204,10 @@ export default {
     font-weight: 400;
   }
 }
+
+@media only screen and (min-width: 1600px) {
+  :root {
+    --list-font-size: 14px;
+  }
+}
 </style>

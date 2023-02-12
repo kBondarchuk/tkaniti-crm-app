@@ -15,7 +15,7 @@
       <UISpacer />
       <!-- Add -->
       <UIButton
-        v-if="checkAuthRole('customers')"
+        :disabled="!checkAuthNewCustomer"
         icon="plus"
         type="right labeled"
         text="Новый клиент"
@@ -31,6 +31,8 @@
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import TKCustomersList from "@/components/TKCustomersList.vue";
+
+import { AccessRightsEnum } from "@/enums/index";
 
 export default {
   name: "TKCustomersView",
@@ -48,6 +50,13 @@ export default {
       view: { title: "Клиенты", subTitle: "Список клиентов" },
     };
   },
+
+  computed: {
+    checkAuthNewCustomer() {
+      return this.checkAuthRole(AccessRightsEnum.CustomersEdit);
+    },
+  },
+
   methods: {
     newCustomer() {
       this.$router.push({ name: "customers_new" });

@@ -16,7 +16,7 @@
       <!--  -->
       <UISpacer />
       <!--  -->
-      <UIButton v-if="checkAuthRole('sales')" icon="plus" type="right labeled" text="Новый заказ" @click="newOrder" />
+      <UIButton :disabled="!checkAuthNewOrder" icon="plus" type="right labeled" text="Новый заказ" @click="newOrder" />
     </template>
     <!-- /Toolbar -->
     <!-- Side Menu -->
@@ -36,6 +36,8 @@
 
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+
 import apiService from "@/services/api.service.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
@@ -49,7 +51,7 @@ export default {
     LayoutPage,
   },
 
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin],
 
   data() {
     return {
