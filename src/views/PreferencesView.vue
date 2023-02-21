@@ -1,5 +1,5 @@
 <template>
-  <LayoutPage>
+  <LayoutPage :no-paddings="currentPaddings">
     <!-- Side Menu -->
     <template #side>
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
@@ -34,8 +34,16 @@ const _menu_items = [
     icon: "address card",
     component: "CMPrefsProfile",
     access: "user",
+    noPaddings: true,
   },
-  { id: 2, name: "Пользователи", icon: "user friends", component: "CMPrefsUsers", access: "sysadmin" },
+  {
+    id: 2,
+    name: "Пользователи",
+    icon: "user friends",
+    component: "CMPrefsUsers",
+    access: "sysadmin",
+    noPaddings: true,
+  },
   { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
   { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
   {
@@ -105,6 +113,16 @@ export default {
         return item.component;
       } else {
         return null;
+      }
+    },
+    currentPaddings() {
+      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+
+      // console.warn(item);
+      if (item.noPaddings) {
+        return true;
+      } else {
+        return false;
       }
     },
   },
