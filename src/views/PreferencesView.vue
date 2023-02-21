@@ -16,16 +16,16 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
-import UITransition from "@/components/UITransition.vue";
+// import UITransition from "@/components/UITransition.vue";
 import CMPrefsUsers from "@/components/CMPrefsUsers.vue";
 import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
-import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
+// import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
 import CMPrefsParams from "@/components/CMPrefsParams.vue";
-import CMPrefsBranches from "@/components/CMPrefsBranches.vue";
+// import CMPrefsBranches from "@/components/CMPrefsBranches.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
-import CMPrefsExpensesCategories from "@/components/CMPrefsExpensesCategories.vue";
+// import CMPrefsExpensesCategories from "@/components/CMPrefsExpensesCategories.vue";
 import CMPrefsSystem from "@/components/CMPrefsSystem.vue";
-import CMPrefsPercentTable from "@/components/CMPrefsPercentTable.vue";
+// import CMPrefsPercentTable from "@/components/CMPrefsPercentTable.vue";
 
 const _menu_items = [
   {
@@ -44,23 +44,23 @@ const _menu_items = [
     access: "sysadmin",
     noPaddings: true,
   },
-  { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
+  // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
   { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
-  {
-    id: 9,
-    name: "Таблица процентов",
-    icon: "percent",
-    component: "CMPrefsPercentTable",
-    access: "admin",
-  },
-  { id: 5, name: "Филиалы", icon: "landmark", component: "CMPrefsBranches", access: "sysadmin" },
-  {
-    id: 6,
-    name: "Статьи расхода",
-    icon: "piggy bank",
-    component: "CMPrefsExpensesCategories",
-    access: "sysadmin",
-  },
+  // {
+  //   id: 9,
+  //   name: "Таблица процентов",
+  //   icon: "percent",
+  //   component: "CMPrefsPercentTable",
+  //   access: "admin",
+  // },
+  // { id: 5, name: "Филиалы", icon: "landmark", component: "CMPrefsBranches", access: "sysadmin" },
+  // {
+  //   id: 6,
+  //   name: "Статьи расхода",
+  //   icon: "piggy bank",
+  //   component: "CMPrefsExpensesCategories",
+  //   access: "sysadmin",
+  // },
   { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
 ];
@@ -71,16 +71,16 @@ export default {
   components: {
     LayoutPage,
     LayoutSideMenu,
-    UITransition,
+    // UITransition,
     CMPrefsUsers,
     CMPrefsProfile,
-    CMPrefsTemplates,
+    // CMPrefsTemplates,
     CMPrefsParams,
-    CMPrefsBranches,
+    // CMPrefsBranches,
     CMPrefsCompanies,
-    CMPrefsExpensesCategories,
+    // CMPrefsExpensesCategories,
     CMPrefsSystem,
-    CMPrefsPercentTable,
+    // CMPrefsPercentTable,
   },
 
   mixins: [viewMixin],

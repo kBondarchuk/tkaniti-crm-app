@@ -53,14 +53,14 @@
               />
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>Филиалы:</td>
             <td>{{ user.branches }}</td>
           </tr>
           <tr>
             <td>Инвесторы:</td>
             <td>{{ user.investors }}</td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Дата создания:</td>
             <td>{{ $filters.date(user.created_ts) }}</td>
