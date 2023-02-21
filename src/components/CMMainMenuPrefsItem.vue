@@ -3,9 +3,10 @@
   <CMMainMenuSubmenu
     :submenu="menu"
     class="right"
-    style="margin: 0 0 0 auto; padding-right: 1em; font-variant-caps: normal; font-size: 14px; font-weight: 400"
+    rounded="left"
+    style="padding-right: 1em; font-variant-caps: normal; font-size: 14px; font-weight: 400"
   />
-
+  <!-- margin: 0 0 0 auto; padding-right: 1em; font-variant-caps: normal; font-size: 14px; font-weight: 400 -->
   <!-- <div class="ui simple dropdown item" :class="{ 'is-active': subIsActive(['/prefs']) }">
       <i class="circle user bright icon"></i>
       {{ authData.name || "Ошибка" }}
@@ -114,7 +115,7 @@ export default {
   top: 22%;
   left: calc(-1px);
   height: 60%;
-  width: 1px;
+  width: 0px;
   /* background: red; */
 }
 </style>
