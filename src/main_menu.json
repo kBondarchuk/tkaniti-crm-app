@@ -30,7 +30,14 @@
             "access": "acquiring.hide",
             "divider": "top"
         },
-
+        {
+            "id": 65,
+            "name": "Отчёты",
+            "icon": "table",
+            "route": "/finances/reports",
+            "access": "reports",
+            "divider": "top"
+        },
         {
             "id": 6,
             "name": "Финансы",
