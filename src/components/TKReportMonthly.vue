@@ -1,0 +1,96 @@
+<template>
+  <!-- Пополнения с карт -->
+  <div>
+    <!-- Filter Form -->
+    <CMReportForm date-type="month" @report-request="requestReport" @report-save="saveReport" />
+    <div class="ui divider"></div>
+    <!-- Loading block -->
+    <div v-if="isLoading && !items.length" class="ui center aligned disabled segment">
+      <div class="ui active centered inline loader"></div>
+    </div>
+    <!-- Empty List  -->
+    <div v-if="!isLoading && !items.length" class="ui disabled center aligned segment">
+      <span style="font-size: 1.3em">Пусто</span>
+    </div>
+    <!-- Table -->
+    <table v-if="items.length" class="ui very compact small collapsing celled table" :class="{ loading: isLoading }">
+      <thead>
+        <tr>
+          <th>Месяц</th>
+          <th class="right aligned">Приход</th>
+          <th class="right aligned">Расход</th>
+          <th>Приход накопительно</th>
+          <th>Расход накопительно</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in items" :key="index" :item="item">
+          <td>{{ $filters.date(item.month, 0) }}</td>
+
+          <td class="right aligned nobr">
+            {{ $filters.money(item.debet) }}
+          </td>
+
+          <td class="right aligned nobr">
+            {{ $filters.money(item.credit) }}
+          </td>
+
+          <td class="right aligned nobr">
+            {{ $filters.money(item.closed_debet) }}
+          </td>
+
+          <td class="right aligned nobr">
+            {{ $filters.money(item.closed_credit) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import apiService from "@/services/api.service.js";
+import CMReportForm from "@/components/CMReportForm.vue";
+
+export default {
+  name: "TKReportMonthly",
+
+  components: {
+    CMReportForm,
+  },
+
+  data() {
+    return {
+      reportName: "monthly",
+      report: [],
+      isLoading: false,
+    };
+  },
+
+  computed: {
+    items() {
+      return this.report;
+    },
+  },
+
+  methods: {
+    requestReport(payload) {
+      // console.log("requestReport: ", payload);
+      this.fetchReport(this.reportName, payload.date1, payload.date2, payload.investors, payload.branches);
+    },
+    saveReport() {
+      // this.saveCsv("report_.csv", this.report);
+    },
+    async fetchReport(name, date1, date2, investors_filter, branches_filter) {
+      this.isLoading = true;
+
+      try {
+        this.report = await apiService.getReport(name, date1, date2, investors_filter, branches_filter);
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      }
+      this.isLoading = false;
+    },
+  },
+};
+</script>

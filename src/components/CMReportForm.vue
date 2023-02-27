@@ -9,14 +9,14 @@
       <!-- Date2 -->
       <UIInputDate v-if="dateMode == 'double'" v-model="date2" :type="dateType">Конечная дата</UIInputDate>
       <!-- Select Investor -->
-      <UIInputDropdownMultiple
+      <!-- <UIInputDropdownMultiple
         v-if="showInvestors"
         v-model="investor_selected"
         label="Инвесторы"
         placeholder="Все"
         :options="investorsList"
         style="min-width: 10em"
-      />
+      /> -->
       <!-- Buttons -->
       <div class="field">
         <div class="ui sub header" style="visibility: hidden">X</div>
@@ -31,58 +31,59 @@
 </template>
 
 <script>
-import apiService from "@/services/api.service.js";
 import { getCurrentDate, getCurrentMonthFirstDate, getFirstMonthOfYearDate } from "@/utils/utils.js";
 
 export default {
   name: "CMReportForm",
-  components: {},
+
   props: {
     showSave: {
       type: Boolean,
       default: false,
     },
-    showInvestors: {
-      type: Boolean,
-      default: true,
-    },
+    // showInvestors: {
+    //   type: Boolean,
+    //   default: true,
+    // },
     // single
     // double
     // none
     dateMode: {
       type: String,
-      default: "double",
+      default: "double", // single | double
     },
     dateType: {
       type: String,
-      default: "date",
+      default: "date", // date | month
     },
     date1Title: {
       type: String,
       default: null,
     },
   },
+
   emits: ["reportRequest", "reportSave"],
+
   data() {
     return {
       isLoading: false,
       date1: "",
       date2: "",
       // Helpers
-      investor_selected: [],
-      investors: [],
+      // investor_selected: [],
+      // investors: [],
     };
   },
-  computed: {
-    investorsList() {
-      return this.investors.map(function (item) {
-        return { name: item.last_name, value: item.id };
-      });
-    },
-    authBranches() {
-      return this.$store.getters["auth/getAuthData"].branches;
-    },
-  },
+  // computed: {
+  //   investorsList() {
+  //     return this.investors.map(function (item) {
+  //       return { name: item.last_name, value: item.id };
+  //     });
+  //   },
+  //   authBranches() {
+  //     return this.$store.getters["auth/getAuthData"].branches;
+  //   },
+  // },
   created() {
     // Load saved params
     const ext_type = this.dateType ? "_" + this.dateType : "";
@@ -97,7 +98,7 @@ export default {
     if (date2) {
       this.date2 = date2;
     }
-    console.log(this.dateMode, ", ", this.dateType);
+    // console.log(this.dateMode, ", ", this.dateType);
 
     // Auto date
     // single, date
@@ -126,9 +127,7 @@ export default {
       this.date2 = getCurrentMonthFirstDate();
     }
   },
-  mounted() {
-    this.fetchInvestors();
-  },
+
   methods: {
     handleClickRequest() {
       console.log("Form: click request", this.date1);
@@ -137,21 +136,12 @@ export default {
         return;
       }
 
-      // Prepare Investors
-      var investors_filter = null;
-      if (this.investor_selected.length == 0) {
-        // All
-        investors_filter = this.investors.map((item) => item.id).join(",");
-      } else {
-        // Selected
-        investors_filter = this.investor_selected.join(",");
-      }
       // Prepare Payload
       const payload = {
         date1: this.date1,
         date2: this.date2,
-        investors: investors_filter,
-        branches: this.authBranches.join(","),
+        // investors: investors_filter,
+        // branches: this.authBranches.join(","),
       };
 
       this.$emit("reportRequest", payload);
@@ -167,19 +157,6 @@ export default {
     handleClickSave() {
       console.log("Form: click save");
       this.$emit("reportSave");
-    },
-    // Network
-    async fetchInvestors() {
-      this.isLoading = true;
-      try {
-        let result = await apiService.getInvestors();
-        this.investors = result;
-        // Fetch Report
-        this.handleClickRequest();
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      }
-      this.isLoading = false;
     },
   },
 };
