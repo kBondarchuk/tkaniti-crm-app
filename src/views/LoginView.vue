@@ -112,13 +112,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import UITransition from "@/components/UITransition.vue";
 // import XThemeManager from "@/components/XThemeManager.vue";
 
 export default {
   name: "LoginView",
   components: {
-    UITransition,
+    // UITransition,
     // XThemeManager,
   },
   data() {

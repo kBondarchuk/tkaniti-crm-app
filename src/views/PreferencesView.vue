@@ -5,9 +5,11 @@
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
     </template>
     <!-- <h1>Заглавная страница</h1> -->
-    <!-- <UITransition mode="out-in" appear :duration="150"> -->
-    <component :is="currentComponent" />
-    <!-- </UITransition> -->
+    <UITransition mode="out-in" duration="0.3s">
+      <!-- <transition mode="out-in" name="fade2" appear> -->
+      <component :is="currentComponent" />
+      <!-- </transition> -->
+    </UITransition>
   </LayoutPage>
 </template>
 
@@ -61,7 +63,7 @@ const _menu_items = [
   //   component: "CMPrefsExpensesCategories",
   //   access: "sysadmin",
   // },
-  { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
+  // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
 ];
 
@@ -71,7 +73,6 @@ export default {
   components: {
     LayoutPage,
     LayoutSideMenu,
-    // UITransition,
     CMPrefsUsers,
     CMPrefsProfile,
     // CMPrefsTemplates,
@@ -119,7 +120,7 @@ export default {
       const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
 
       // console.warn(item);
-      if (item.noPaddings) {
+      if (item?.noPaddings) {
         return true;
       } else {
         return false;

@@ -9,13 +9,9 @@
 </template>
 
 <script>
-import UITransition from "@/components/UITransition.vue";
-
 export default {
   name: "LogoffView",
-  components: {
-    UITransition,
-  },
+
   data() {
     return {
       login: "",
