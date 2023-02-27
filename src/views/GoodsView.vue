@@ -6,6 +6,23 @@
         <span v-if="showSideMenu">Скрыть</span>
         <span v-else>Показать</span>
       </UIButton>
+      <!-- View Mode -->
+      <div class="ui compact basic icon buttons" :class="{ disabled: !checkAuthEditGood }" style="margin-left: 4.5rem">
+        <button
+          class="ui button"
+          :class="{ active: viewMode == 0 }"
+          title="Текстовый табличный вид"
+          @click="viewMode = 0"
+        >
+          <i class="table icon"></i>
+        </button>
+        <button class="ui button" :class="{ active: viewMode == 1 }" title="Табличный вид с фото" @click="viewMode = 1">
+          <i class="list icon"></i>
+        </button>
+        <button class="ui button" :class="{ active: viewMode == 2 }" title="Галлерея" @click="viewMode = 2">
+          <i class="th icon"></i>
+        </button>
+      </div>
       <!--  -->
       <UISpacer />
       <!-- Поиск -->
@@ -21,10 +38,21 @@
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
     <!-- List -->
-    <TKGoodsList
+
+    <TKGoodsGrid
+      v-if="viewMode == 2"
       :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
+      :view-mode="viewMode"
+      @event-details="handleDetails"
+    />
+    <TKGoodsList
+      v-else
+      :filter-status="[menuSelectedId]"
+      :header-sticked-at="42"
+      :search-string="searchString"
+      :view-mode="viewMode"
       @event-details="handleDetails"
     />
   </LayoutPage>
@@ -38,12 +66,14 @@ import apiService from "@/services/api.service.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import TKGoodsList from "@/components/TKGoodsList.vue";
+import TKGoodsGrid from "@/components/TKGoodsGrid.vue";
 
 export default {
   name: "GoodsView",
 
   components: {
     TKGoodsList,
+    TKGoodsGrid,
     LayoutPage,
   },
 
@@ -66,6 +96,7 @@ export default {
         // { id: 6, name: "Отменён", icon: "hourglass half" },
       ],
       menuSelectedId: 999,
+      viewMode: 0, // 0 - text, 1 - image, 3 - grid
     };
   },
 
