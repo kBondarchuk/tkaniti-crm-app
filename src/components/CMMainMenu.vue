@@ -152,6 +152,11 @@ export default {
 
 <style scoped>
 div#mainmenu {
+  --ui-main-menu-font-size: 16px;
+  --ui-main-menu-icon-size: 18px;
+}
+
+div#mainmenu {
   /* font-family: "SF Pro Text", "Myriad Set Pro", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif; */
   /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
   background-color: rgba(0, 0, 0, 0.79);
@@ -171,7 +176,7 @@ div#mainmenu :deep(.item > .icon:not(.ui.dropdown.item .item > .icon)) {
   color: white;
   /* margin-top: -2px; */
   /* margin-bottom: -2px; */
-  font-size: 18px;
+  font-size: var(--ui-main-menu-icon-size);
 }
 
 .ui.menu #nav {
@@ -185,10 +190,25 @@ div#mainmenu :deep(.item > .icon:not(.ui.dropdown.item .item > .icon)) {
   padding: 7px 10px;
   /* padding: 0.5rem 0.7rem; */
 
-  font-size: 16px;
+  font-size: var(--ui-main-menu-font-size);
   font-variant-caps: small-caps;
   font-weight: 600;
   /* background-color: violet; */
+}
+
+.ui.menu #nav > .item:last-child {
+  border-radius: 6px !important;
+  margin: 5px 8.5px;
+}
+.ui.menu #nav > .item:nth-last-child(2) {
+  margin-right: 17px;
+}
+
+.ui.menu #nav > .item:last-child:hover {
+  border-top-left-radius: 6px !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .ui.menu .item::before {
@@ -231,40 +251,49 @@ $brand-warning: #ffd600;
 $brand-info: #29b6f6;
 $brand-danger: #ef1c1c;
 $bg-light-gray: #f5f5f5;
+
 .progress {
   background-color: $bg-light-gray;
   border-radius: 3px;
   box-shadow: none;
+
   &.progress-xs {
     height: 5px;
     margin-top: 5px;
   }
+
   &.progress-sm {
     height: 10px;
     margin-top: 5px;
   }
+
   &.progress-lg {
     height: 25px;
   }
+
   &.vertical {
     position: relative;
     width: 20px;
     height: 200px;
     display: inline-block;
     margin-right: 10px;
+
     > .progress-bar {
       width: 100% !important;
       position: absolute;
       bottom: 0;
     }
+
     &.progress-xs {
       width: 5px;
       margin-top: 5px;
     }
+
     &.progress-sm {
       width: 10px;
       margin-top: 5px;
     }
+
     &.progress-lg {
       width: 30px;
     }
@@ -274,19 +303,24 @@ $bg-light-gray: #f5f5f5;
 .progress-bar {
   background-color: $brand-primary;
   box-shadow: none;
+
   &.text-left {
     text-align: left;
+
     span {
       margin-left: 10px;
     }
   }
+
   &.text-right {
     text-align: right;
+
     span {
       margin-right: 10px;
     }
   }
 }
+
 @mixin gradient-striped($color: rgba(255, 255, 255, 0.372), $angle: 45deg) {
   // background-image: -webkit-linear-gradient(
   //   $angle,
@@ -324,6 +358,7 @@ $bg-light-gray: #f5f5f5;
   from {
     background-position: 40px 0;
   }
+
   to {
     background-position: 0 0;
   }
@@ -334,6 +369,7 @@ $bg-light-gray: #f5f5f5;
   from {
     background-position: 40px 0;
   }
+
   to {
     background-position: 0 0;
   }
@@ -344,15 +380,18 @@ $bg-light-gray: #f5f5f5;
   -o-animation: $animation;
   animation: $animation;
 }
+
 .progress.active .progress-bar,
 .progress-bar.active {
   @include animation(progress-bar-stripes 0.2s linear infinite);
 }
+
 .progress-striped .progress-bar,
 .progress-bar-striped {
   @include gradient-striped;
   background-size: 40px 40px;
 }
+
 @mixin progress-bar-variant($color) {
   background-color: $color;
 }

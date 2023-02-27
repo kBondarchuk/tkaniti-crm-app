@@ -1,13 +1,15 @@
 <template>
-  <LayoutPage>
+  <LayoutPage :no-paddings="currentPaddings">
     <!-- Side Menu -->
     <template #side>
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
     </template>
     <!-- <h1>Заглавная страница</h1> -->
-    <!-- <UITransition mode="out-in" appear :duration="150"> -->
-    <component :is="currentComponent" />
-    <!-- </UITransition> -->
+    <UITransition mode="out-in" duration="0.3s">
+      <!-- <transition mode="out-in" name="fade2" appear> -->
+      <component :is="currentComponent" />
+      <!-- </transition> -->
+    </UITransition>
   </LayoutPage>
 </template>
 
@@ -16,16 +18,16 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
-import UITransition from "@/components/UITransition.vue";
+// import UITransition from "@/components/UITransition.vue";
 import CMPrefsUsers from "@/components/CMPrefsUsers.vue";
 import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
-import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
+// import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
 import CMPrefsParams from "@/components/CMPrefsParams.vue";
-import CMPrefsBranches from "@/components/CMPrefsBranches.vue";
+// import CMPrefsBranches from "@/components/CMPrefsBranches.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
-import CMPrefsExpensesCategories from "@/components/CMPrefsExpensesCategories.vue";
+// import CMPrefsExpensesCategories from "@/components/CMPrefsExpensesCategories.vue";
 import CMPrefsSystem from "@/components/CMPrefsSystem.vue";
-import CMPrefsPercentTable from "@/components/CMPrefsPercentTable.vue";
+// import CMPrefsPercentTable from "@/components/CMPrefsPercentTable.vue";
 
 const _menu_items = [
   {
@@ -34,26 +36,34 @@ const _menu_items = [
     icon: "address card",
     component: "CMPrefsProfile",
     access: "user",
+    noPaddings: true,
   },
-  { id: 2, name: "Пользователи", icon: "user friends", component: "CMPrefsUsers", access: "sysadmin" },
-  { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
-  { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
   {
-    id: 9,
-    name: "Таблица процентов",
-    icon: "percent",
-    component: "CMPrefsPercentTable",
-    access: "admin",
-  },
-  { id: 5, name: "Филиалы", icon: "landmark", component: "CMPrefsBranches", access: "sysadmin" },
-  {
-    id: 6,
-    name: "Статьи расхода",
-    icon: "piggy bank",
-    component: "CMPrefsExpensesCategories",
+    id: 2,
+    name: "Пользователи",
+    icon: "user friends",
+    component: "CMPrefsUsers",
     access: "sysadmin",
+    noPaddings: true,
   },
-  { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
+  // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
+  { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
+  // {
+  //   id: 9,
+  //   name: "Таблица процентов",
+  //   icon: "percent",
+  //   component: "CMPrefsPercentTable",
+  //   access: "admin",
+  // },
+  // { id: 5, name: "Филиалы", icon: "landmark", component: "CMPrefsBranches", access: "sysadmin" },
+  // {
+  //   id: 6,
+  //   name: "Статьи расхода",
+  //   icon: "piggy bank",
+  //   component: "CMPrefsExpensesCategories",
+  //   access: "sysadmin",
+  // },
+  // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
 ];
 
@@ -63,16 +73,15 @@ export default {
   components: {
     LayoutPage,
     LayoutSideMenu,
-    UITransition,
     CMPrefsUsers,
     CMPrefsProfile,
-    CMPrefsTemplates,
+    // CMPrefsTemplates,
     CMPrefsParams,
-    CMPrefsBranches,
+    // CMPrefsBranches,
     CMPrefsCompanies,
-    CMPrefsExpensesCategories,
+    // CMPrefsExpensesCategories,
     CMPrefsSystem,
-    CMPrefsPercentTable,
+    // CMPrefsPercentTable,
   },
 
   mixins: [viewMixin],
@@ -105,6 +114,16 @@ export default {
         return item.component;
       } else {
         return null;
+      }
+    },
+    currentPaddings() {
+      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+
+      // console.warn(item);
+      if (item?.noPaddings) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

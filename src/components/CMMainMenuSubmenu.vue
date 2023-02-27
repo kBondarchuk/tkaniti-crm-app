@@ -3,7 +3,7 @@
   <div class="ui simple dropdown item" :class="{ 'is-active': subIsActive() }">
     <i v-if="submenu.icon" class="icon bright" :class="submenu.icon" /> {{ submenu.name }}
     <i class="dropdown icon"></i>
-    <div class="menu rounded-corner">
+    <div class="menu" :class="{ 'rounded-right-corner': rounded == 'right', 'rounded-left-corner': rounded == 'left' }">
       <!-- Items -->
       <template v-for="item in submenu.items" :key="item.id">
         <div v-if="item.divider == 'top'" :key="'div' + item.id" class="divider"></div>
@@ -27,6 +27,14 @@ export default {
     submenu: {
       type: Object,
       default: () => {},
+    },
+    rounded: {
+      type: String,
+      default: "right",
+      validator(value) {
+        // The value must match one of these strings
+        return ["right", "left"].includes(value);
+      },
     },
   },
 
@@ -57,8 +65,12 @@ export default {
   /* font-size: 16px !important; */
 }
 
-.ui.dropdown .menu.rounded-corner {
+.ui.dropdown .menu.rounded-right-corner {
   border-top-right-radius: 0.285714rem;
+  box-shadow: 0px 5px 10px 0 rgb(0 0 0 / 13%);
+}
+.ui.dropdown .menu.rounded-left-corner {
+  border-top-left-radius: 0.285714rem;
   box-shadow: 0px 5px 10px 0 rgb(0 0 0 / 13%);
 }
 
