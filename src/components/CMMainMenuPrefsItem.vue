@@ -34,7 +34,7 @@ export default {
         items: [
           {
             id: 91,
-            name: this.host + "<br/>" + this.authData.email + " :: " + this.authData.ip,
+            name: this.host + "<br/>" + this.authData.email + "<br/>" + this.authData.ip,
             // +
             // "<br/><br/>" +
             // this.authData.branches,
