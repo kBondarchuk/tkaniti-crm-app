@@ -435,23 +435,23 @@ export default [
         component: () => import("@/views/ReportsView.vue"),
       },
       //
-      {
-        path: "/photo_reports",
-        name: "photo_reports",
-        component: () => import("@/views/PhotoReportsView.vue"),
-      },
+      // {
+      //   path: "/photo_reports",
+      //   name: "photo_reports",
+      //   component: () => import("@/views/PhotoReportsView.vue"),
+      // },
       //
-      {
-        path: "/promo",
-        name: "promo",
-        component: () => import("@/views/PromoView.vue"),
-      },
-      //
-      {
-        path: "/notifications",
-        name: "notifications",
-        component: () => import("@/views/NotificationsView.vue"),
-      },
+      // {
+      //   path: "/promo",
+      //   name: "promo",
+      //   component: () => import("@/views/PromoView.vue"),
+      // },
+      // //
+      // {
+      //   path: "/notifications",
+      //   name: "notifications",
+      //   component: () => import("@/views/NotificationsView.vue"),
+      // },
       //
       // {
       //   path: "/dtp",
