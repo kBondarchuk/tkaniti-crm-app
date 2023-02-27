@@ -17,6 +17,7 @@ const AccessRightsEnum = Object.freeze({
   OrdersCancel: "orders.cancel",
   PaymentsDeposit: "payments.deposit",
   PaymentsRefund: "payments.refund",
+  Reports: "reports",
 });
 
 export default AccessRightsEnum;
