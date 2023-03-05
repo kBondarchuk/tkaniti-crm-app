@@ -132,10 +132,10 @@ export default {
           var main_menu_file = "main_menu_customers";
         }
 
-        console.warn(main_menu_file);
+        // console.warn(main_menu_file);
 
         this.menuObject = await import(`../${main_menu_file}.json`);
-        console.log("MENU:   ", JSON.stringify(this.menuObject.default));
+        // console.log("MENU:   ", JSON.stringify(this.menuObject.default));
       }
 
       // console.log("+++ ", this.authRights);
