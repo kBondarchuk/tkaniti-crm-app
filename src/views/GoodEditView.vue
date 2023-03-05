@@ -54,8 +54,28 @@
         </div>
         <!-- second column -->
         <div class="four wide second column">
+          <!-- Единицы измерения -->
+          <UIInputDropdown
+            v-model="good.measure_id"
+            label="Единицы измерения"
+            :options="optionsMeasures"
+            :disabled="isEditMode"
+          />
+          <!-- :class="validateCompany" -->
           <!-- Остаток -->
-          <UIInputMoney v-model="good.quantity" label="Исходный остаток" />
+          <UIInputMoney
+            :key="'ost' + decimalScale"
+            v-model="good.quantity"
+            label="Исходный остаток"
+            :disabled="!good.measure_id"
+            :decimal-scale="decimalScale"
+          />
+          <!-- <UIInputNumber
+            v-if="measureFraction == 1"
+            v-model="good.quantity"
+            label="Исходный остаток"
+            :disabled="!good.measure_id"
+          /> -->
           <!-- Цена -->
           <UIInputMoney v-model="good.price" label="Цена" />
           <!-- Select Investor -->
@@ -68,13 +88,6 @@
           /> -->
           <!-- Branch -->
           <!-- <UIInputDropdown v-model="car.branch_id" label="Филиал" :options="optionsBranch" :class="validateBranch" /> -->
-          <!-- Юр. лицо -->
-          <!-- <UIInputDropdown
-            v-model="car.company_id"
-            label="Юр. лицо"
-            :options="optionsCompany"
-            :class="validateCompany"
-          /> -->
         </div>
       </div>
       <br />
@@ -116,6 +129,7 @@ export default {
     return {
       // model data
       good: Object.assign({}, GoodObject),
+      measures: [],
       // view
       view: {
         title: "Товар",
@@ -126,26 +140,33 @@ export default {
   },
 
   computed: {
+    isEditMode() {
+      return this.goodId ? true : false;
+    },
     selectedInvestor() {
       if (this.investor === undefined) {
         return "";
       } else return this.investor.last_name + " " + this.investor.first_name + " " + this.investor.second_name;
     },
-    optionsBranch() {
+    optionsMeasures() {
       let menu = [{ name: "Не выбран", value: null }].concat(
-        this.branches.map((item) => {
+        this.measures.map((item) => {
           return { name: item.name, value: item.id };
         })
       );
       return menu;
     },
-    optionsCompany() {
-      let menu = [{ name: "Не выбран", value: null }].concat(
-        this.companies.map((item) => {
-          return { name: item.name, value: item.id };
-        })
-      );
-      return menu;
+    measureFraction() {
+      const self = this;
+      const _item = this.measures.find((item) => item.id == self.good.measure_id);
+      return _item?.fraction;
+    },
+    decimalScale() {
+      // if (this.measureFraction == 0) return 0;
+      // if (this.measureFraction == 1) return 1;
+      // if (this.measureFraction == 2) return 2;
+      // if (this.measureFraction == 3) return 3;
+      return this.measureFraction;
     },
     // Validate
     // validatePlateNumber() {
@@ -187,20 +208,15 @@ export default {
     },
   },
 
-  created() {
+  async created() {
     console.log("Created Params.id: " + this.$route.params);
-    // Get ID from params
-    // this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
     this.reset();
     this.setTitle();
-  },
 
-  mounted() {
     if (this.goodId) {
       this.fetchBranchesThenItem(this.goodId);
     } else {
-      // this.fetchBranches();
-      // this.fetchCompanies();
+      await this.fetchMeasures();
     }
   },
 
@@ -247,7 +263,7 @@ export default {
     // Networking
     async fetchBranchesThenItem(car_id) {
       // await this.fetchBranches();
-      // await this.fetchCompanies();
+      await this.fetchMeasures();
       await this.fetchItem(car_id);
     },
     async fetchItem(good_id) {
@@ -264,15 +280,15 @@ export default {
       this.isLoading = false;
     },
 
-    // async fetchCompanies() {
-    //   this.isLoading = true;
-    //   try {
-    //     this.companies = await apiService.getCompanies();
-    //   } catch (error) {
-    //     this.$UIService.showNetworkError(error);
-    //   }
-    //   this.isLoading = false;
-    // },
+    async fetchMeasures() {
+      this.isLoading = true;
+      try {
+        this.measures = await apiService.getMeasures();
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      }
+      this.isLoading = false;
+    },
     async create() {
       console.log("Create ", this.good);
       this.isLoading = true;
