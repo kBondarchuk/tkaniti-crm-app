@@ -1764,6 +1764,7 @@ class APIService extends APIServiceCore {
       notes: good.notes ?? "",
       sostav: good.sostav,
       width: parseInt(good.width),
+      measure_id: parseInt(good.measure_id),
     };
 
     return params;
@@ -2008,6 +2009,19 @@ class APIService extends APIServiceCore {
     };
 
     let response = await this.service.get("/options/payment_methods", { params: params });
+
+    return response.data.data;
+  }
+
+  async getMeasures(filter) {
+    filter = filter || { sort_by: "id", sort_order: "asc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+    };
+
+    let response = await this.service.get("/options/measures", { params: params });
 
     return response.data.data;
   }

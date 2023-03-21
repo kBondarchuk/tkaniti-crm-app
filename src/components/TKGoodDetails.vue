@@ -1,25 +1,4 @@
 <template>
-  <!-- <LayoutTwoColumns> -->
-  <!-- First column -->
-  <!-- <UIStaticTable> -->
-  <!--  -->
-  <!-- <UITableRow name="Наименование" :value="good?.name" />
-      <UITableRow name="Бренд" :value="good?.brand" />
-      <UITableRow name="Артикул" :value="good?.code" />
-      <UITableRow name="Описание" :value="good?.description" /> -->
-  <!--  -->
-  <!-- <UITableDividerRow />
-      <UITableRow name="Ширина" :value="good?.width" />
-      <UITableRow name="Состав" :value="good?.sostav" /> -->
-  <!--  -->
-  <!-- <UITableDividerRow />
-      <UITableRow name="UUID" :value="good?.uuid" /> -->
-
-  <!--  -->
-  <!-- <UITableDividerRow />
-      <UITableRow name="Комментарий" :value="good?.notes" /> -->
-  <!--  -->
-  <!-- </UIStaticTable> -->
   <LayoutTwoColumns>
     <!-- Test List -->
     <UIList class="grouped" :is-loading="isLoading">
@@ -50,14 +29,6 @@
 
     <!--  -->
     <template #second>
-      <!-- <UIStaticTable two-columns>
-        <UITableRow name="Цена" :value="good?.price" type="money2" align="right" />
-        <UITableDividerRow />
-        <UITableRow name="Исходное количество" :value="good?.quantity" align="right" />
-        <UITableRow name="Продано" :value="good?.stats?.sold" align="right" />
-        <UITableRow name="Текущий остаток" :value="good?.stats?.remains" align="right" />
-      </UIStaticTable> -->
-
       <UIList class="grouped right-aligned" :is-loading="isLoading">
         <UIListSection header="Цены">
           <UIListItem name="Цена" :value="good?.price" type="money2" />
@@ -67,6 +38,7 @@
           <UIListItem name="Исходное количество" :value="good?.quantity" />
           <UIListItem name="Продано" :value="good?.stats?.sold" />
           <UIListItem name="Текущий остаток" :value="good?.stats?.remains" />
+          <UIListItem name="Единицы измерения" :value="good?.measure_name" />
         </UIListSection>
       </UIList>
     </template>

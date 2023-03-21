@@ -17,11 +17,11 @@
       {{ $filters.date(item.delivery_date) }}
     </td>
     <!--  -->
-    <td>
+    <td class="right aligned">
       {{ item.goods_count }}
     </td>
     <!--  -->
-    <td>
+    <td class="right aligned">
       {{ item.total_quantity }}
     </td>
     <!--  -->

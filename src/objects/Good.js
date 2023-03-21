@@ -15,6 +15,7 @@ const _good = {
   status_id: null,
   uuid: null,
   width: null,
+  measure_id: null,
 };
 
 export default _good;
