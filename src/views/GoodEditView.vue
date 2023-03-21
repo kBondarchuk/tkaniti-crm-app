@@ -159,7 +159,7 @@ export default {
     measureFraction() {
       const self = this;
       const _item = this.measures.find((item) => item.id == self.good.measure_id);
-      return _item?.fraction;
+      return _item?.system_fraction;
     },
     decimalScale() {
       // if (this.measureFraction == 0) return 0;
