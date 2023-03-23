@@ -23,6 +23,9 @@
         >
           В продаже
         </button>
+        <button class="ui button" :class="{ active: good?.status_id == 4, disabled: !checkAuthEditGood }">
+          Приостановлено
+        </button>
         <button
           class="ui button"
           :class="{ active: good?.status_id == 3, disabled: !checkAuthEditGood }"
