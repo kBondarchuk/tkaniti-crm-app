@@ -64,7 +64,7 @@
       />
       <!--  -->
 
-      <template v-if="checkAuthForwardOrder">
+      <template v-if="checkAuthForwardOrder && [3, 4, 5].includes(order?.status_id)">
         <UISpacer />
         <UIButton text="Внести номер посылки" type="basic" @click="actionEditParcelNumber" />
       </template>
