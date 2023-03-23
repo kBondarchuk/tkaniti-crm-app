@@ -67,6 +67,7 @@ export default {
         { id: "real_customer_fio", name: "Клиент", class: "" },
         { id: "customer_fio", name: "ФИО", class: "" },
         { id: "customer_phone", name: "Номер телефона", class: "" },
+        { id: "parcel_number", name: "Посылка", class: "" },
         { id: "notes", name: "Комментарий", class: "" },
         // { id: "gibdd_valid_number", name: "М", class: "" },
       ],

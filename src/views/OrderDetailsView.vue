@@ -64,6 +64,11 @@
       />
       <!--  -->
 
+      <template v-if="checkAuthForwardOrder">
+        <UISpacer />
+        <UIButton text="Внести номер посылки" type="basic" @click="actionEditParcelNumber" />
+      </template>
+
       <UISpacer />
       <!-- Всегда? -->
       <UIButton
@@ -89,6 +94,10 @@
       <router-view :order="order" @update="refetchOrder()"></router-view>
     </div>
 
+    <!-- Parcel Modal -->
+    <ModalParcelNumberEdit v-model:active="modals.parcel" :order-id="order?.id" @created="refetchOrder()" />
+    <!--  -->
+
     <!------->
   </LayoutPage>
 </template>
@@ -102,6 +111,8 @@ import { TabsMixin } from "@/mixins/TabsMixin.js";
 
 import { OrderStatusEnum } from "@/enums/index";
 
+import ModalParcelNumberEdit from "@/components/ModalParcelNumberEdit.vue";
+
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "РАСЧЕТЫ", id: "operations" },
@@ -111,7 +122,9 @@ const kTABS = [
 export default {
   name: "OrderDetailsView",
 
-  components: {},
+  components: {
+    ModalParcelNumberEdit,
+  },
 
   mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
@@ -130,6 +143,10 @@ export default {
       view: { title: "Заказ", subTitle: "Детализация заказа" },
       // Tabs
       tabs: [],
+      // Modals
+      modals: {
+        parcel: false,
+      },
     };
   },
 
@@ -213,6 +230,9 @@ export default {
       if (confirmed) {
         this.cancelOrder(this.orderId);
       }
+    },
+    actionEditParcelNumber() {
+      this.modals.parcel = true;
     },
 
     // Events

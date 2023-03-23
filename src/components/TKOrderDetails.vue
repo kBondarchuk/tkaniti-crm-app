@@ -88,6 +88,8 @@
       <UIListItem name="Адрес доставки" :value="order?.delivery_address" />
       <!-- Отложенная отправка -->
       <UIListItem name="Отложить до" :value="order?.delivery_date" type="date" />
+      <!-- Номер посылки -->
+      <UIListItem name="Номер посылки" :value="order?.parcel_number" />
     </UIListSection>
 
     <UIListSection header="Комментарий сотрудника">
