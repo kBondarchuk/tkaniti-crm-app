@@ -38,6 +38,7 @@
           <UIListItem name="Исходное количество" :value="good?.quantity" />
           <UIListItem name="Продано" :value="good?.stats?.sold" />
           <UIListItem name="Текущий остаток" :value="good?.stats?.remains" />
+          <UIListItem name="Входящий остаток" :value="good?.stats?.remains_predicted" />
           <UIListItem name="Единицы измерения" :value="good?.measure_name" />
         </UIListSection>
       </UIList>
