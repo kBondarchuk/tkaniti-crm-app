@@ -8,7 +8,9 @@
       <UISpacer />
       <!-- Statuses -->
       <div class="ui compact basic buttons" :class="{ disabled: !checkAuthEditGood }">
-        <button class="ui button" :class="{ active: good?.status_id == 0, disabled: !checkAuthEditGood }">Новый</button>
+        <button class="ui disabled button" :class="{ active: good?.status_id == 0, disabled: !checkAuthEditGood }">
+          Новый
+        </button>
         <button
           class="ui button"
           :class="{ active: good?.status_id == 1, disabled: !checkAuthEditGood }"
@@ -26,11 +28,8 @@
         <button class="ui button" :class="{ active: good?.status_id == 4, disabled: !checkAuthEditGood }">
           Приостановлено
         </button>
-        <button
-          class="ui button"
-          :class="{ active: good?.status_id == 3, disabled: !checkAuthEditGood }"
-          @click="actionSetStatus(3)"
-        >
+        <!-- @click="actionSetStatus(3)" -->
+        <button class="ui button" :class="{ active: good?.status_id == 3, disabled: !checkAuthEditGood }">
           Продано
         </button>
       </div>
