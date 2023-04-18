@@ -4,6 +4,18 @@
     <template #toolbar>
       <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
       <UISpacer />
+      <template v-if="order?.status_id != 6 && order?.id">
+        <!-- Всегда? -->
+        <!-- <UIButton
+          text="Отменить"
+          color=""
+          icon="red times circle"
+          type="basic labeled"
+          :disabled="!checkAuthCancelOrder"
+          @click="actionCancelOrder(order.id)"
+        /> -->
+        <UISpacer />
+      </template>
       <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
     </template>
     <!-- /Toolbar -->
@@ -89,7 +101,7 @@
         <div class="ten wide second column">
           <!-- Список товаров (корзина) -->
           <TKOrderBasketEdit
-            v-if="[1].includes(order.status_id)"
+            v-if="order?.status?.editable == 1"
             v-model="order.basket"
             :order="order"
             @basket="basketChanged"
@@ -109,6 +121,7 @@ import { toRaw } from "vue";
 
 import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
+import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
 
 import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
@@ -126,7 +139,7 @@ export default {
     CUISelectCustomer,
   },
 
-  mixins: [viewMixin],
+  mixins: [viewMixin, CheckAuthMixin],
 
   props: {
     orderId: {
@@ -221,6 +234,7 @@ export default {
     reset() {
       if (this.orderId === null) {
         this.order.status_id = 1;
+        this.order.status = { editable: 1 }; // TODO: Подумать
       }
       // item
       // this.investor.id = item.id;
@@ -256,12 +270,20 @@ export default {
         this.update();
       }
     },
+    actionCancelOrder() {
+      //
+      const text = "Вы действительно хотите отменить заказ?";
+      var confirmed = confirm(text);
+      if (confirmed) {
+        this.cancelOrder(this.orderId);
+      }
+    },
 
     // Networking
-    async fetchBranchesThenItem(car_id) {
+    async fetchBranchesThenItem(order_id) {
       await this.fetchPaymentMethods();
       await this.fetchDeliveryMethods();
-      await this.fetchItem(car_id);
+      await this.fetchItem(order_id);
     },
     async fetchItem(order_id) {
       this.isLoading = true;
@@ -317,6 +339,21 @@ export default {
       try {
         await apiService.updateOrder(this.order);
         this.$router.push({ name: "order_details", params: { id: this.order.id } });
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async cancelOrder(order_id) {
+      this.isLoading = true;
+
+      try {
+        await apiService.cancelOrder(order_id);
+
+        this.$UIService.showSuccess(`Заказ отменён!`);
+        await this.fetchItem(order_id);
+        this.back();
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {

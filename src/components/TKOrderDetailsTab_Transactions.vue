@@ -4,14 +4,14 @@
     <div class="ui-tool-bar-local">
       <!-- Оплата -->
       <UIButton
-        :disabled="order?.status_id < OrderStatusEnum.Payment || !checkAuthPaymentsDeposit"
+        :disabled="order?.status.fixed != 1 || !checkAuthPaymentsDeposit"
         text="Внести оплату"
         icon="ruble sign"
         type="right labeled"
         @click="actionDeposit"
       />
       <UIButton
-        :disabled="order?.status_id < OrderStatusEnum.Payment || !checkAuthPaymentsRefund"
+        :disabled="(order?.status.fixed != 1 && order?.payment_status_id == 0) || !checkAuthPaymentsRefund"
         text="Возврат"
         @click="actionRefund"
       />

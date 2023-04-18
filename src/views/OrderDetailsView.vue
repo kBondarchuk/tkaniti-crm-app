@@ -10,73 +10,44 @@
       <!-- Откатить -->
       <!-- Если не оплачен -->
       <UIButton
-        v-if="![0, 6].includes(order?.status_id)"
-        type="basic"
+        v-if="order?.status.previous_status_id != null"
+        type="labeled basic"
         text="Откатить"
-        :class="{ disabled: order?.payment_status_id != 0 || [0, 1].includes(order?.status_id) }"
+        icon="undo"
         :disabled="!checkAuthRevertOrder"
-        @click="actionRevertStatus"
+        @click="actionRevertStatus(order?.status.previous_status_id)"
       />
-      <!-- Когда Новый -->
+      <!-- :class="{ disabled: order?.payment_status_id != 0 }" -->
+
+      <!-- Actions -->
       <UIButton
-        v-if="order?.status_id == 0"
-        text="Взять в работу"
-        icon="thumbs up"
-        type="right labeled"
-        :class="{ disabled: !(order?.basket.length > 0) }"
+        v-if="actions[order?.status.next_status_id]?.id == order?.status.next_status_id"
+        :text="actions[order?.status.next_status_id]?.text"
+        :icon="actions[order?.status.next_status_id]?.icon"
+        type=" labeled"
         :disabled="!checkAuthForwardOrder"
-        @click="actionSetStatus(1)"
+        @click="actionSetNextStatus(order?.status.next_status_id)"
       />
-      <!-- Когда Проверен -->
-      <UIButton
-        v-if="order?.status_id == 1"
-        text="Утвердить заказ"
-        :disabled="!checkAuthForwardOrder"
-        @click="actionSetStatus(2)"
-      />
-      <!-- icon="box open" type="right labeled"-->
-      <!-- Когда В подготовке -->
-      <UIButton
-        v-if="order?.status_id == 2"
-        text="В подготовку"
-        icon="box"
-        type="right labeled"
-        :disabled="!checkAuthForwardOrder"
-        @click="actionSetStatus(3)"
-      />
-      <!-- Когда К отправке -->
-      <UIButton
-        v-if="order?.status_id == 3"
-        text="Отправлен"
-        icon="truck"
-        type="right labeled"
-        :disabled="!checkAuthForwardOrder"
-        @click="actionSetStatus(4)"
-      />
-      <!-- Когда Отправлен -->
-      <UIButton
-        v-if="order?.status_id == 4"
-        text="Заказ получен"
-        icon="grin stars"
-        type="right labeled"
-        :disabled="!checkAuthForwardOrder"
-        @click="actionSetStatus(5)"
-      />
-      <!--  -->
 
       <UISpacer />
-      <!-- Всегда? -->
+      <template v-if="checkAuthForwardOrder && order?.status.need_payment == 1">
+        <UIButton text="Внести номер посылки" type="basic" @click="actionEditParcelNumber" />
+      </template>
+
+      <UISpacer />
+
+      <!-- Cancel -->
       <UIButton
-        v-if="order?.status_id != 6"
-        text="Отменить"
-        color=""
-        icon="red times circle"
-        type="basic labeled"
+        v-if="order?.status.cancel_status_id != null"
+        text="Удалить заказ"
+        color="red"
+        icon="times"
+        type="labeled"
         :disabled="!checkAuthCancelOrder"
         @click="actionCancelOrder"
       />
       <!--  -->
-      <UIButton type="basic labeled" text="Изменить" icon="edit" :class="{ disabled: !validateEdit }" @click="edit" />
+      <!-- <UIButton type="basic labeled" text="Изменить" icon="edit" :class="{ disabled: !validateEdit }" @click="edit" /> -->
       <!--  -->
     </template>
     <!-- /Toolbar -->
@@ -88,6 +59,10 @@
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
       <router-view :order="order" @update="refetchOrder()"></router-view>
     </div>
+
+    <!-- Parcel Modal -->
+    <ModalParcelNumberEdit v-model:active="modals.parcel" :order-id="order?.id" @created="refetchOrder()" />
+    <!--  -->
 
     <!------->
   </LayoutPage>
@@ -102,16 +77,51 @@ import { TabsMixin } from "@/mixins/TabsMixin.js";
 
 import { OrderStatusEnum } from "@/enums/index";
 
+import ModalParcelNumberEdit from "@/components/ModalParcelNumberEdit.vue";
+
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "РАСЧЕТЫ", id: "operations" },
   { name: "ИСТОРИЯ", id: "history" },
 ];
 
+const kActions = [
+  {
+    id: 0,
+  },
+  {
+    id: 1,
+    text: "Взять в работу",
+    icon: "right arrow",
+  },
+  {
+    id: 2,
+    text: "Утвердить заказ",
+    icon: "thumbs up",
+  },
+  {
+    id: 3,
+    text: "В подготовку",
+    icon: "box",
+  },
+  {
+    id: 4,
+    text: "Отправлен",
+    icon: "truck",
+  },
+  {
+    id: 5,
+    text: "Заказ получен",
+    icon: "grin stars",
+  },
+];
+
 export default {
   name: "OrderDetailsView",
 
-  components: {},
+  components: {
+    ModalParcelNumberEdit,
+  },
 
   mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
@@ -130,13 +140,19 @@ export default {
       view: { title: "Заказ", subTitle: "Детализация заказа" },
       // Tabs
       tabs: [],
+      // Modals
+      modals: {
+        parcel: false,
+      },
+      // UI
+      actions: kActions,
     };
   },
 
   computed: {
     validateEdit() {
       //
-      return this.checkAuthEditOrder && [1, 2, 3].includes(this.order?.status_id);
+      return this.checkAuthEditOrder && this.order?.status.editable == 1;
     },
   },
 
@@ -164,11 +180,11 @@ export default {
       this.$router.push({ name: `order_details_${name}`, params: { id: this.orderId } });
     },
     // Actions
-    actionSetStatus(status) {
+    actionSetNextStatus(status) {
       var text;
       switch (status) {
         case 1:
-          text = "Вы действительно хотите редактировать заказ?";
+          text = "Вы действительно хотите взять заказ в работу?";
           break;
         case 2:
           text = "Вы действительно хотите утвердить заказ?";
@@ -191,19 +207,19 @@ export default {
       }
       var confirmed = confirm(text);
       if (confirmed) {
-        this.postSetStatus(this.orderId, status);
+        this.setOrderNextStatus(this.orderId, status);
       }
     },
-    actionRevertStatus() {
+    actionRevertStatus(status) {
       //
-      if (this.order?.status_id == OrderStatusEnum.New) return;
-      if (this.order?.status_id == OrderStatusEnum.Check) return;
-      if (this.order?.status_id == OrderStatusEnum.Canceled) return;
+      // if (this.order?.status_id == OrderStatusEnum.New) return;
+      // if (this.order?.status_id == OrderStatusEnum.Check) return;
+      // if (this.order?.status_id == OrderStatusEnum.Canceled) return;
 
       const text = "Вы действительно хотите откатить заказ на предыдущую стадию?";
       var confirmed = confirm(text);
       if (confirmed) {
-        this.setOrderPreviousStatus(this.orderId);
+        this.setOrderPreviousStatus(this.orderId, status);
       }
     },
     actionCancelOrder() {
@@ -213,6 +229,9 @@ export default {
       if (confirmed) {
         this.cancelOrder(this.orderId);
       }
+    },
+    actionEditParcelNumber() {
+      this.modals.parcel = true;
     },
 
     // Events
@@ -235,13 +254,13 @@ export default {
       }
       this.isLoading = false;
     },
-    async postSetStatus(order_id, status) {
+    async setOrderNextStatus(order_id, status) {
       this.isLoading = true;
 
       try {
-        await apiService.setOrderStatus(order_id, status);
+        await apiService.setOrderNextStatus(order_id, status);
 
-        this.$UIService.showSuccess(`Заказ сменил статус!`);
+        this.$UIService.showSuccess(`Заказ переведен на следующую стадию!`);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {
@@ -250,13 +269,13 @@ export default {
 
       this.fetchOrder(order_id);
     },
-    async setOrderPreviousStatus(order_id) {
+    async setOrderPreviousStatus(order_id, status) {
       this.isLoading = true;
 
       try {
-        await apiService.setOrderPreviousStatus(order_id);
+        await apiService.setOrderPreviousStatus(order_id, status);
 
-        this.$UIService.showSuccess(`Заказ сменил статус!`);
+        this.$UIService.showSuccess(`Заказ возвращён на предыдущую стадию!`);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {

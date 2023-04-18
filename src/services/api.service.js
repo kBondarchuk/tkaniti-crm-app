@@ -1637,13 +1637,27 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
-  async setOrderStatus(order_id, status) {
-    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/" + status);
+  async getOrderParcelNumber(id) {
+    let response = await this.service.get(REQUESTS.ORDERS + "/" + id + "/parcel");
     return response.data.data;
   }
 
-  async setOrderPreviousStatus(order_id) {
-    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/previous");
+  async setOrderParcelNumber(order_id, parcel_number) {
+    const params = {
+      parcel_number: parcel_number,
+    };
+
+    let response = await this.service.put(REQUESTS.ORDERS + "/" + order_id + "/parcel", params);
+    return response.data.data;
+  }
+
+  async setOrderNextStatus(order_id, status) {
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/next/" + status);
+    return response.data.data;
+  }
+
+  async setOrderPreviousStatus(order_id, status) {
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/status/previous/" + status);
     return response.data.data;
   }
 
