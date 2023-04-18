@@ -8,13 +8,12 @@
       :class="size"
       size="middle"
       no-padding
+      scrolling-content
       @cancel="modalCancel"
       @did-show="didShow"
     >
       <!-- List -->
-      <div class="scrolling content">
-        <TKGoodsList :filter-status="filterStatus" @event-details="handleItemSelect" />
-      </div>
+      <TKGoodsList :filter-status="filterStatus" @event-details="handleItemSelect" />
     </UIModal>
     <!-- /New Modal -->
   </Teleport>
