@@ -27,6 +27,8 @@
     <td class="right aligned">
       {{ item.remains }}
     </td>
+    <!-- Ед изм -->
+    <td>{{ item.measure_name }}</td>
     <!--  -->
     <!-- <td :title="item.description" v-html="$filters.truncate(item.description, 30)"></td> -->
     <!--  -->
