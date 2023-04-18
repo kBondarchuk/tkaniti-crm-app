@@ -234,6 +234,7 @@ export default {
     reset() {
       if (this.orderId === null) {
         this.order.status_id = 1;
+        this.order.status = { editable: 1 }; // TODO: Подумать
       }
       // item
       // this.investor.id = item.id;
