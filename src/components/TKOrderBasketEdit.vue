@@ -4,11 +4,12 @@
     <!--  -->
     <thead>
       <tr>
-        <th class="center aligned" colspan="5">КОРЗИНА ТОВАРОВ</th>
+        <th class="center aligned" colspan="6">КОРЗИНА ТОВАРОВ</th>
       </tr>
       <tr>
         <th></th>
         <th>Наименование товара</th>
+        <th class="right aligned">Остатки</th>
         <th class="">Цена</th>
         <th class="">Количество</th>
         <th class="right aligned">Стоимость</th>
@@ -20,12 +21,17 @@
       <tr v-for="(item, index) in basket" :key="item.id">
         <td><i class="trash alternate red icon" title="Удалить товар" @click.stop="deleteItem(item)"></i></td>
         <td :class="{ deleted: item.delete == 1 }">{{ item.good_name }} ({{ item.good_id }})</td>
+        <!-- Remains -->
+        <td class="right aligned">{{ basket[index].remains }}</td>
+        <!-- Price -->
         <td>
           <UIInputMoney v-model="basket[index].good_price" />
         </td>
+        <!-- Quantity -->
         <td>
-          <UIInputMoney v-model="basket[index].good_quantity" />
+          <UIInputMoney v-model="basket[index].good_quantity" :decimal-scale="basket[index].good_system_fraction" />
         </td>
+        <!-- Price -->
         <td class="right aligned">{{ $filters.money(item.good_total_price) }}</td>
       </tr>
       <!--  -->
@@ -33,7 +39,7 @@
     <!--  -->
     <tfoot>
       <tr>
-        <th colspan="4">
+        <th colspan="5">
           <!-- Buttons -->
           <!-- <UIButton text="Сохранить" @click.prevent="save" />
           <UIButton text="Отменить" @click.prevent="undo" /> -->
