@@ -163,10 +163,7 @@ export default {
       // investor: undefined,
       // paramId: null,
       isLoading: false,
-      // Modals
-      modals: {
-        browseInvestors: false,
-      },
+
       // Delivery methods
       deliveryMethods: [],
       // Payment methods
