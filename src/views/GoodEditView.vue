@@ -237,14 +237,7 @@ export default {
         this.update();
       }
     },
-    // browseInvestors() {
-    //   this.modals.browseInvestors = true;
-    // },
-    // investorSelected(item) {
-    //   this.investor = item;
-    //   this.modals.browseInvestors = false;
-    //   this.car.investor_id = this.investor.id;
-    // },
+
     // Networking
     async fetchBranchesThenItem(car_id) {
       // await this.fetchBranches();

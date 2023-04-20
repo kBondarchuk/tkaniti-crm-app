@@ -16,15 +16,6 @@
         @button-did-click="browseCars"
       /> -->
 
-      <!-- Select Investor -->
-      <!-- <UIInputSelect
-        v-if="filter.helper_value == 6"
-        placeholder="Инвестор не выбран"
-        :value="selectedInvestor"
-        style="padding-left: 1em; min-width: 22em"
-        @button-did-click="browseInvestors"
-      /> -->
-
       <!-- Select Customer -->
       <!-- <UIInputSelect
         v-if="filter.helper_value == 5"
@@ -102,9 +93,6 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import TKOperationsList from "@/components/TKOperationsList.vue";
-// import BrowseCars from "@/components/BrowseCars.vue";
-// import BrowseInvestors from "@/components/BrowseInvestors.vue";
-// import BrowseCustomers from "@/components/BrowseCustomers.vue";
 
 export default {
   name: "TKOperationsView",
@@ -112,9 +100,6 @@ export default {
   components: {
     LayoutPage,
     TKOperationsList,
-    // BrowseCars,
-    // BrowseInvestors,
-    // BrowseCustomers,
   },
 
   mixins: [viewMixin],
@@ -143,8 +128,6 @@ export default {
       options: [],
       // Modals
       modals: {
-        browseCars: false,
-        browseInvestors: false,
         browseCustomers: false,
       },
     };
@@ -201,14 +184,6 @@ export default {
       this.car = item;
       this.filter.operations_subject_id = item.id;
       this.modals.browseCars = false;
-    },
-    browseInvestors() {
-      this.modals.browseInvestors = true;
-    },
-    investorSelected(item) {
-      this.investor = item;
-      this.filter.operations_subject_id = item.id;
-      this.modals.browseInvestors = false;
     },
     browseCustomers() {
       this.modals.browseCustomers = true;
