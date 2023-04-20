@@ -70,24 +70,9 @@
             :disabled="!good.measure_id"
             :decimal-scale="decimalScale"
           />
-          <!-- <UIInputNumber
-            v-if="measureFraction == 1"
-            v-model="good.quantity"
-            label="Исходный остаток"
-            :disabled="!good.measure_id"
-          /> -->
+
           <!-- Цена -->
           <UIInputMoney v-model="good.price" label="Цена" />
-          <!-- Select Investor -->
-          <!-- <UIInputSelect
-            text="Инвестор"
-            placeholder="Инвестор не выбран"
-            :value="selectedInvestor"
-            :class="{ disabled: car.ref_car_status != 0 && paramId != null }"
-            @button-did-click="browseInvestors"
-          /> -->
-          <!-- Branch -->
-          <!-- <UIInputDropdown v-model="car.branch_id" label="Филиал" :options="optionsBranch" :class="validateBranch" /> -->
         </div>
       </div>
       <br />
