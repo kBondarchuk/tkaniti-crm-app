@@ -4,9 +4,9 @@
     <!--  -->
     <thead>
       <tr>
-        <th class="center aligned" colspan="7">КОРЗИНА ТОВАРОВ</th>
+        <th class="center aligned" :colspan="columnsCount">КОРЗИНА ТОВАРОВ</th>
       </tr>
-      <tr>
+      <tr v-if="order?.basket.length != 0">
         <th>Товар</th>
         <th></th>
         <th class="right aligned">Остатки</th>
@@ -18,6 +18,16 @@
     </thead>
     <!--  -->
     <tbody>
+      <!-- Empty Basket -->
+      <tr v-if="order?.basket.length == 0">
+        <td
+          :colspan="columnsCount"
+          class="center aligned text-color-grey"
+          style="padding: 2rem; text-transform: uppercase"
+        >
+          Нет товара в корзине
+        </td>
+      </tr>
       <!--  -->
       <tr v-for="item in order?.basket" :key="item.id">
         <td><TKLink :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
@@ -31,7 +41,7 @@
       <!--  -->
     </tbody>
     <!--  -->
-    <tfoot>
+    <tfoot v-if="order?.basket.length != 0">
       <tr>
         <th></th>
         <th></th>
@@ -68,6 +78,12 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  data() {
+    return {
+      columnsCount: 7,
+    };
   },
 };
 </script>
