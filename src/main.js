@@ -40,7 +40,7 @@ console.log(
   "background:transparent"
 );
 console.log(
-  `%c Copyright (c) 2019-2022 Konstantin Bondarchuk %c`,
+  `%c Copyright (c) 2022-2023 Konstantin Bondarchuk %c`,
   "background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff",
   "background:transparent"
 );
