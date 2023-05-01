@@ -36,6 +36,8 @@
 
       <UISpacer />
 
+      <!-- Клон заказа -->
+      <UIButton text="Клонировать" icon="clone" type="labeled" :disabled="!orderId" @click="cloneOrder" />
       <!-- Cancel -->
       <UIButton
         v-if="order?.status.cancel_status_id != null"
@@ -156,6 +158,12 @@ export default {
     },
   },
 
+  watch: {
+    orderId(newValue, oldValue) {
+      this.fetchOrder(newValue);
+    },
+  },
+
   created() {
     // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
     this.createTabs(kTABS);
@@ -238,6 +246,13 @@ export default {
     refetchOrder() {
       this.fetchOrder(this.orderId);
     },
+    cloneOrder() {
+      const text = "Будет создана копия этого заказа.";
+      var confirmed = confirm(text);
+      if (confirmed) {
+        this.fetchCloneOrder(this.orderId);
+      }
+    },
 
     // Networking
     async fetchOrder(order_id) {
@@ -298,6 +313,23 @@ export default {
       }
 
       this.fetchOrder(order_id);
+    },
+    async fetchCloneOrder(order_id) {
+      this.isLoading = true;
+
+      try {
+        let result = await apiService.cloneOrder(order_id);
+        console.warn(result);
+        this.$router.push({ name: "order_details", params: { id: result.id } });
+
+        this.$UIService.showSuccess(`Создан новый заказ!`);
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      } finally {
+        this.isLoading = false;
+      }
+
+      // this.fetchOrder(order_id);
     },
   },
 };
