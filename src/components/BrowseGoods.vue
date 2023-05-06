@@ -13,7 +13,7 @@
       @did-show="didShow"
     >
       <!-- List -->
-      <TKGoodsList :filter-status="filterStatus" @event-details="handleItemSelect" />
+      <TKGoodsList v-if="active || keepAlive" :filter-status="filterStatus" @event-details="handleItemSelect" />
     </UIModal>
     <!-- /New Modal -->
   </Teleport>
@@ -51,6 +51,7 @@ export default {
   data() {
     return {
       title: "",
+      keepAlive: false,
     };
   },
 
@@ -67,6 +68,7 @@ export default {
     didShow() {
       // modal_id
       this.reset();
+      this.keepAlive = true;
     },
 
     // Browser

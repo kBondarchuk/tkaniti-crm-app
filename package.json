@@ -1,6 +1,6 @@
 {
   "name": "tkaniti-crm-app",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -28,7 +28,7 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.0",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "eslint": "^8.14.0",
     "eslint-plugin-prettier": "^4.0.0",

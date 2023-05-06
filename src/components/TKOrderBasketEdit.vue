@@ -6,7 +6,7 @@
       <tr>
         <th class="center aligned" colspan="6">КОРЗИНА ТОВАРОВ</th>
       </tr>
-      <tr>
+      <tr v-if="order?.basket.length != 0">
         <th></th>
         <th>Наименование товара</th>
         <th class="right aligned">Остатки</th>
@@ -17,6 +17,16 @@
     </thead>
     <!--  -->
     <tbody>
+      <!-- Empty Basket -->
+      <tr v-if="basket.length == 0">
+        <td
+          :colspan="columnsCount"
+          class="center aligned text-color-grey"
+          style="padding: 2rem; text-transform: uppercase"
+        >
+          <span>Нет товара в корзине</span>
+        </td>
+      </tr>
       <!--  -->
       <tr v-for="(item, index) in basket" :key="item.id">
         <td><i class="trash alternate red icon" title="Удалить товар" @click.stop="deleteItem(item)"></i></td>
@@ -92,6 +102,7 @@ export default {
       basket: [],
       // UI
       isLoading: false,
+      columnsCount: 7,
       modals: {
         browseGoods: false,
       },

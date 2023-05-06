@@ -1686,6 +1686,11 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async cloneOrder(order_id) {
+    let response = await this.service.post(REQUESTS.ORDERS + "/" + order_id + "/clone");
+    return response.data.data;
+  }
+
   async deleteCar(id) {
     let response = await this.service.delete(REQUESTS.CARS + "/" + id);
     return response.data.data;
