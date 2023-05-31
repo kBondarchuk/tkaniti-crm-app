@@ -205,6 +205,24 @@ export default [
         name: "Preferences",
         component: () => import("@/views/PreferencesView.vue"),
       },
+      // Payments
+      {
+        path: "/cashier/invoices",
+        component: LayoutView,
+        children: [
+          {
+            path: "",
+            name: "payments_invoices",
+            component: () => import("@/views/PaymentsView.vue"),
+          },
+          {
+            path: ":id",
+            name: "payments_invoice_details",
+            props: (route) => ({ invoiceId: Number(route.params.id) }),
+            component: () => import("@/views/PaymentDetails.vue"),
+          },
+        ],
+      },
 
       // {
       //   path: "admin",

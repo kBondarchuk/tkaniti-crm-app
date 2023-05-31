@@ -6,20 +6,9 @@ const REQUESTS = {
   ORDERS: "/orders",
   GOODS: "/goods",
 
-  CARS: "/cars",
-  INVESTORS: "/investors",
-  CONTRACTS: "/contracts",
-  CONTRACTS_RENT: "/contracts/rent",
-  // INVESTMENTS: "/investments",
-  EXPENSES: "/expenses",
-  EXPENSES_TOTALS: "/expenses/totals",
-  EXPENSES_CATEGORIES: "/expenses/categories",
   SALES: "/sales",
   OPERATIONS: "/operations",
   TRANSACTIONS: "/transactions",
-  CALC: "/utils/calc",
-  CALC_GRAPH: "/utils/calc/graph",
-  CALC_GRAPH_PRINTED: "/utils/calc/graph/printed",
   REPORTS: "/reports",
   STATISTICS: "/statistics",
   ACQUIRING: "/acquiring/transactions",
@@ -32,18 +21,15 @@ const REQUESTS = {
   IMAGES: "/images",
   DOCUMENTS: "/documents",
   WARNINGS: "/warnings",
-  DTP: "/dtp",
   COMPANIES: "/companies",
-  CAR_FINES: "/fines",
-  PHOTO_REPORTS: "/photo_reports",
-  PROMO: "/promo",
   NOTIFICATIONS: "/notifications",
   PREFS: "/prefs",
-  BRANCHES: "/branches",
+  PAYMENTS: {
+    INVOICES: "/payments/invoices",
+    REFRESH_ORDER: "/payments/refreshorder",
+    SETTINGS: "/payments/settings",
+  },
   TOKEN: "/token",
-  BUDGET_REQUESTS: "/budget/requests",
-  ADVANCE_REQUESTS: "/advance/requests",
-  REGISTRATION_REQUESTS: "/registrations/requests",
   HINTS: "/hint",
   SYSTEM: "/system",
 };
@@ -205,301 +191,6 @@ class APIService extends APIServiceCore {
   }
 
   /**
-   * Investors
-   */
-
-  async getInvestors(filter = null) {
-    filter = filter || { sort_by: "id", sort_order: "asc" };
-
-    const params = {
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-    };
-
-    let response = await this.service.get(REQUESTS.INVESTORS, { params: params });
-    return response.data.data;
-  }
-
-  async getInvestor(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id);
-    return response.data.data;
-  }
-
-  async getInvestorAccounts(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/accounts");
-    return response.data.data;
-  }
-
-  async getInvestorAccountsInvestments(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/accounts/investments");
-    return response.data.data;
-  }
-
-  async getInvestorBillingPlans(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/billing_plans");
-    return response.data.data;
-  }
-
-  async getInvestorActiveBillingPlan(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/billing_plans/active");
-    return response.data.data;
-  }
-
-  async getInvestorsLeasingContractsTotals(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/contracts_totals");
-    return response.data.data;
-  }
-
-  async getInvestorsRentContractsTotals(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/rent_contracts_totals");
-    return response.data.data;
-  }
-
-  async getInvestorSalesTotals(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/sales_totals");
-    return response.data.data;
-  }
-
-  async getInvestorsTotals() {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/totals");
-    return response.data.data;
-  }
-
-  async getInvestorsStatsHistoryInvestment(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/stat/history/investment");
-    return response.data.data;
-  }
-
-  async getInvestorsInterestStats(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/stats/interest");
-    return response.data.data;
-  }
-
-  async getInvestorsInterestHistory(investor_id) {
-    let response = await this.service.get(REQUESTS.INVESTORS + "/" + investor_id + "/stats/interest/history");
-    return response.data.data;
-  }
-
-  async createInvestor(investor) {
-    let response = await this.service.post(REQUESTS.INVESTORS, investor);
-    return response.data.data;
-  }
-
-  async updateInvestor(investor) {
-    let response = await this.service.put(REQUESTS.INVESTORS + "/" + investor.id, investor);
-    return response.data.data;
-  }
-
-  async deleteInvestor(investor_id) {
-    let response = await this.service.delete(REQUESTS.INVESTORS + "/" + investor_id);
-    return response.data.data;
-  }
-
-  async createInvestorBillingPlan(investor_id, plan) {
-    let response = await this.service.post(REQUESTS.INVESTORS + "/" + investor_id + "/billing_plans", plan);
-    return response.data.data;
-  }
-
-  /**
-   * Withdraw amount from investors deposit
-   * @param {number} investor_id
-   * @param {string} date Date
-   * @param {string} amount Amount to withdraw
-   * @param {string} notes Notes
-   */
-  async investorWithdraw(investor_id, date, amount, notes) {
-    const params = {
-      date: date,
-      amount: amount,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.INVESTORS + "/" + investor_id + "/withdraw", params);
-    return response.data.data;
-  }
-
-  /**
-   * Withdraw amount of interest from investors deposit
-   */
-  async investorWithdrawInterest(investor_id, payload) {
-    const params = {
-      amount: payload.amount,
-      notes: payload.notes,
-    };
-    let response = await this.service.post(REQUESTS.INVESTORS + "/" + investor_id + "/withdraw_interest", params);
-    return response.data.data;
-  }
-
-  async investorWithdrawInterestPlanned(investor_id, payload) {
-    const params = {
-      notes: payload.notes,
-    };
-    let response = await this.service.post(
-      REQUESTS.INVESTORS + "/" + investor_id + "/withdraw_interest_planned",
-      params
-    );
-    return response.data.data;
-  }
-
-  async investorReinvestInterest(investor_id, payload) {
-    const params = {
-      amount: payload.amount,
-      notes: payload.notes,
-    };
-    let response = await this.service.post(REQUESTS.INVESTORS + "/" + investor_id + "/reinvest_interest", params);
-    return response.data.data;
-  }
-
-  async investorSetReinvestPercent(investor_id, reinvest_percent) {
-    const params = {
-      reinvest_percent,
-    };
-    let response = await this.service.put(
-      REQUESTS.INVESTORS + "/" + investor_id + "/billing_plans/active/reinvest_percent",
-      params
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Deposit amount for investor
-   * @param {number} investor_id
-   * @param {string} date Date
-   * @param {string} amount Amount to withdraw
-   * @param {string} notes Notes
-   */
-  async investorDeposit(investor_id, date, amount, notes) {
-    const params = {
-      date: date,
-      amount: amount,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.INVESTORS + "/" + investor_id + "/deposit", params);
-    return response.data.data;
-  }
-
-  /**
-   * Rent Contracts
-   */
-
-  async getRentContracts(status_arr, filter = null, searchString = null) {
-    filter = filter || { sort_by: "id", sort_order: "desc" };
-
-    const params = {
-      brief: 1,
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-      search: searchString,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    if (filter.investor_id != null) {
-      delete params.brief;
-      params.investor_id = filter.investor_id;
-    }
-
-    if (filter.totals != null) {
-      params.totals = filter.totals;
-    }
-
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT, {
-      params: params,
-    });
-    return response.data.data;
-  }
-
-  async getRentContractsForCar(car_id, status_arr) {
-    const params = {
-      car_id: car_id,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT, { params: params });
-    return response.data.data;
-  }
-
-  async getRentContract(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT + "/" + contract_id);
-    return response.data.data;
-  }
-
-  async getRentContractLastNumber() {
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT + "/last");
-    return response.data.data;
-  }
-
-  async getRentContractsCount() {
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT + "/count");
-    return response.data.data;
-  }
-
-  // contract_number, :contract_date, :date_opened, :contract_days, :contract_daily_payment, :contract_pledge, :customer_id, :car_id, :notes, :use_accum
-  async createRentContract(
-    contract_number,
-    contract_date,
-    date_opened,
-    contract_days,
-    contract_daily_payment,
-    contract_pledge,
-    customer_id,
-    car_id,
-    notes,
-    use_accum
-  ) {
-    // contract_number, contract_date, date_opened,  car_price, down_payment, daily_percentage, contract_days,  investor_id, customer_id, car_id, notes
-    const params = {
-      contract_number,
-      contract_date,
-      date_opened,
-      contract_days,
-      contract_daily_payment,
-      contract_pledge,
-      customer_id,
-      car_id,
-      notes,
-      use_accum: use_accum ? 1 : 0,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS_RENT, params);
-    return response.data.data;
-  }
-
-  async getRentContractsHistory(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS_RENT + "/" + contract_id + "/history");
-    return response.data.data;
-  }
-
-  async createRentDeposit(contract_id, amount, notes) {
-    const params = {
-      amount: amount,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS_RENT + "/" + contract_id + "/deposit", params);
-    return response.data.data;
-  }
-
-  async rentContractFinish(contract_id, amount) {
-    const params = {
-      refund_amount: amount,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS_RENT + "/" + contract_id + "/finish", params);
-    return response.data.data;
-  }
-
-  async rentContractRefundPledge(contract_id, amount) {
-    const params = {
-      amount: amount,
-      notes: "",
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS_RENT + "/" + contract_id + "/refund_pledge", params);
-    return response.data.data;
-  }
-
-  /**
    * getPrintedDocument
    * @param {number} contract_id
    * @param {string} document_type
@@ -527,279 +218,6 @@ class APIService extends APIServiceCore {
     console.log(params);
 
     let response = await this.service.put(REQUESTS.CONTRACTS_RENT + "/" + contract_id + "/options", params);
-    return response.data.data;
-  }
-
-  /**
-   * Contracts
-   */
-
-  async getContracts(status_arr, filter = null, searchString = null) {
-    filter = filter || { sort_by: "id", sort_order: "desc" };
-
-    const params = {
-      brief: 1,
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-      search: searchString,
-    };
-
-    // Statuses
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    // Investors
-    if (filter.investors != null) {
-      params["investors"] = filter.investors.join(",");
-    }
-
-    // Branches
-    if (filter.branches != null) {
-      params["branches"] = filter.branches.join(",");
-    }
-
-    // if (filter.investor_id != null) {
-    //   delete params.brief;
-    //   params.investor_id = filter.investor_id;
-    // }
-
-    if (filter.totals != null) {
-      params.totals = filter.totals;
-    }
-
-    let response = await this.service.get(REQUESTS.CONTRACTS, {
-      params: params,
-    });
-    return response.data.data;
-  }
-
-  async getContract(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id);
-    return response.data.data;
-  }
-
-  async getContractLastNumber() {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/last");
-    return response.data.data;
-  }
-
-  async getContractsCount({ investors, branches } = {}) {
-    // console.log("### ", investors, investors.length);
-
-    let params = {
-      investors: investors && investors.length ? investors.join(",") : null,
-      branches: branches && branches.length ? branches.join(",") : null,
-    };
-
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/count", { params });
-    return response.data.data;
-  }
-
-  async createContract(
-    contract_number,
-    contract_date,
-    date_opened,
-    car_price,
-    down_payment,
-    daily_percentage,
-    contract_days,
-    investor_id,
-    customer_id,
-    car_id,
-    notes,
-    use_accum,
-    company_id
-  ) {
-    // contract_number, contract_date, date_opened,  car_price, down_payment, daily_percentage, contract_days,  investor_id, customer_id, car_id, notes
-    const params = {
-      contract_number: contract_number,
-      contract_date: contract_date,
-      date_opened: date_opened,
-      car_price: car_price,
-      down_payment: down_payment,
-      daily_percentage: daily_percentage,
-      contract_days: contract_days,
-      investor_id: investor_id,
-      customer_id: customer_id,
-      car_id: car_id,
-      company_id: company_id,
-      notes: notes,
-      use_accum: use_accum ? 1 : 0,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS, params);
-    return response.data.data;
-  }
-
-  // async getContractsForInvestor(investor_id) {
-  //   let response = await this.service.get(REQUESTS.CONTRACTS, {
-  //     params: {
-  //       investor_id: investor_id,
-  //     },
-  //   });
-  //   return response.data.data;
-  // }
-
-  async getContractsForCustomer(customer_id, status_arr) {
-    const params = {
-      customer_id: customer_id,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    let response = await this.service.get(REQUESTS.CONTRACTS, { params: params });
-    return response.data.data;
-  }
-
-  async getContractsForCar(car_id, status_arr) {
-    const params = {
-      car_id: car_id,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    let response = await this.service.get(REQUESTS.CONTRACTS, { params: params });
-    return response.data.data;
-  }
-
-  async getContractsSchedule(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id + "/schedule");
-    return response.data.data;
-  }
-
-  async getContractsHistory(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id + "/history");
-    return response.data.data;
-  }
-
-  async getContractsPayplan(contract_id, date1, date2) {
-    const params = {
-      date1: date1,
-      date2: date2,
-    };
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id + "/payplan", { params: params });
-    return response.data.data;
-  }
-
-  async getContractsAccountsGraph(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id + "/accounts_graph");
-    return response.data.data;
-  }
-
-  async getContractsDepositsGraph(contract_id) {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/" + contract_id + "/deposits_graph");
-    return response.data.data;
-  }
-
-  async createDeposit(contract_id, amount, notes) {
-    const params = {
-      amount: amount,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/deposit", params);
-    return response.data.data;
-  }
-
-  async contractPayForward(contract_id, amount, type, notes) {
-    const params = {
-      amount: amount,
-      type: type,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/payforward", params);
-    return response.data.data;
-  }
-
-  async contractRestruct(contract_id, amount, contract_days, daily_percentage, notes) {
-    const params = {
-      amount: amount,
-      daily_percentage: daily_percentage,
-      contract_days: contract_days,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/restruct", params);
-    return response.data.data;
-  }
-
-  async contractAbort(contract_id, amount_to_hold, amount_to_payout) {
-    const params = {
-      hold_amount: amount_to_hold,
-      payout_amount: amount_to_payout,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/abort", params);
-    return response.data.data;
-  }
-
-  async contractSuperAbort(
-    contract_id,
-    debt_refund,
-    interest_refund,
-    penalty_refund,
-    car_fines_refund,
-    closing_status
-  ) {
-    const params = {
-      debt_refund,
-      interest_refund,
-      penalty_refund,
-      car_fines_refund,
-      closing_status,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/abort2", params);
-    return response.data.data;
-  }
-
-  async contractDelete(contract_id) {
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/delete");
-    return response.data.data;
-  }
-
-  async contractFinish(contract_id) {
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/finish");
-    return response.data.data;
-  }
-
-  async setContractPenaltyOff(contract_id, date1, date2, notes) {
-    const params = {
-      date1: date1 == "" ? null : date1,
-      date2: date2 == "" ? null : date2,
-      notes: notes,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/" + contract_id + "/penalty", params);
-    return response.data.data;
-  }
-
-  // Percent table
-
-  async getLeasePercentTable() {
-    let response = await this.service.get(REQUESTS.CONTRACTS + "/percent_table");
-    return response.data.data;
-  }
-
-  async createLeasePercentTableItem(item) {
-    const params = {
-      term: item.term,
-      percent: item.percent,
-    };
-    let response = await this.service.post(REQUESTS.CONTRACTS + "/percent_table", params);
-    return response.data.data;
-  }
-
-  async updateLeasePercentTableItem(item) {
-    const params = {
-      term: item.term,
-      percent: item.percent,
-    };
-    let response = await this.service.put(REQUESTS.CONTRACTS + "/percent_table/" + item.id, params);
-    return response.data.data;
-  }
-
-  async deleteLeasePercentTableItem(item_id) {
-    let response = await this.service.delete(REQUESTS.CONTRACTS + "/percent_table/" + item_id);
     return response.data.data;
   }
 
@@ -961,6 +379,47 @@ class APIService extends APIServiceCore {
         contract_id: contract_id,
       },
     });
+    return response.data.data;
+  }
+
+  /**
+   * Payments
+   */
+
+  async getPaymentsInvoices(filter) {
+    filter = filter || { sort_by: "id", sort_order: "desc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+      page: filter.page,
+      per_page: filter.per_page,
+      status: filter.status,
+      company_id: filter.company_id,
+      payment_method: filter.payment_method,
+      date1: filter.date1,
+      date2: filter.date2,
+      cleared: filter.cleared,
+    };
+
+    let response = await this.service.get(REQUESTS.PAYMENTS.INVOICES, { params: params });
+    return { data: response.data.data, meta: response.data.meta };
+  }
+
+  async getInvoice(id) {
+    let response = await this.service.get(REQUESTS.PAYMENTS.INVOICES + "/" + id);
+    return response.data.data;
+  }
+
+  async depositInvoice(id) {
+    let response = await this.service.post(REQUESTS.PAYMENTS.INVOICES + "/" + id + "/deposit");
+    return response.data.data;
+  }
+
+  async refreshPaymentOrderStatus(paymentMethod, orderId) {
+    let params = { payment_method: paymentMethod, order_id: orderId };
+
+    let response = await this.service.post(REQUESTS.PAYMENTS.REFRESH_ORDER, params);
     return response.data.data;
   }
 
@@ -2045,6 +1504,22 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  /**
+   * Companies
+   */
+  async getCompanies(filter) {
+    filter = filter || { sort_by: "id", sort_order: "desc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+    };
+
+    let response = await this.service.get(REQUESTS.COMPANIES, { params: params });
+
+    return response.data.data;
+  }
+
   async getCompany(id) {
     let response = await this.service.get(REQUESTS.COMPANIES + "/" + id);
     return response.data.data;
@@ -2056,6 +1531,10 @@ class APIService extends APIServiceCore {
       details: company.details,
       bank_details: company.bank_details,
       notes: company.notes,
+      inn: company.inn,
+      acq_settings_id: company.acq_settings_id,
+      sbp_settings_id: company.sbp_settings_id,
+      ofd_settings_id: company.ofd_settings_id,
     };
     let response = await this.service.post(REQUESTS.COMPANIES, params);
     return response.data.data;
@@ -2067,251 +1546,12 @@ class APIService extends APIServiceCore {
       details: company.details,
       bank_details: company.bank_details,
       notes: company.notes,
+      inn: company.inn,
+      acq_settings_id: company.acq_settings_id,
+      sbp_settings_id: company.sbp_settings_id,
+      ofd_settings_id: company.ofd_settings_id,
     };
     let response = await this.service.put(REQUESTS.COMPANIES + "/" + company.id, params);
-    return response.data.data;
-  }
-
-  /**
-   * Car Fines
-   */
-  async getCarFines(car_id, status_filter, filter, searchString) {
-    filter = filter || { sort_by: "id", sort_order: "desc" };
-
-    const params = {
-      car_id: car_id,
-      search: searchString,
-      ...filter,
-    };
-
-    // Decouple statuses
-    const { charge_arr, payed_arr, terms_arr } = status_filter;
-
-    // console.log(charge_arr, payed_arr, terms_arr);
-
-    // Charged status
-    if (charge_arr != null) {
-      params["charged"] = charge_arr.join(",");
-    }
-
-    // Payed status
-    if (payed_arr != null && payed_arr.length > 0) {
-      params["payed"] = payed_arr.join(",");
-    }
-
-    // Terms status
-    if (terms_arr != null && terms_arr.length > 0) {
-      params["terms"] = terms_arr.join(",");
-    }
-
-    let response = await this.service.get(REQUESTS.CAR_FINES, { params: params });
-
-    return { data: response.data.data, meta: response.data.meta };
-  }
-
-  async getCarFine(id) {
-    let response = await this.service.get(REQUESTS.CAR_FINES + "/" + id);
-    return response.data.data;
-  }
-
-  async createCarFine(fine) {
-    const params = {
-      car_id: fine.car_id,
-      decree_date: fine.decree_date,
-      decree_number: fine.decree_number,
-      amount: fine.amount,
-      notes: fine.notes,
-    };
-    let response = await this.service.post(REQUESTS.CAR_FINES, params);
-    return response.data.data;
-  }
-
-  async updateCarFine(fine) {
-    const params = {
-      decree_date: fine.decree_date,
-      decree_number: fine.decree_number,
-      amount: fine.amount,
-      notes: fine.notes,
-    };
-    let response = await this.service.put(REQUESTS.CAR_FINES + "/" + fine.id, params);
-    return response.data.data;
-  }
-
-  async deleteCarFine(id) {
-    let response = await this.service.delete(REQUESTS.CAR_FINES + "/" + id);
-    return response.data.data;
-  }
-
-  async payCarFine(id) {
-    let response = await this.service.post(REQUESTS.CAR_FINES + "/" + id + "/pay");
-    return response.data.data;
-  }
-
-  async payCarFinesForContract(contract_id) {
-    let response = await this.service.post(REQUESTS.CAR_FINES + "/contract/" + contract_id + "/pay");
-    return response.data.data;
-  }
-
-  async getCarFinesTotals() {
-    let response = await this.service.get(REQUESTS.CAR_FINES + "/totals");
-
-    return response.data.data;
-  }
-
-  async getCarFinesTotalsForContracts(contract_id) {
-    let response = await this.service.get(REQUESTS.CAR_FINES + "/totals/contracts/" + contract_id);
-
-    return response.data.data;
-  }
-
-  async getCarFinesTotalsForRentContracts(contract_id) {
-    let response = await this.service.get(REQUESTS.CAR_FINES + "/totals/rent_contracts/" + contract_id);
-
-    return response.data.data;
-  }
-
-  async getCarFinesTotalsForCar(car_id) {
-    let response = await this.service.get(REQUESTS.CAR_FINES + "/totals/cars/" + car_id);
-
-    return response.data.data;
-  }
-
-  /**
-   * Promo
-   */
-
-  async getPromoActions(status_arr, filter) {
-    filter = filter || { sort_by: "id", sort_order: "desc" };
-
-    const params = {
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    let response = await this.service.get(REQUESTS.PROMO, { params: params });
-
-    return response.data.data;
-  }
-
-  async createPromoAction(action) {
-    const params = {
-      name: action.name,
-      date1: action.date1,
-      date2: action.date2,
-      notes: action.notes,
-      hidden: action.hidden ? 1 : 0,
-    };
-    let response = await this.service.post(REQUESTS.PROMO, params);
-    return response.data.data;
-  }
-
-  async deletePromoAction(action_id) {
-    let response = await this.service.delete(REQUESTS.PROMO + "/" + action_id);
-    return response.data.data;
-  }
-
-  async updatePromoAction(action) {
-    const params = {
-      name: action.name,
-      date1: action.date1,
-      date2: action.date2,
-      notes: action.notes,
-      hidden: action.hidden == true ? 1 : 0,
-    };
-    let response = await this.service.put(REQUESTS.PROMO + "/" + action.id, params);
-    return response.data.data;
-  }
-  async updatePromoActionMessage(action) {
-    const params = {
-      header: action.message_header,
-      text: action.message_text,
-    };
-    let response = await this.service.put(REQUESTS.PROMO + "/" + action.id + "/message", params);
-    return response.data.data;
-  }
-
-  async setPromoActionStatus(action_id, status) {
-    let response = await this.service.post(REQUESTS.PROMO + "/" + action_id + "/" + "status" + "/" + status);
-    return response.data.data;
-  }
-
-  async getPromoAction(action_id) {
-    let response = await this.service.get(REQUESTS.PROMO + "/" + action_id);
-    return response.data.data;
-  }
-
-  async getPromoAvailableIndicators() {
-    let response = await this.service.get(REQUESTS.PROMO + "/" + "indicators");
-    return response.data.data;
-  }
-
-  async addPromoActionIndicator(action_id, indicator) {
-    const params = {
-      indicator_id: indicator.indicator_id,
-      value: indicator.value,
-      notes: indicator.notes || "",
-    };
-    let response = await this.service.post(REQUESTS.PROMO + "/" + action_id + "/" + "indicators", params);
-    return response.data.data;
-  }
-
-  async updatePromoActionIndicator(action_id, indicator_id, indicator) {
-    const params = {
-      indicator_id: indicator.indicator_id,
-      value: indicator.value,
-      notes: indicator.notes || "",
-    };
-    let response = await this.service.put(
-      REQUESTS.PROMO + "/" + action_id + "/" + "indicators" + "/" + indicator_id,
-      params
-    );
-    return response.data.data;
-  }
-
-  async deletePromoActionIndicator(action_id, indicator_id) {
-    let response = await this.service.delete(
-      REQUESTS.PROMO + "/" + action_id + "/" + "indicators" + "/" + indicator_id
-    );
-    return response.data.data;
-  }
-
-  async getPromoActionResult(action_id) {
-    let response = await this.service.get(REQUESTS.PROMO + "/" + action_id + "/" + "result");
-    return response.data.data;
-  }
-
-  async runPromoAction(action_id) {
-    let response = await this.service.post(REQUESTS.PROMO + "/" + action_id + "/" + "run");
-    return response.data.data;
-  }
-
-  async getPromoActionContracts(date1, date2) {
-    const params = {
-      date1: date1,
-      date2: date2,
-    };
-
-    let response = await this.service.get(REQUESTS.PROMO + "/" + "calc_contracts", { params: params });
-
-    return response.data.data;
-  }
-
-  async getPromoActionRules(action_id) {
-    let response = await this.service.get(REQUESTS.PROMO + "/" + action_id + "/" + "rules");
-    return response.data.data;
-  }
-
-  async updatePromoActionRules(action_id, rules) {
-    let response = await this.service.put(REQUESTS.PROMO + "/" + action_id + "/" + "rules", rules);
-    return response.data.data;
-  }
-
-  async deletePromoActionRules(action_id, section) {
-    let response = await this.service.delete(REQUESTS.PROMO + "/" + action_id + "/" + "rules" + "/" + section);
     return response.data.data;
   }
 
@@ -2357,110 +1597,6 @@ class APIService extends APIServiceCore {
   }
 
   /**
-   * Photo Reports
-   */
-
-  async getPhotoReports(car_id, status_arr, checks_arr, expired, filter) {
-    filter = filter || { sort_by: "id", sort_order: "desc" };
-
-    const params = {
-      car_id: car_id,
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-    };
-
-    if (status_arr != null) {
-      params["status"] = status_arr.join(",");
-    }
-
-    if (checks_arr != null) {
-      params["checks"] = checks_arr.join(",");
-    }
-
-    if (expired != null) {
-      params["expired"] = expired;
-    }
-
-    let response = await this.service.get(REQUESTS.PHOTO_REPORTS, { params: params });
-    return response.data.data;
-  }
-
-  async getPhotoReport(report_id) {
-    let response = await this.service.get(REQUESTS.PHOTO_REPORTS + "/" + report_id);
-    return response.data.data;
-  }
-
-  async updateItemsMarks(items) {
-    let response = await this.service.put(REQUESTS.PHOTO_REPORTS + "/items", items);
-    return response.data.data;
-  }
-
-  /**
-   * BRANCHES
-   */
-
-  parseBranch(branch) {
-    const params = {
-      name: !branch.name ? "" : branch.name,
-      short_name: !branch.short_name ? "" : branch.short_name,
-      description: !branch.description ? "" : branch.description,
-    };
-
-    return params;
-  }
-
-  async getBranches(filter) {
-    filter = filter || { sort_by: "id", sort_order: "asc" };
-
-    const params = {
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-    };
-
-    let response = await this.service.get(REQUESTS.BRANCHES, { params: params });
-
-    return response.data.data;
-  }
-
-  async getBranchesExt(filter) {
-    filter = filter || { sort_by: "id", sort_order: "asc" };
-
-    const params = {
-      sort_by: filter.sort_by,
-      sort_order: filter.sort_order,
-    };
-
-    let response = await this.service.get(REQUESTS.BRANCHES + "/ext", { params: params });
-
-    return response.data.data;
-  }
-
-  async getBranch(branch_id) {
-    let response = await this.service.get(REQUESTS.BRANCHES + "/" + branch_id);
-    return response.data.data;
-  }
-
-  async getBranchAccounts(branch_id) {
-    let response = await this.service.get(REQUESTS.BRANCHES + "/" + branch_id + "/accounts");
-    return response.data.data;
-  }
-
-  async getBranchLeasingContractsTotals(branch_id) {
-    let response = await this.service.get(REQUESTS.BRANCHES + "/" + branch_id + "/contracts_totals");
-    return response.data.data;
-  }
-
-  async createBranch(branch) {
-    let response = await this.service.post(REQUESTS.BRANCHES, this.parseBranch(branch));
-    return response.data.data;
-  }
-
-  async updateBranch(branch) {
-    let response = await this.service.put(REQUESTS.BRANCHES + "/" + branch.id, this.parseBranch(branch));
-    return response.data.data;
-  }
-
-  /**
    * Prefs
    */
 
@@ -2476,6 +1612,60 @@ class APIService extends APIServiceCore {
 
   async updatePrefValue(item) {
     let response = await this.service.put(REQUESTS.PREFS, item);
+    return response.data.data;
+  }
+
+  /**
+   * Payments: Settings
+   */
+
+  async getPaymentsSettings(filter) {
+    filter = filter || { sort_by: "id", sort_order: "desc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+      settings_type: filter.settings_type,
+      enabled: filter.enabled,
+    };
+
+    let response = await this.service.get(REQUESTS.PAYMENTS.SETTINGS, { params: params });
+
+    return response.data.data;
+  }
+
+  parsePaymentsSettings(params) {
+    return {
+      name: params.name,
+      notes: params.notes,
+      settings_type: params.settings_type,
+      enabled: Number(params.enabled),
+      payload: params.payload,
+      // payload: {
+      //   api_login: params.payload.api_login,
+      //   api_password: params.payload.api_password,
+      //   api_url: params.payload.api_url,
+      //   api_callback_url: params.payload.api_callback_url,
+      //   payment_method: params.payload.payment_method,
+      //   payment_type: params.payload.payment_type,
+      //   taxation_system: params.payload.taxation_system,
+      //   vat: params.payload.vat,
+      //   item_label: params.payload.item_label,
+      // },
+    };
+  }
+
+  async createPaymentsSettings(item) {
+    const params = this.parsePaymentsSettings(item);
+
+    let response = await this.service.post(REQUESTS.PAYMENTS.SETTINGS, params);
+    return response.data.data;
+  }
+
+  async updatePaymentsSettings(item) {
+    const params = this.parsePaymentsSettings(item);
+
+    let response = await this.service.put(REQUESTS.PAYMENTS.SETTINGS + "/" + item.id, params);
     return response.data.data;
   }
 

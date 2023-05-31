@@ -19,6 +19,7 @@ import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
 import TKReportDaily from "@/components/TKReportDaily.vue";
 import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
+import TKReportQuantityDaily from "@/components/TKReportQuantityDaily.vue";
 
 export default {
   name: "ReportsView",
@@ -29,6 +30,7 @@ export default {
     TKReportDaily,
     TKReportMonthly,
     TKReportQuantityMonthly,
+    TKReportQuantityDaily,
   },
 
   mixins: [viewMixin],
@@ -61,6 +63,13 @@ export default {
           id: 3,
           component: "TKReportQuantityMonthly",
           name: "Кол-во по месяцам",
+          icon: "table",
+          access: "user",
+        },
+        {
+          id: 4,
+          component: "TKReportQuantityDaily",
+          name: "Кол-во по дням",
           icon: "table",
           access: "user",
         },

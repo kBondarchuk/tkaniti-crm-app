@@ -18,16 +18,15 @@ import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
-// import UITransition from "@/components/UITransition.vue";
 import CMPrefsUsers from "@/components/CMPrefsUsers.vue";
 import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
 // import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
 import CMPrefsParams from "@/components/CMPrefsParams.vue";
-// import CMPrefsBranches from "@/components/CMPrefsBranches.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
-// import CMPrefsExpensesCategories from "@/components/CMPrefsExpensesCategories.vue";
+import CMPrefsAcquiring from "@/components/CMPrefsAcquiring.vue";
+import CMPrefsPaymentsSbp from "@/components/CMPrefsPaymentsSbp.vue";
+import CMPrefsOfd from "@/components/CMPrefsOfd.vue";
 import CMPrefsSystem from "@/components/CMPrefsSystem.vue";
-// import CMPrefsPercentTable from "@/components/CMPrefsPercentTable.vue";
 
 const _menu_items = [
   {
@@ -64,7 +63,11 @@ const _menu_items = [
   //   access: "sysadmin",
   // },
   // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
-  { id: 8, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
+  { id: 8, name: "Юр. лица", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
+  { id: 9, name: "Эквайринг", icon: "visa", component: "CMPrefsAcquiring", access: "admin" },
+  { id: 11, name: "СБП", icon: "visa", component: "CMPrefsPaymentsSbp", access: "admin" },
+  { id: 10, name: "Фискализация", icon: "cash register", component: "CMPrefsOfd", access: "admin" },
+  { id: 20, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
 ];
 
 export default {
@@ -77,11 +80,11 @@ export default {
     CMPrefsProfile,
     // CMPrefsTemplates,
     CMPrefsParams,
-    // CMPrefsBranches,
     CMPrefsCompanies,
-    // CMPrefsExpensesCategories,
+    CMPrefsAcquiring,
+    CMPrefsPaymentsSbp,
+    CMPrefsOfd,
     CMPrefsSystem,
-    // CMPrefsPercentTable,
   },
 
   mixins: [viewMixin],
