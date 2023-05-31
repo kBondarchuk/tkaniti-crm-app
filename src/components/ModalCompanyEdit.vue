@@ -13,14 +13,34 @@
     @did-show="didShow"
   >
     <form class="ui error form" :name="$options.name" :class="{ loading: isLoading }" @submit.prevent>
-      <UITextfield v-model.trim.lazy="params.name" placeholder="ИП Иванов И.И." label="Наименование юр. лица" />
-      <UITextAria v-model.trim.lazy="params.details" rows="4" placeholder="Реквизиты" label="Реквизиты" />
+      <div class="two fields">
+        <UITextfield v-model.trim.lazy="params.name" placeholder="ИП Иванов И.И." label="Наименование юр. лица" />
+        <!-- <UITextfield v-model="params.inn" placeholder="" label="ИНН" /> -->
+      </div>
+
+      <h5>НАСТРОЙКИ ПЛАТЕЖНОЙ СИСТЕМЫ</h5>
+
+      <div class="two fields">
+        <!-- Acquiring -->
+        <UIInputDropdown v-model="params.acq_settings_id" label="Эквайринг" :options="optionsAcq" />
+        <!-- СБП -->
+        <UIInputDropdown v-model="params.sbp_settings_id" label="СБП" :options="optionsSbp" />
+      </div>
+      <div class="two fields">
+        <!-- Касса / OFD -->
+        <UIInputDropdown v-model="params.ofd_settings_id" label="Онлайн касса" :options="optionsOfd" />
+      </div>
+
+      <h5>РЕКВИЗИТЫ ДЛЯ ДОГОВОРОВ</h5>
+
+      <UITextAria v-model.trim.lazy="params.details" rows="2" placeholder="Реквизиты" label="Реквизиты" />
       <UITextAria
         v-model.trim.lazy="params.bank_details"
-        rows="6"
+        rows="7"
         placeholder="Банковские реквизиты"
         label="Банковские реквизиты"
       />
+
       <!-- error -->
       <div v-if="api_error" class="ui error message">
         <div class="header">Произошла ошибка</div>
@@ -34,30 +54,20 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-const _companyObject = {
-  id: null,
-  name: "",
-  details: "",
-  bank_details: "",
-  notes: "",
-};
+import CompanyObject from "@/objects/CompanyObject";
 
 export default {
   name: "ModalCompanyEdit",
-  components: {},
+
   props: {
     active: {
       type: Boolean,
       default: false,
     },
-    // branchId: {
-    //   type: Number,
-    //   default: null,
-    // },
     selectedItem: {
       type: Object,
       default: () => {
-        return _companyObject;
+        return CompanyObject;
       },
     },
   },
@@ -65,7 +75,11 @@ export default {
 
   data() {
     return {
-      params: Object.assign({}, _companyObject),
+      params: Object.assign({}, CompanyObject),
+      acqItems: [],
+      sbpItems: [],
+      ofdItems: [],
+      // UI
       title: "Новые реквизиты",
       isLoading: false,
       api_error: "",
@@ -74,7 +88,31 @@ export default {
 
   computed: {
     currentCompany() {
-      return this.selectedItem || _companyObject;
+      return this.selectedItem || CompanyObject;
+    },
+    optionsAcq() {
+      let menu = [{ name: "Нет", value: null }].concat(
+        this.acqItems.map((item) => {
+          return { name: item.name, value: item.id };
+        })
+      );
+      return menu;
+    },
+    optionsSbp() {
+      let menu = [{ name: "Нет", value: null }].concat(
+        this.sbpItems.map((item) => {
+          return { name: item.name, value: item.id };
+        })
+      );
+      return menu;
+    },
+    optionsOfd() {
+      let menu = [{ name: "Нет", value: null }].concat(
+        this.ofdItems.map((item) => {
+          return { name: item.name, value: item.id };
+        })
+      );
+      return menu;
     },
   },
 
@@ -97,7 +135,7 @@ export default {
       // modal_id
       // console.log("didShow: " + modal_id);
       this.reset();
-      // this.fetch();
+      this.getOptions();
     },
     modalApproved(modal_id) {
       console.log("approved: " + modal_id);
@@ -162,6 +200,28 @@ export default {
       }
       this.isLoading = false;
     },
+    async getPaymentsSettings(filter) {
+      this.isLoading = true;
+
+      filter["settings_type"] = "ofd";
+
+      try {
+        let result = await apiService.getPaymentsSettings(filter);
+        // console.log(result);
+        return result;
+      } catch (error) {
+        this.$UIService.showNetworkError(error);
+      }
+      this.isLoading = false;
+    },
+    async getOptions() {
+      this.isLoading = true;
+      this.ofdItems = await apiService.getPaymentsSettings({ settings_type: "ofd", enabled: 1 });
+      this.acqItems = await apiService.getPaymentsSettings({ settings_type: "acq", enabled: 1 });
+      this.sbpItems = await apiService.getPaymentsSettings({ settings_type: "sbp", enabled: 1 });
+      this.isLoading = false;
+    },
+
     async delete() {
       // this.isLoading = true;
       // try {
@@ -181,3 +241,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+h5 {
+  border-bottom: 1px solid #80808029;
+  color: #a0a0a0 !important;
+  font-size: 12px;
+  font-weight: 400;
+}
+</style>
