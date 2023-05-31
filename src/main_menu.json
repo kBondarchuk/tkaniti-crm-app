@@ -59,6 +59,14 @@
                     "route": "/cashier/transactions",
                     "access": "acquiring",
                     "divider": "top"
+                },
+                {
+                    "id": 67,
+                    "name": "Касса",
+                    "icon": "cash register",
+                    "route": "/cashier/invoices",
+                    "access": "acquiring",
+                    "divider": "top"
                 }
             ]
         }

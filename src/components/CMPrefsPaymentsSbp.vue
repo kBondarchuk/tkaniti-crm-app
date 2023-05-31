@@ -1,28 +1,27 @@
 <template>
   <div>
     <UIButton
+      text="Новые настройки СБП"
       icon="plus"
       type="right labeled"
       @click="
-        selectedBranch = null;
-        modals.branch = true;
+        selectedItem = null;
+        modals.item = true;
       "
-    >
-      Новые реквизиты
-    </UIButton>
+    />
 
     <UITableList
       :id="$options.name"
       :headers="headers"
-      :items-count="branches.length"
+      :items-count="items.length"
       :is-loading="isLoading"
       bordered
       @header:sort="handleHeaderSort"
     >
       <!-- Items -->
-      <CMPrefsCompaniesListItem
-        v-for="item in branches"
-        :key="item.id + '-branch-' + item.customer_id"
+      <CMPrefsSbpListItem
+        v-for="item in items"
+        :key="item.id"
         :item="item"
         @event-details="handleDetails"
         @event-edit="$emit('eventEdit', item.id)"
@@ -30,11 +29,11 @@
       />
     </UITableList>
     <!-- New Expense Modal -->
-    <ModalCompanyEdit
-      :active="modals.branch"
-      :selected-item="selectedBranch"
-      @hide="modals.branch = false"
-      @did-change="branchCreated"
+    <ModalSbpPrefItemEdit
+      :active="modals.item"
+      :selected-item="selectedItem"
+      @hide="modals.item = false"
+      @did-change="itemCreated"
     />
     <!------->
   </div>
@@ -42,45 +41,41 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import CMPrefsCompaniesListItem from "@/components/CMPrefsCompaniesListItem.vue";
-import ModalCompanyEdit from "@/components/ModalCompanyEdit.vue";
-// import UIButton from "@/components/UIButton.vue";
+import CMPrefsSbpListItem from "@/components/CMPrefsSbpListItem.vue";
+import ModalSbpPrefItemEdit from "@/components/ModalSbpPrefItemEdit.vue";
 
 export default {
-  name: "CMPrefsCompanies",
+  name: "CMPrefsPaymentsSbp",
+
   components: {
-    CMPrefsCompaniesListItem,
-    ModalCompanyEdit,
-    // UIButton,
+    CMPrefsSbpListItem,
+    ModalSbpPrefItemEdit,
   },
+
   emits: ["eventEdit", "eventDelete"],
+
   data() {
     return {
       headers: [
         { id: "id", name: "ID", class: "" },
         { id: "name", name: "Название", class: "" },
-        // { id: "inn", name: "ИНН", class: "" },
-        { id: "acq_settings_name", name: "Эквайринг", class: "" },
-        { id: "sbp_settings_name", name: "СБП", class: "" },
-        { id: "ofd_settings_name", name: "Касса", class: "" },
-        { id: "details", name: "Реквизиты", class: "" },
-        // { id: "bank_details", name: "Банковские реквизиты", class: "" },
+        { id: "notes", name: "Описание", class: "" },
+        { id: "api_login", name: "API Login", class: "" },
+        { id: "api_url", name: "API URL", class: "" },
+        { id: "api_callback_url", name: "API callback URL", class: "" },
+        { id: "enabled", name: "Включено", class: "" },
       ],
       filter: {},
-      branches: [],
+      items: [],
       isLoading: false,
       // Modals
       modals: {
-        branch: false,
+        item: false,
       },
-      selectedBranch: {},
+      selectedItem: {},
     };
   },
-  computed: {
-    items() {
-      return this.report;
-    },
-  },
+
   methods: {
     handleHeaderSort(filter) {
       this.filter = filter;
@@ -91,24 +86,34 @@ export default {
       // console.log("delete clicked: " + expense_id);
     },
     handleDetails(item) {
-      this.selectedBranch = item;
+      this.selectedItem = item;
       if (item != null) {
-        this.modals.branch = true;
+        this.modals.item = true;
       }
     },
     // Modal
-    branchCreated() {
+    itemCreated() {
       // console.log("branch changed!");
       this.refetch(this.filter);
     },
+
+    parsePayload(items) {
+      return items.map((element) => {
+        element.payload = JSON.parse(element.payload);
+        return element;
+      });
+    },
+
     // Network
     async refetch(filter) {
       this.isLoading = true;
 
+      filter["settings_type"] = "sbp";
+
       try {
-        let result = await apiService.getCompanies(filter);
+        let result = await apiService.getPaymentsSettings(filter);
         // console.log(result);
-        this.branches = result;
+        this.items = this.parsePayload(result);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
