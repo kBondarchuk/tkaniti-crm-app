@@ -38,6 +38,9 @@ export const CheckAuthMixin = {
     checkAuthPaymentsRefund() {
       return this.checkAuthRole(AccessRightsEnum.PaymentsRefund);
     },
+    checkAuthPaymentsAcquiring() {
+      return this.checkAuthRole(AccessRightsEnum.Acquiring);
+    },
   },
   methods: {
     checkAuthRole(role) {
