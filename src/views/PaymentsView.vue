@@ -12,7 +12,7 @@
           <!--  -->
           <UIInputDropdown v-model="filter.status" label="Статус оплаты" :options="status_options" />
           <!--  -->
-          <UIInputDropdown v-model="filter.company_id" label="Юр. лицо" :options="companies_options" />
+          <!-- <UIInputDropdown v-model="filter.company_id" label="Юр. лицо" :options="companies_options" /> -->
           <!--  -->
           <UIInputDropdownString v-model="filter.payment_method" label="Способ оплаты" :options="payment_methods" />
           <!--  -->
