@@ -39,6 +39,14 @@
             "divider": "top"
         },
         {
+            "id": 67,
+            "name": "Касса",
+            "icon": "cash register",
+            "route": "/cashier/invoices",
+            "access": "acquiring",
+            "divider": "top"
+        },
+        {
             "id": 6,
             "name": "Финансы",
             "icon": "id ruble sign",
@@ -57,17 +65,10 @@
                     "name": "Эквайринг",
                     "icon": "cc visa",
                     "route": "/cashier/transactions",
-                    "access": "acquiring",
-                    "divider": "top"
-                },
-                {
-                    "id": 67,
-                    "name": "Касса",
-                    "icon": "cash register",
-                    "route": "/cashier/invoices",
-                    "access": "acquiring",
+                    "access": "admin",
                     "divider": "top"
                 }
+
             ]
         }
 
