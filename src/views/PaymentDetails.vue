@@ -3,22 +3,22 @@
     <!-- Toolbar -->
     <!-- Back -->
     <template #toolbar>
-      <UIButton icon="left arrow" type="basic labeled" @click="back">Назад</UIButton>
+      <UIButton icon="left arrow" type="basic labeled" @click="back('payments_invoices')">Назад</UIButton>
       <UISpacer />
       <!-- Кассовый чек -->
-      <UIButton
+      <!-- <UIButton
         text="Обновить чек"
         icon="refresh"
         type="basic labeled"
         :class="{ disabled: !invoice.receipt_id }"
         @click="refreshReceiptStatus"
-      />
+      /> -->
       <!-- Эквайринг -->
       <UIButton
         v-if="invoice.payment_acq"
         text="Обновить статус оплаты"
         icon="refresh"
-        type="basic labeled"
+        :type="['basic labeled', { 'disabled loading': loadingRefresh['acq'] }]"
         @click="refreshAcqPaymentStatus"
       />
       <!-- СБП -->
@@ -63,11 +63,11 @@
           v-if="invoice?.payment_method == 'acq' && invoice?.payment_acq"
           :key="transaction_key"
           :order="invoice.payment_acq ?? {}"
-          :is-loading="isLoading"
+          :is-loading="loadingRefresh['acq']"
         />
 
         <!-- Чек -->
-        <CMPaymentsReceiptDetails :key="transaction_key" :receipt="invoice.receipt ?? {}" :is-loading="isLoading" />
+        <!-- <CMPaymentsReceiptDetails :key="transaction_key" :receipt="invoice.receipt ?? {}" :is-loading="isLoading" /> -->
 
         <!-- Описание ошибки -->
         <!-- <template v-if="receiptStatus?.Description">
@@ -89,7 +89,7 @@ import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
 import CMPaymentsInvoiceDetails from "@/components/CMPaymentsInvoiceDetails.vue";
-import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
+// import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
 import CMPaymentsSbpOrderDetails from "@/components/CMPaymentsSbpOrderDetails.vue";
 import CMPaymentsAcqOrderDetails from "@/components/CMPaymentsAcqOrderDetails.vue";
 
@@ -98,7 +98,7 @@ export default {
 
   components: {
     CMPaymentsInvoiceDetails,
-    CMPaymentsReceiptDetails,
+    // CMPaymentsReceiptDetails,
     CMPaymentsSbpOrderDetails,
     CMPaymentsAcqOrderDetails,
   },
@@ -118,6 +118,11 @@ export default {
       isLoading: false,
       invoice: {},
       receiptStatus: null,
+      // Loading
+      loadingRefresh: {
+        acq: false,
+        sbp: false,
+      },
       // Keys
       transaction_key: 0,
     };
@@ -136,9 +141,9 @@ export default {
     setTitle() {
       this.view.title = this.view.title + " " + this.invoiceId;
     },
-    back() {
-      this.$router.push({ name: "payments_invoices" });
-    },
+    // back() {
+    //   this.$router.push({ name: "payments_invoices" });
+    // },
 
     // Actions
     refreshReceiptStatus() {
@@ -174,14 +179,14 @@ export default {
       this.isLoading = false;
     },
     async fetchOrderStatus(paymentMethod, orderId) {
-      this.isLoading = true;
+      this.loadingRefresh[paymentMethod] = true;
       try {
         await apiService.refreshPaymentOrderStatus(paymentMethod, orderId);
         this.fetchInvoice(this.invoiceId);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
-      this.isLoading = false;
+      this.loadingRefresh[paymentMethod] = false;
     },
     async fetchDepositByInvoice(invoiceId) {
       this.isLoading = true;

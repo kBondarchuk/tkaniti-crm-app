@@ -86,7 +86,11 @@
       </tr>
       <tr>
         <td>URL платежной страницы</td>
-        <td><a v-if="order.form_url" :href="order.form_url" target="_blank">Открыть страницу оплаты</a></td>
+        <td>
+          <a v-if="order.form_url" :href="order.form_url" target="_blank">Открыть страницу оплаты</a>
+          &nbsp;
+          <UIClipButton v-if="order.form_url" :value="order.form_url" />
+        </td>
       </tr>
     </tbody>
   </table>
@@ -124,11 +128,14 @@ const actionCodes = {
   71015: "Введены неправильные параметры карты",
 };
 
+import UIClipButton from "@/components/UIClipButton.vue";
+
 export default {
   name: "CMPaymentsAcqOrderDetails",
 
   components: {
     // CMOfdStatus,
+    UIClipButton,
   },
 
   props: {

@@ -5,6 +5,7 @@
     :header-sticked-at="headerStickedAt"
     :items-count="items.length"
     :is-loading="isLoading"
+    :bordered="bordered"
     :pagination="pagination"
     @header:sort="handleHeaderSort"
     @paging:up="handlePagingUp"
@@ -43,6 +44,10 @@ export default {
       type: Number,
       default: null,
     },
+    bordered: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   emits: ["eventDetails", "eventEdit", "eventDelete"],
@@ -54,9 +59,9 @@ export default {
         { id: "id", name: "No.", class: "" },
         { id: "created_ts", name: "Дата/Время", class: "" },
         { id: "payment_method", name: "Способ", class: "" },
-        { id: "company_id", name: "Юр. лицо", class: "" },
-        { id: "contract_type", name: "Тип договора", class: "" },
-        { id: "contract_id", name: "Номер договора", class: "" },
+        { id: "company_name", name: "Юр. лицо", class: "" },
+        // { id: "contract_type", name: "Тип договора", class: "" },
+        { id: "contract_id", name: "Заказ", class: "" },
         { id: "invoice_number", name: "Номер счёта", class: "" },
         {
           id: "deposit_amount",
