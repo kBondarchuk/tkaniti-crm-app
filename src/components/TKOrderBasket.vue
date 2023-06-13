@@ -10,8 +10,8 @@
         <th>Товар</th>
         <th></th>
         <th class="right aligned">Остатки</th>
-        <th class="right aligned">Количество</th>
-        <th class="right aligned"></th>
+        <th class="right aligned" colspan="2">Количество</th>
+        <!-- <th class="right aligned"></th> -->
         <th class="right aligned">Цена</th>
         <th class="right aligned">Стоимость</th>
       </tr>
