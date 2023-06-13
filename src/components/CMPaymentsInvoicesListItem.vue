@@ -6,9 +6,9 @@
     <!--  -->
     <td><CMInvoicePaymentMethod :value="item.payment_method" /></td>
     <!--  -->
-    <td>{{ item.company_id }}</td>
+    <td>{{ item.company_name }}</td>
     <!--  -->
-    <td><CMAcquiringTypeStatus :type="item.subject_type" /></td>
+    <!-- <td><CMAcquiringTypeStatus :type="item.subject_type" /></td> -->
     <!--  -->
     <td>{{ item.subject_id }}</td>
     <!--  -->

@@ -27,6 +27,11 @@ export default {
           icon: "undo alternate",
           name: "Возврат наличными",
         },
+        "Op.OrderPaymentAcquiring": {
+          color: "green",
+          icon: "credit card outline",
+          name: "Онлайн-оплата",
+        },
         "contract_leasing.ChargeDebt": {
           color: "yellow",
           icon: "dollar sign",

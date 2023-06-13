@@ -19,25 +19,24 @@
         <td>{{ invoice.invoice_description }}</td>
       </tr>
       <tr>
+        <td>Юр. лицо</td>
+        <td>{{ invoice.company_name }}</td>
+      </tr>
+      <tr>
         <td colspan="2"></td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>Тип договора</td>
         <td><CMAcquiringTypeStatus :type="invoice.subject_type" /></td>
-      </tr>
+      </tr> -->
       <tr>
-        <td>ID Договора / Клиента</td>
+        <td>ID Заказа</td>
         <td>
           {{ invoice.subject_id }}
-          <a v-if="invoice.subject_type == 'lease'" @click.stop="go('lease')"> Перейти к договору </a>
-          <a v-if="invoice.subject_type == 'rent'" @click.stop="go('rent')"> Перейти к договору </a>
-          <a v-if="invoice.subject_type == 'accum'" @click.stop="go('accum')"> Перейти к клиенту </a>
+          <a v-if="invoice.subject_type == 'order'" @click.stop="go('order')"> Перейти к заказу </a>
         </td>
       </tr>
-      <tr>
-        <td>Юр. лицо договора</td>
-        <td>{{ invoice.company_id }} {{ invoice.company_name }}</td>
-      </tr>
+
       <tr>
         <td colspan="2"></td>
       </tr>
@@ -76,7 +75,7 @@
 </template>
 
 <script>
-import CMAcquiringTypeStatus from "@/components/CMAcquiringTypeStatus.vue";
+// import CMAcquiringTypeStatus from "@/components/CMAcquiringTypeStatus.vue";
 import CMInvoiceStatus from "@/components/CMInvoiceStatus.vue";
 import CMInvoicePaymentMethod from "@/components/CMInvoicePaymentMethod.vue";
 
@@ -84,7 +83,7 @@ export default {
   name: "CMPaymentsInvoiceDetails",
 
   components: {
-    CMAcquiringTypeStatus,
+    // CMAcquiringTypeStatus,
     CMInvoiceStatus,
     CMInvoicePaymentMethod,
   },
@@ -103,23 +102,9 @@ export default {
   methods: {
     go(type) {
       switch (type) {
-        case "lease":
+        case "order":
           this.$router.push({
-            name: "contract_details",
-            params: { id: this.invoice.subject_id },
-          });
-          break;
-
-        case "rent":
-          this.$router.push({
-            name: "contract_rent_details",
-            params: { id: this.invoice.subject_id },
-          });
-          break;
-
-        case "accum":
-          this.$router.push({
-            name: "customers_details",
+            name: "order_details",
             params: { id: this.invoice.subject_id },
           });
           break;

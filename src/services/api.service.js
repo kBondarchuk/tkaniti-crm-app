@@ -400,6 +400,8 @@ class APIService extends APIServiceCore {
       date1: filter.date1,
       date2: filter.date2,
       cleared: filter.cleared,
+      subject_type: filter.subject_type,
+      subject_id: filter.subject_id,
     };
 
     let response = await this.service.get(REQUESTS.PAYMENTS.INVOICES, { params: params });
@@ -408,6 +410,25 @@ class APIService extends APIServiceCore {
 
   async getInvoice(id) {
     let response = await this.service.get(REQUESTS.PAYMENTS.INVOICES + "/" + id);
+    let payload = JSON.parse(response.data.data.payload);
+
+    var result = response.data.data;
+    result.payload = payload;
+
+    return result;
+  }
+
+  async makeInvoice(item) {
+    const params = {
+      amount: item.amount,
+      payment_method: item.payment_method,
+      subject_type: item.subject_type,
+      subject_id: item.subject_id,
+      send_cart: item.send_cart,
+    };
+    console.warn(params);
+
+    let response = await this.service.post(REQUESTS.PAYMENTS.INVOICES, params);
     return response.data.data;
   }
 

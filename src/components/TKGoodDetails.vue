@@ -18,7 +18,9 @@
       <!--  -->
       <UIListSection>
         <UIListItem name="UUID" :value="good?.uuid" />
-        <UIListItem name="Адрес формы заказа" :value="'https://store.tkaniti.ru/order/g/' + good?.uuid" />
+        <UIListItem name="Адрес формы заказа" :value="'https://store.tkaniti.ru/order/g/' + good?.uuid">
+          <UIClipButton :value="'https://store.tkaniti.ru/order/g/' + good?.uuid" />
+        </UIListItem>
       </UIListSection>
       <!--  -->
       <UIListSection header="Комментарий">
@@ -61,12 +63,14 @@ let _form_data = [
 */
 
 // import UILayoutColumns from "@/components/UILayoutColumns.vue";
+import UIClipButton from "@/components/UIClipButton.vue";
 
 export default {
   name: "TKGoodDetails",
 
   components: {
     // UILayoutColumns,
+    UIClipButton,
   },
 
   props: {

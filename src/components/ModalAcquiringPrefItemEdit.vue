@@ -27,8 +27,8 @@
       </div>
 
       <UITextfield v-model="params.payload.api_url" label="API URL" />
-      <UITextfield v-model="params.payload.success_url" label="Success callback URL" />
-      <UITextfield v-model="params.payload.fail_url" label="Fail callback URL" />
+      <UITextfield v-model="params.payload.success_url" label="Success URL" />
+      <UITextfield v-model="params.payload.fail_url" label="Fail URL" />
 
       <!-- error -->
       <div v-if="api_error" class="ui error message">

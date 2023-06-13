@@ -52,7 +52,9 @@
         <TKOrderStatus :value="order?.status_id" />
       </UIListItem>
       <UIListItem name="Дата, время заказа" :value="order?.date" type="date" />
-      <UIListItem name="Ссылка для клиента" :value="'https://store.tkaniti.ru/orders/' + order?.uuid" />
+      <UIListItem name="Ссылка для клиента" :value="'https://store.tkaniti.ru/orders/' + order?.uuid">
+        <UIClipButton :value="'https://store.tkaniti.ru/orders/' + order?.uuid" />
+      </UIListItem>
     </UIListSection>
 
     <!--  -->
@@ -106,6 +108,7 @@
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
 import TKOrderPaymentStatus from "@/components/TKOrderPaymentStatus.vue";
 import TKLink from "@/components/TKLink.vue";
+import UIClipButton from "@/components/UIClipButton.vue";
 import UIListItem from "./UIListItem.vue";
 
 export default {
@@ -116,6 +119,7 @@ export default {
     TKOrderPaymentStatus,
     TKLink,
     UIListItem,
+    UIClipButton,
   },
 
   props: {

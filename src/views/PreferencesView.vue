@@ -2,7 +2,7 @@
   <LayoutPage :no-paddings="currentPaddings">
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
     <!-- <h1>Заглавная страница</h1> -->
     <UITransition mode="out-in" duration="0.3s">

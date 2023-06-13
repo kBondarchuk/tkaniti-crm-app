@@ -208,7 +208,6 @@ export default [
       // Payments
       {
         path: "/cashier/invoices",
-        component: LayoutView,
         children: [
           {
             path: "",
