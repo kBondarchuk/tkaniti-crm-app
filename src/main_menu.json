@@ -59,16 +59,7 @@
                     "icon": "coins icon",
                     "route": "/finances/operations",
                     "access": "operations"
-                },
-                {
-                    "id": 66,
-                    "name": "Эквайринг",
-                    "icon": "cc visa",
-                    "route": "/cashier/transactions",
-                    "access": "admin",
-                    "divider": "top"
                 }
-
             ]
         }
 
