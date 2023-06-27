@@ -105,7 +105,7 @@ export default {
     menuSelectedId: {
       immediate: false,
       handler(newValue) {
-        console.log("menuSelectedId", newValue);
+        // console.log("menuSelectedId", newValue);
         // Save menuSelectedId
         // if (newValue === null) {
         //   localStorage.removeItem("cars.list.selected_menu");
@@ -123,7 +123,7 @@ export default {
     const selected_menu_params = localStorage.getItem(this.$options.name + ".list.selected_menu");
 
     if (selected_menu_params) {
-      console.log("->", selected_menu_params);
+      // console.log("->", selected_menu_params);
       this.menuSelectedId = JSON.parse(selected_menu_params);
     } else {
       this.menuSelectedId = null;
