@@ -2,8 +2,11 @@ export const viewMixin = {
   data: function () {
     return {
       view: { title: "-", subTitle: "-" },
+      viewShowSideMenu: true,
+      viewSideMenuSelectedId: 999,
     };
   },
+
   methods: {
     checkAuthRole(role) {
       return this.$store.getters["auth/getAuthRights"].includes(role);
@@ -21,7 +24,28 @@ export const viewMixin = {
         this.$router.push({ name });
       }
     },
+    viewToggleSideMenu() {
+      this.viewShowSideMenu = !this.viewShowSideMenu;
+      localStorage.setItem(this.$options.name + ".list.show_side_menu", this.viewShowSideMenu);
+    },
+    viewSideMenuSelected(id) {
+      console.warn("[ViewMixin]: viewSideMenuSelected", id);
+    },
   },
+
+  created() {
+    // Load saved params
+    this.viewShowSideMenu = JSON.parse(localStorage.getItem(this.$options.name + ".list.show_side_menu")) ?? true;
+    const selected_menu_params = localStorage.getItem(this.$options.name + ".list.selected_menu");
+
+    if (selected_menu_params) {
+      console.log("->", selected_menu_params);
+      this.viewSideMenuSelectedId = JSON.parse(selected_menu_params);
+    } else {
+      this.viewSideMenuSelectedId = null;
+    }
+  },
+
   mounted() {
     this.$store.commit("setTitle", {
       title: this.view.title,
@@ -29,6 +53,7 @@ export const viewMixin = {
     });
     this.$UIService.setHtmlTitle(this.view.title);
   },
+
   watch: {
     "view.title": function () {
       this.$store.commit("setTitle", {
@@ -42,6 +67,13 @@ export const viewMixin = {
         title: this.view.title,
         subTitle: this.view.subTitle,
       });
+    },
+    viewSideMenuSelectedId: {
+      immediate: false,
+      handler(newValue) {
+        localStorage.setItem(this.$options.name + ".list.selected_menu", newValue);
+        this.viewSideMenuSelected(newValue);
+      },
     },
   },
 };

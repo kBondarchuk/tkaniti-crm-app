@@ -3,8 +3,8 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!--  -->
-      <UIButton icon="filter" type="labeled basic" style="min-width: 10em" @click="toggleSideMenu">
-        <span v-if="showSideMenu">Скрыть</span>
+      <UIButton icon="filter" type="labeled basic" style="min-width: 10em" @click="viewToggleSideMenu">
+        <span v-if="viewShowSideMenu">Скрыть</span>
         <span v-else>Показать</span>
       </UIButton>
 
@@ -22,14 +22,14 @@
     <!-- /Toolbar -->
 
     <!-- Side Menu -->
-    <template v-if="showSideMenu" #side>
-      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
+    <template v-if="viewShowSideMenu" #side>
+      <LayoutSideMenu v-model="viewSideMenuSelectedId" :items="menu" :sticky-at="56" />
     </template>
-    <!-- List -->
 
+    <!-- List -->
     <TKGoodsGrid
       v-if="viewMode == 2"
-      :filter-status="[menuSelectedId]"
+      :filter-status="[viewSideMenuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
       :view-mode="viewMode"
@@ -37,7 +37,7 @@
     />
     <TKGoodsList
       v-else
-      :filter-status="[menuSelectedId]"
+      :filter-status="[viewSideMenuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
       :view-mode="viewMode"
@@ -71,9 +71,8 @@ export default {
   data() {
     return {
       searchString: "",
-      //
+      // UI
       view: { title: "Товары", subTitle: "Справочник товаров" },
-      showSideMenu: true,
       menu: [
         { id: null, name: "Все", icon: "folder" },
         { id: 0, name: "Новый", icon: "edit" },
@@ -85,7 +84,6 @@ export default {
         // { id: 5, name: "Получен", icon: "undo alternate" },
         // { id: 6, name: "Отменён", icon: "hourglass half" },
       ],
-      menuSelectedId: 999,
       viewMode: 0, // 0 - text, 1 - image, 3 - grid
       modeOptions: [
         { id: 0, name: "", title: "Текстовый табличный вид", icon: "table" },
@@ -95,41 +93,6 @@ export default {
     };
   },
 
-  watch: {
-    menuSelectedId: {
-      immediate: false,
-      handler(newValue) {
-        // console.log("menuSelectedId", newValue);
-        // Save menuSelectedId
-        // if (newValue === null) {
-        //   localStorage.removeItem("cars.list.selected_menu");
-        // } else {
-        localStorage.setItem(this.$options.name + ".list.selected_menu", newValue);
-        // }
-        // fetch
-        this.fetchOrdersCount();
-      },
-    },
-  },
-
-  created() {
-    // Load saved params
-    const selected_menu_params = localStorage.getItem(this.$options.name + ".list.selected_menu");
-
-    if (selected_menu_params) {
-      // console.log("->", selected_menu_params);
-      this.menuSelectedId = JSON.parse(selected_menu_params);
-    } else {
-      this.menuSelectedId = null;
-    }
-
-    this.showSideMenu = JSON.parse(localStorage.getItem(this.$options.name + ".list.show_side_menu")) ?? true;
-  },
-
-  // mounted() {
-  //   this.fetchOrdersCount();
-  // },
-
   methods: {
     newGood() {
       this.$router.push({ name: "good_new" });
@@ -138,11 +101,12 @@ export default {
       // console.log("row clicked: " + item.id);
       this.$router.push({ name: "goods_details", params: { id: item.id } });
     },
-    toggleSideMenu() {
-      this.showSideMenu = !this.showSideMenu;
-      localStorage.setItem(this.$options.name + ".list.show_side_menu", this.showSideMenu);
+    viewSideMenuSelected(id) {
+      this.fetchGoodsCount();
     },
-    async fetchOrdersCount() {
+
+    // Networking
+    async fetchGoodsCount() {
       try {
         let result = await apiService.getGoodsCount();
         this.combineMenu(result);

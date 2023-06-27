@@ -2,17 +2,16 @@
   <LayoutPage>
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
+      <LayoutSideMenu v-model="viewSideMenuSelectedId" :items="menu" />
     </template>
     <!-- Reports -->
-    <component :is="currentReport" :show-investors="showInvestors" />
+    <component :is="currentReport" />
     <!--  -->
   </LayoutPage>
 </template>
 
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
-import apiService from "@/services/api.service.js";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
@@ -39,8 +38,6 @@ export default {
     return {
       view: { title: "Отчёты", subTitle: "" },
       menu: [],
-      menuSelectedId: null,
-      showInvestors: false,
       // Reports
       reports: [
         {
@@ -84,30 +81,24 @@ export default {
 
   computed: {
     currentReport() {
-      if (!this.menuSelectedId) return null;
+      if (!this.viewSideMenuSelectedId) return null;
 
       let self = this;
-      console.log(">>>", this.reports);
+      // console.log(">>>", this.reports);
 
       return this.reports.find((obj) => {
-        console.log("++", self.menuSelectedId);
+        // console.log("++", self.viewSideMenuSelectedId);
 
-        return obj.id == self.menuSelectedId;
+        return obj.id == self.viewSideMenuSelectedId;
       }).component;
-      // [this.menuSelectedId - 1].component;
+      // [this.viewSideMenuSelectedId - 1].component;
     },
     userRights() {
       return this.$store.getters["auth/getAuthRights"];
     },
-    // branchesCombined() {
-    //   return this.branches.map((item) => item.short_name).join(", ");
-    // },
   },
 
   mounted() {
-    // Fetch alowed branches
-    // this.fetchBranches();
-
     // Build menu
     const menu = this.reports.filter((report) => {
       const rights = this.userRights.filter((value) => report.access.split(",").includes(value));
@@ -117,7 +108,7 @@ export default {
     console.log(menu);
     this.menu = menu;
 
-    this.menuSelectedId = this.menu[0]?.id;
+    this.viewSideMenuSelectedId = this.menu[0]?.id;
   },
 
   methods: {
