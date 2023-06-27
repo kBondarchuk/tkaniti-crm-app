@@ -41,8 +41,6 @@ export default {
       menu: [],
       menuSelectedId: null,
       showInvestors: false,
-      // Branches
-      branches: [],
       // Reports
       reports: [
         {
