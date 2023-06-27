@@ -2,8 +2,10 @@
   <LayoutPage no-vertical-paddings>
     <!-- Toolbar -->
     <template #toolbar>
-      <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
+      <!-- Back -->
+      <BackButton />
       <UISpacer />
+      <!-- Save -->
       <UIButton
         text="Сохранить"
         type="primary"

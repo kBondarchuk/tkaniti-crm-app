@@ -3,7 +3,9 @@
     <!-- Toolbar -->
     <!-- Back -->
     <template #toolbar>
-      <UIButton icon="left arrow" type="basic labeled" @click="back('payments_invoices')">Назад</UIButton>
+      <!-- Back -->
+      <BackButton to="payments_invoices" />
+
       <UISpacer />
       <!-- Кассовый чек -->
       <!-- <UIButton

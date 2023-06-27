@@ -3,7 +3,8 @@
     <!-- Toolbar -->
     <!-- Back -->
     <template #toolbar>
-      <UIButton type="basic labeled" text="Назад" icon="left arrow" @click="back('goods')" />
+      <!-- Back -->
+      <BackButton to="goods" />
       <!--  -->
       <UISpacer />
 

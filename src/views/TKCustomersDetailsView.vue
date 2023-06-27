@@ -1,14 +1,15 @@
 <template>
   <LayoutPage no-paddings>
     <!-- Toolbar -->
-    <!-- Back -->
     <template #toolbar>
-      <UIButton text="Назад" icon="left arrow" type="basic labeled" color="white" @click="back('customers')" />
+      <!-- Back -->
+      <BackButton to="customers" />
       <UISpacer />
-      <!--  -->
+      <!-- Edit -->
       <UIButton :disabled="!checkAuthEditCustomer" type="basic labeled" icon="edit" text="Изменить" @click="edit" />
     </template>
     <!-- /Toolbar -->
+
     <!-- Tabs -->
     <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
 
@@ -16,25 +17,7 @@
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
       <router-view :customer="customer" @update="fetchCustomer()"></router-view>
     </div>
-
-    <!-- <div class="ui top tabular menu"> -->
-    <!-- <div class="item" :class="{ active: tabsComponent == 1 }" @click="tabSelect(1)">ОСНОВНОЕ</div> -->
-    <!-- <div class="item" :class="{ active: tabsComponent == 5 }" @click="tabSelect(5)">ОПЕРАЦИИ</div>
-      <div class="item" :class="{ active: tabsComponent == 2 }" @click="tabSelect(2)">ДОКУМЕНТЫ</div>
-      <div class="item" :class="{ active: tabsComponent == 3 }" @click="tabSelect(3)">ЛИЧНЫЙ КАБИНЕТ</div>
-      <div class="item" :class="{ active: tabsComponent == 4 }" @click="tabSelect(4)">ИСТОРИЯ</div> -->
-    <!-- </div> -->
-    <!-- Pages -->
-    <!-- Page 1: General -->
-    <!-- <div class="ui tab" :class="{ active: tabsComponent == 1 }">
-       <LayoutTwoColumns> -->
-    <!-- First column -->
-    <!-- <TKCustomerDetails :key="keys.details" :customer-id="paramId" /> -->
-    <!-- second column -->
-    <!-- </LayoutTwoColumns> -->
-    <!-- </div> -->
-
-    <!------->
+    <!--  -->
   </LayoutPage>
 </template>
 
