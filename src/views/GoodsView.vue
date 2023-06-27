@@ -2,27 +2,14 @@
   <LayoutPage no-paddings>
     <!-- Toolbar -->
     <template #toolbar>
+      <!--  -->
       <UIButton icon="filter" type="labeled basic" style="min-width: 10em" @click="toggleSideMenu">
         <span v-if="showSideMenu">Скрыть</span>
         <span v-else>Показать</span>
       </UIButton>
+
       <!-- View Mode -->
-      <div class="ui compact basic icon buttons" :class="{ disabled: !checkAuthEditGood }" style="margin-left: 4.5rem">
-        <button
-          class="ui button"
-          :class="{ active: viewMode == 0 }"
-          title="Текстовый табличный вид"
-          @click="viewMode = 0"
-        >
-          <i class="table icon"></i>
-        </button>
-        <button class="ui button" :class="{ active: viewMode == 1 }" title="Табличный вид с фото" @click="viewMode = 1">
-          <i class="list icon"></i>
-        </button>
-        <button class="ui button" :class="{ active: viewMode == 2 }" title="Галлерея" @click="viewMode = 2">
-          <i class="th icon"></i>
-        </button>
-      </div>
+      <UIOptButtons v-model="viewMode" :options="modeOptions" style="margin-left: 4.5rem" />
       <!--  -->
       <UISpacer />
       <!-- Поиск -->
@@ -33,6 +20,7 @@
       <UIButton :disabled="!checkAuthNewGood" icon="plus" type="right labeled" text="Новый товар" @click="newGood" />
     </template>
     <!-- /Toolbar -->
+
     <!-- Side Menu -->
     <template v-if="showSideMenu" #side>
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
@@ -64,9 +52,10 @@ import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
 
 import apiService from "@/services/api.service.js";
 
-import LayoutPage from "@/components/LayoutPage.vue";
 import TKGoodsList from "@/components/TKGoodsList.vue";
 import TKGoodsGrid from "@/components/TKGoodsGrid.vue";
+
+import UIOptButtons from "@/components/UIOptButtons.vue";
 
 export default {
   name: "GoodsView",
@@ -74,7 +63,7 @@ export default {
   components: {
     TKGoodsList,
     TKGoodsGrid,
-    LayoutPage,
+    UIOptButtons,
   },
 
   mixins: [viewMixin, CheckAuthMixin],
@@ -98,6 +87,11 @@ export default {
       ],
       menuSelectedId: 999,
       viewMode: 0, // 0 - text, 1 - image, 3 - grid
+      modeOptions: [
+        { id: 0, name: "", title: "Текстовый табличный вид", icon: "table" },
+        { id: 1, name: "", title: "Табличный вид с фото", icon: "list" },
+        { id: 2, name: "", title: "Галлерея", icon: "th" },
+      ],
     };
   },
 

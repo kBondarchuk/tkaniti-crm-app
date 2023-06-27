@@ -6,33 +6,15 @@
       <UIButton type="basic labeled" text="Назад" icon="left arrow" @click="back('goods')" />
       <!--  -->
       <UISpacer />
+
       <!-- Statuses -->
-      <div class="ui compact basic buttons" :class="{ disabled: !checkAuthEditGood }">
-        <button class="ui disabled button" :class="{ active: good?.status_id == 0, disabled: !checkAuthEditGood }">
-          Новый
-        </button>
-        <button
-          class="ui button"
-          :class="{ active: good?.status_id == 1, disabled: !checkAuthEditGood }"
-          @click="actionSetStatus(1)"
-        >
-          На складе
-        </button>
-        <button
-          class="ui button"
-          :class="{ active: good?.status_id == 2, disabled: !checkAuthEditGood }"
-          @click="actionSetStatus(2)"
-        >
-          В продаже
-        </button>
-        <button class="ui button" :class="{ active: good?.status_id == 4, disabled: !checkAuthEditGood }">
-          Приостановлено
-        </button>
-        <!-- @click="actionSetStatus(3)" -->
-        <button class="ui button" :class="{ active: good?.status_id == 3, disabled: !checkAuthEditGood }">
-          Продано
-        </button>
-      </div>
+      <UIOptButtons
+        v-if="good"
+        :model-value="good.status_id"
+        :options="modeOptions"
+        :disabled="!checkAuthEditGood"
+        @update:model-value="actionSetStatus"
+      />
       <!--  -->
       <UISpacer />
 
@@ -63,6 +45,8 @@ import { TabsMixin } from "@/mixins/TabsMixin.js";
 
 import { AccessRightsEnum } from "@/enums/index";
 
+import UIOptButtons from "@/components/UIOptButtons.vue";
+
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "ФОТО", id: "photos" },
@@ -72,7 +56,9 @@ const kTABS = [
 export default {
   name: "GoodsDetailsView",
 
-  components: {},
+  components: {
+    UIOptButtons,
+  },
 
   mixins: [viewMixin, CheckAuthMixin, TabsMixin],
 
@@ -91,6 +77,14 @@ export default {
       view: { title: "Товар", subTitle: "Детализация" },
       // Tabs
       tabs: [],
+      // UI
+      modeOptions: [
+        { id: 0, name: "Новый", title: "", icon: null, disabled: true },
+        { id: 1, name: "На складе", title: "", icon: null },
+        { id: 2, name: "В продаже", title: "", icon: null },
+        { id: 4, name: "Приостановлено", title: "", icon: null },
+        { id: 3, name: "Продано", title: "", icon: null },
+      ],
     };
   },
 
@@ -120,6 +114,9 @@ export default {
 
     // Actions
     actionSetStatus(status) {
+      console.warn(status);
+
+      if (status == 3 || status == 4) return;
       this.fetchSetStatus(this.goodId, status);
     },
     // Events
