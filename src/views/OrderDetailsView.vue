@@ -4,7 +4,7 @@
     <!-- Back -->
     <template #toolbar>
       <!-- Back -->
-      <BackButton to="orders" />
+      <YBackButton to="orders" />
       <!--  -->
       <UISpacer />
       <!--  -->

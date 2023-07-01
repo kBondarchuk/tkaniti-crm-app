@@ -3,7 +3,7 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Back -->
-      <BackButton to="customers" />
+      <YBackButton to="customers" />
       <UISpacer />
       <!-- Edit -->
       <UIButton :disabled="!checkAuthEditCustomer" type="basic labeled" icon="edit" text="Изменить" @click="edit" />

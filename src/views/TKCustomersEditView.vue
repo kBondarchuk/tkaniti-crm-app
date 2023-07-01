@@ -3,7 +3,7 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Back -->
-      <BackButton />
+      <YBackButton />
       <UISpacer />
       <!-- Save -->
       <UIButton

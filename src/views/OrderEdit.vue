@@ -3,7 +3,7 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Back -->
-      <BackButton />
+      <YBackButton />
       <UISpacer />
 
       <template v-if="order?.status_id != 6 && order?.id">

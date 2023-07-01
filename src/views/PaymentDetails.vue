@@ -4,7 +4,7 @@
     <!-- Back -->
     <template #toolbar>
       <!-- Back -->
-      <BackButton to="payments_invoices" />
+      <YBackButton to="payments_invoices" />
 
       <UISpacer />
       <!-- Кассовый чек -->
