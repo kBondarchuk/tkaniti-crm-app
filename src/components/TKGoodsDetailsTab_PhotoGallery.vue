@@ -1,5 +1,5 @@
 <template>
-  <CMPhotoGallery :album-uuid="good.photo_album_uuid" />
+  <CMPhotoGallery :album-uuid="good?.photo_album_uuid" />
 </template>
 
 <script>
