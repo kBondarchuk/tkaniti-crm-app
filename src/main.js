@@ -3,8 +3,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { createStore } from "./store/store";
 import { createRouter } from "./router/router";
+import { setNavigation } from "./navigation";
 import GlobalComponents from "@/global_components";
-// import "./filters/filters";
 import UIService from "./plugins/UIService";
 import UIFilters from "./plugins/filters";
 import APIService from "./services/api.service.js";
@@ -30,6 +30,9 @@ app.use(UIFilters);
 app.use(UIComponents);
 // Register global components
 GlobalComponents.register(app);
+
+// Provite app presets
+app.provide("APP_PRESETS", { app_name: store.state.appName });
 
 // console.log(store, router);
 
@@ -96,43 +99,8 @@ store.dispatch("prefs/fetch");
 // Load Auth from local storage
 // store.dispatch("auth/recall");
 
-router.beforeEach((to, from, next) => {
-  // console.warn("[main]: 🔄 START LOADING...");
-  // Set loading indicator
-  store.commit("setLoadingState", true);
-
-  // if (to.name != "login" && !store.getters["auth/isAuthenticated"]) {
-  //   next();
-  //   // next("login");
-  // } else
-  // console.log("router.beforeEach: ", from.name);
-  // Check if prev route name is same or not
-  if (from.name && to.query.navigate != "back" && from.name != to.name) {
-    if (!from.meta.ignoreHistory) {
-      store.commit("addRouteName", {
-        name: from.path,
-      });
-    }
-  }
-  //remove query navigate data
-  if (to.query.navigate == "back") {
-    delete to.query["navigate"];
-  }
-  // check auth
-  if (to.name == "login" && store.getters["auth/isAuthenticated"]) {
-    next("/");
-  } else {
-    next();
-  }
-});
-
-router.afterEach((to, from) => {
-  // Complete the animation of the route progress bar.
-  // NProgress.done()
-  // console.warn("[main]: 🔄 STOP LOADING.");
-  // Set loading indicator
-  store.commit("setLoadingState", false);
-});
+// ROUTER NAVIGATION
+setNavigation(router, store);
 
 // VUE
 // Vue.config.productionTip = false;
