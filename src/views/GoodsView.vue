@@ -2,34 +2,27 @@
   <LayoutPage no-paddings>
     <!-- Toolbar -->
     <template #toolbar>
-      <!--  -->
-      <UIButton icon="filter" type="labeled basic" style="min-width: 10em" @click="viewToggleSideMenu">
-        <span v-if="viewShowSideMenu">Скрыть</span>
-        <span v-else>Показать</span>
-      </UIButton>
-
+      <YTogglePanelButton :show="view.showSidePanel" @click="toggleSidePanel" />
       <!-- View Mode -->
-      <UIOptButtons v-model="viewMode" :options="modeOptions" style="margin-left: 4.5rem" />
-      <!--  -->
+      <UIOptButtons v-model="viewMode" :options="modeOptions" type="icon" style="margin-left: 4.5rem" />
       <UISpacer />
+
       <!-- Поиск -->
       <UITextSearch v-model="searchString" placeholder="Поиск..." />
-      <!--  -->
       <UISpacer />
-      <!--  -->
+      <!-- New -->
       <UIButton :disabled="!checkAuthNewGood" icon="plus" type="right labeled" text="Новый товар" @click="newGood" />
     </template>
-    <!-- /Toolbar -->
 
     <!-- Side Menu -->
-    <template v-if="viewShowSideMenu" #side>
-      <LayoutSideMenu v-model="viewSideMenuSelectedId" :items="menu" :sticky-at="56" />
+    <template v-if="view.showSidePanel" #side>
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
 
     <!-- List -->
     <TKGoodsGrid
       v-if="viewMode == 2"
-      :filter-status="[viewSideMenuSelectedId]"
+      :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
       :view-mode="viewMode"
@@ -37,7 +30,7 @@
     />
     <TKGoodsList
       v-else
-      :filter-status="[viewSideMenuSelectedId]"
+      :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
       :view-mode="viewMode"
@@ -47,8 +40,8 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import { useView } from "@/composables/view";
+import combineMenu from "@/utils/combine";
 
 import apiService from "@/services/api.service.js";
 
@@ -56,6 +49,10 @@ import TKGoodsList from "@/components/TKGoodsList.vue";
 import TKGoodsGrid from "@/components/TKGoodsGrid.vue";
 
 import UIOptButtons from "@/components/UIOptButtons.vue";
+import AccessRightsEnum from "@/enums/AccessRights";
+import RouteNames from "@/router/routeNames";
+
+const _storageID = "GoodsView.list.selected_menu";
 
 export default {
   name: "GoodsView",
@@ -66,13 +63,18 @@ export default {
     UIOptButtons,
   },
 
-  mixins: [viewMixin, CheckAuthMixin],
+  setup() {
+    const { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue } = useView("CarsView");
+
+    view.title = "Товары";
+    view.subTitle = "Справочник товаров";
+
+    return { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue };
+  },
 
   data() {
     return {
-      searchString: "",
       // UI
-      view: { title: "Товары", subTitle: "Справочник товаров" },
       menu: [
         { id: null, name: "Все", icon: "folder" },
         { id: 0, name: "Новый", icon: "edit" },
@@ -80,52 +82,51 @@ export default {
         { id: 2, name: "В продаже", icon: "store" },
         { id: 4, name: "Приостановлено", icon: "hourglass half" },
         { id: 3, name: "Продано", icon: "thumbs up" },
-        // { id: 4, name: "Отправлен", icon: "car" },
-        // { id: 5, name: "Получен", icon: "undo alternate" },
-        // { id: 6, name: "Отменён", icon: "hourglass half" },
       ],
-      viewMode: 0, // 0 - text, 1 - image, 3 - grid
       modeOptions: [
         { id: 0, name: "", title: "Текстовый табличный вид", icon: "table" },
         { id: 1, name: "", title: "Табличный вид с фото", icon: "list" },
         { id: 2, name: "", title: "Галлерея", icon: "th" },
       ],
+      searchString: "",
+      viewMode: 0, // 0 - text, 1 - image, 3 - grid
+      menuSelectedId: 999,
     };
+  },
+
+  computed: {
+    checkAuthNewGood() {
+      return this.checkAuthRole(AccessRightsEnum.GoodsEdit);
+    },
+  },
+
+  watch: {
+    menuSelectedId(newValue) {
+      this.storageSaveValue(_storageID, newValue);
+      this.fetchGoodsCount();
+    },
+  },
+
+  created() {
+    this.menuSelectedId = this.storageLoadValue(_storageID);
   },
 
   methods: {
     newGood() {
-      this.$router.push({ name: "good_new" });
+      this.$router.push({ name: RouteNames.Goods.New });
     },
     handleDetails(item) {
-      // console.log("row clicked: " + item.id);
-      this.$router.push({ name: "goods_details", params: { id: item.id } });
-    },
-    viewSideMenuSelected(id) {
-      this.fetchGoodsCount();
+      this.$router.push({ name: RouteNames.Goods.Details, params: { id: item.id } });
     },
 
     // Networking
     async fetchGoodsCount() {
       try {
-        let result = await apiService.getGoodsCount();
-        this.combineMenu(result);
+        var result = await apiService.getGoodsCount();
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
-    },
-    combineMenu(counts) {
-      this.menu
-        .filter((item) => {
-          return item.id >= 0;
-        })
-        .forEach((menuItem) => {
-          const result = counts.find((obj) => obj.status_id == menuItem.id);
-
-          if (result) {
-            menuItem["label"] = result.count;
-          }
-        });
+      combineMenu(result, this.menu);
     },
   },
 };

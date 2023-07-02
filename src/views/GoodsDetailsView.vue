@@ -1,11 +1,8 @@
 <template>
   <LayoutPage no-paddings>
     <!-- Toolbar -->
-    <!-- Back -->
     <template #toolbar>
-      <!-- Back -->
-      <BackButton to="goods" />
-      <!--  -->
+      <YBackButton to="goods" />
       <UISpacer />
 
       <!-- Statuses -->
@@ -16,14 +13,12 @@
         :disabled="!checkAuthEditGood"
         @update:model-value="actionSetStatus"
       />
-      <!--  -->
       <UISpacer />
 
-      <!--  -->
+      <!-- Edit -->
       <UIButton type="basic labeled" text="Изменить" icon="edit" :disabled="!checkAuthEditGood" @click="edit" />
       <!--  -->
     </template>
-    <!-- /Toolbar -->
 
     <!-- Tabs -->
     <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
@@ -40,11 +35,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
-import { TabsMixin } from "@/mixins/TabsMixin.js";
+import { useView } from "@/composables/view";
+import { useDetailsTabs } from "@/composables/detailsTabs";
 
 import { AccessRightsEnum } from "@/enums/index";
+import RouteNames from "@/router/routeNames";
 
 import UIOptButtons from "@/components/UIOptButtons.vue";
 
@@ -61,8 +56,6 @@ export default {
     UIOptButtons,
   },
 
-  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
-
   props: {
     goodId: {
       type: Number,
@@ -70,14 +63,21 @@ export default {
     },
   },
 
+  setup() {
+    const { view, checkAuthRole } = useView("CarsView");
+
+    view.title = "Товар";
+    view.subTitle = "Детализация";
+
+    const { tabs } = useDetailsTabs(kTABS);
+
+    return { tabs, view, checkAuthRole };
+  },
+
   data() {
     return {
       // Models
       good: null,
-      // View
-      view: { title: "Товар", subTitle: "Детализация" },
-      // Tabs
-      tabs: [],
       // UI
       modeOptions: [
         { id: 0, name: "Новый", title: "", icon: null, disabled: true },
@@ -89,11 +89,14 @@ export default {
     };
   },
 
+  computed: {
+    checkAuthEditGood() {
+      return this.checkAuthRole(AccessRightsEnum.GoodsEdit);
+    },
+  },
+
   created() {
-    // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-    this.createTabs(kTABS);
-    //
-    if (this.goodId !== undefined) {
+    if (this.goodId) {
       this.fetchGood(this.goodId);
     }
   },
@@ -101,16 +104,15 @@ export default {
   methods: {
     setTitle() {
       this.view.title = this.good?.name + " " + "(" + this.goodId + ")";
-      // this.view.subTitle = this.car.car_status;
     },
     // ---
     edit() {
-      this.$router.push({ name: "good_edit" });
+      this.$router.push({ name: RouteNames.Goods.Edit });
     },
 
     // Tabs
     tabLink(name) {
-      this.$router.push({ name: `goods_details_${name}`, params: { id: this.goodId } });
+      this.$router.push({ name: RouteNames.Goods.Details + `_${name}`, params: { id: this.goodId } });
     },
 
     // Actions
@@ -120,50 +122,23 @@ export default {
       if (status == 3 || status == 4) return;
       this.fetchSetStatus(this.goodId, status);
     },
-    // Events
-    buyDone(new_request_id) {
-      if (new_request_id === null) return;
-
-      this.$router.push({
-        name: "budget_request_details",
-        params: { request_id: new_request_id },
-      });
-    },
-    sellDone(new_request_id) {
-      console.log("Sell done!", new_request_id);
-      if (new_request_id === null) return;
-
-      this.$router.push({
-        name: "budget_request_details",
-        params: { request_id: new_request_id },
-      });
-      // this.keys.transactions++;
-      // this.fetchCar(this.car_id);
-    },
 
     // Networking
     async fetchGood(good_id) {
-      this.isLoading = true;
       try {
-        let result = await apiService.getGood(good_id);
-        this.good = result;
+        var result = await apiService.getGood(good_id);
         console.warn(result);
-
-        this.setTitle();
-        this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
-      this.isLoading = false;
+      this.good = result;
+      this.setTitle();
     },
     async fetchSetStatus(good_id, status) {
-      this.isLoading = true;
       try {
         await apiService.setGoodStatus(good_id, status);
       } catch (error) {
         this.$UIService.showNetworkError(error);
-      } finally {
-        this.isLoading = false;
       }
 
       this.fetchGood(this.goodId);
