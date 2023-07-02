@@ -2,8 +2,10 @@
   <LayoutPage no-vertical-paddings>
     <!-- Toolbar -->
     <template #toolbar>
-      <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
+      <!-- Back -->
+      <YBackButton to="goods" />
       <UISpacer />
+      <!-- Save -->
       <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
     </template>
     <!-- /Toolbar -->
@@ -19,55 +21,59 @@
       <!-- Grid -->
       <div class="ui grid" style="height: 100%">
         <!-- fist column -->
-        <div class="twelve wide column">
-          <div class="three fields">
+        <div class="six wide column">
+          <div class="two fields">
             <!-- Бренд -->
             <UITextfield v-model.trim.lazy="good.brand" label="Бренд" />
             <!-- Наименование -->
             <UITextfield v-model.trim.lazy="good.name" label="Наименование" />
-            <!-- Код -->
+          </div>
+          <!-- Код -->
+          <div class="two fields">
             <UITextfield v-model.trim.lazy="good.code" label="Артикул" />
           </div>
 
-          <div class="fields">
-            <!-- Ширина -->
-            <UIInputNumber v-model="good.width" label="Ширина, см" class="two wide field" />
-            <!-- Состав -->
-            <UITextfield v-model.trim.lazy="good.sostav" label="Состав" class="six wide field" />
-          </div>
+          <!-- <div class="two fields">
+            <UIInputNumber v-model="good.width" label="Ширина, см" />
+            <UITextfield v-model.trim.lazy="good.sostav" label="Состав" />
+          </div> -->
 
-          <div class="two fields">
-            <!-- Цена -->
-            <UITextAria v-model="good.description" label="Описание" />
-            <!-- Комментарий -->
-            <UITextAria
-              v-model="good.notes"
-              label="Комментарий"
-              placeholder="Для внутреннего использования. Не публикуется."
-            />
-          </div>
+          <!-- Цена -->
+          <UITextAria v-model="good.description" label="Описание" />
+          <!-- Комментарий -->
+          <UITextAria
+            v-model="good.notes"
+            label="Комментарий"
+            placeholder="Для внутреннего использования. Не публикуется."
+          />
 
           <div class="ui hidden divider"></div>
 
           <!-- <a class="negative ui button">Удалить запись</a> -->
           <div class="ui error message"></div>
         </div>
-        <!-- second column -->
+
+        <!-- 2 column -->
+        <div class="six wide second column">
+          <UITextfield v-for="item in categorySpecs" :key="item[0]" v-model="good.specs[item[0]]" :label="item[1]" />
+        </div>
+
+        <!-- 3 column -->
         <div class="four wide second column">
-          <!-- Единицы измерения -->
+          <!-- Категория товара -->
           <UIInputDropdown
-            v-model="good.measure_id"
-            label="Единицы измерения"
-            :options="optionsMeasures"
+            v-model="good.category_id"
+            label="Категория товара"
+            :options="optionsCategories"
             :disabled="isEditMode"
           />
-          <!-- :class="validateCompany" -->
+
           <!-- Остаток -->
           <UIInputMoney
             :key="'ost' + decimalScale"
             v-model="good.quantity"
-            label="Исходный остаток"
-            :disabled="!good.measure_id"
+            :label="'Исходный остаток ' + measureName"
+            :disabled="!good.category_id"
             :decimal-scale="decimalScale"
           />
 
@@ -114,7 +120,8 @@ export default {
     return {
       // model data
       good: Object.assign({}, GoodObject),
-      measures: [],
+      // measures: [],
+      categories: [],
       // view
       view: {
         title: "Товар",
@@ -128,14 +135,17 @@ export default {
     isEditMode() {
       return this.goodId ? true : false;
     },
-    selectedInvestor() {
-      if (this.investor === undefined) {
-        return "";
-      } else return this.investor.last_name + " " + this.investor.first_name + " " + this.investor.second_name;
-    },
-    optionsMeasures() {
+    // optionsMeasures() {
+    //   let menu = [{ name: "Не выбран", value: null }].concat(
+    //     this.measures.map((item) => {
+    //       return { name: item.name, value: item.id };
+    //     })
+    //   );
+    //   return menu;
+    // },
+    optionsCategories() {
       let menu = [{ name: "Не выбран", value: null }].concat(
-        this.measures.map((item) => {
+        this.categories.map((item) => {
           return { name: item.name, value: item.id };
         })
       );
@@ -143,49 +153,22 @@ export default {
     },
     measureFraction() {
       const self = this;
-      const _item = this.measures.find((item) => item.id == self.good.measure_id);
-      return _item?.system_fraction;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.measure_system_fraction;
+    },
+    measureName() {
+      const self = this;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.measure_name;
     },
     decimalScale() {
-      // if (this.measureFraction == 0) return 0;
-      // if (this.measureFraction == 1) return 1;
-      // if (this.measureFraction == 2) return 2;
-      // if (this.measureFraction == 3) return 3;
       return this.measureFraction;
     },
-    // Validate
-    // validatePlateNumber() {
-    //   var check = plate_number_regx.test(this.car.plate_number);
-
-    //   return {
-    //     success: this.car.plate_number ? this.car.plate_number.length >= 8 && check : false,
-    //     error: this.car.plate_number ? !check : false,
-    //   };
-    // },
-    // validateVIN() {
-    //   var check = vin_regx.test(this.car.vin);
-
-    //   return {
-    //     success: this.car.vin ? this.car.vin.length >= 8 && check : false,
-    //     error: this.car.vin ? !check : false,
-    //   };
-    // },
-    // validateFrameNo() {
-    //   var check = frame_regx.test(this.car.frame_no);
-
-    //   return {
-    //     success: this.car.frame_no ? this.car.frame_no.length >= 8 && check : false,
-    //     error: this.car.frame_no ? !check : false,
-    //   };
-    // },
-    // validateChassisNo() {
-    //   var check = vin_regx.test(this.car.chassis_no);
-
-    //   return {
-    //     success: this.car.chassis_no ? this.car.chassis_no.length >= 8 && check : false,
-    //     error: this.car.chassis_no ? !check : false,
-    //   };
-    // },
+    categorySpecs() {
+      const self = this;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.specs_meta ? Object.entries(JSON.parse(_item?.specs_meta)) : null;
+    },
     validateSubmit() {
       return {
         disabled: false,
@@ -201,7 +184,7 @@ export default {
     if (this.goodId) {
       this.fetchBranchesThenItem(this.goodId);
     } else {
-      await this.fetchMeasures();
+      await this.fetchCategories();
     }
   },
 
@@ -241,7 +224,7 @@ export default {
     // Networking
     async fetchBranchesThenItem(car_id) {
       // await this.fetchBranches();
-      await this.fetchMeasures();
+      await this.fetchCategories();
       await this.fetchItem(car_id);
     },
     async fetchItem(good_id) {
@@ -258,10 +241,19 @@ export default {
       this.isLoading = false;
     },
 
-    async fetchMeasures() {
+    // async fetchMeasures() {
+    //   this.isLoading = true;
+    //   try {
+    //     this.measures = await apiService.getMeasures();
+    //   } catch (error) {
+    //     this.$UIService.showNetworkError(error);
+    //   }
+    //   this.isLoading = false;
+    // },
+    async fetchCategories() {
       this.isLoading = true;
       try {
-        this.measures = await apiService.getMeasures();
+        this.categories = await apiService.getGoodCategories();
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
@@ -288,7 +280,6 @@ export default {
         this.good = result;
         this.$router.push({ name: "goods_details", params: { id: result.id } });
       } catch (error) {
-        console.log("!!!! " + error);
         this.$UIService.showNetworkError(error);
       }
       this.isLoading = false;
