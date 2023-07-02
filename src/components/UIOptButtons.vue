@@ -1,5 +1,5 @@
 <template>
-  <div class="ui compact basic icon buttons disabled">
+  <div class="ui compact basic buttons" :class="type">
     <!--  -->
     <button
       v-for="item in options"
@@ -32,6 +32,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false,
+    },
+    type: {
+      type: String,
+      default: "text", // icon
     },
   },
 
