@@ -87,7 +87,7 @@ export default [
         path: ":id/edit",
         name: RouteNames.Goods.Edit,
         props: (route) => ({ goodId: Number(route.params.id) }),
-        meta: { ignoreHistory: true },
+        meta: { ignoreHistory: true, historyGroup: "goods" },
         component: () => import("@/views/GoodEditView.vue"),
       },
       {
