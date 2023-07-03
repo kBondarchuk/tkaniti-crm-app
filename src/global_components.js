@@ -8,7 +8,7 @@ import UIList from "@/components/UIList.vue";
 import UIListItem from "@/components/UIListItem.vue";
 import UIListSection from "@/components/UIListSection.vue";
 import UITextLoader from "@/components/UITextLoader.vue";
-import UIDetailsTabs from "@/components/UIDetailsTabs.vue";
+import YDetailsTabs from "@/components/YDetailsTabs.vue";
 import YBackButton from "@/components/YBackButton.vue";
 import YTogglePanelButton from "@/components/YTogglePanelButton.vue";
 
@@ -23,7 +23,7 @@ const register = (app) => {
   app.component("UIListItem", UIListItem);
   app.component("UIListSection", UIListSection);
   app.component("UITextLoader", UITextLoader);
-  app.component("UIDetailsTabs", UIDetailsTabs);
+  app.component("YDetailsTabs", YDetailsTabs);
   app.component("YBackButton", YBackButton);
   app.component("YTogglePanelButton", YTogglePanelButton);
 };
