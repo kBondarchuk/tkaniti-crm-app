@@ -556,130 +556,6 @@ class APIService extends APIServiceCore {
   }
 
   /**
-   * Budget requests
-   */
-
-  async getBudgetRequests(status, filter) {
-    filter = filter || { sort_by: "date", sort_order: "desc" };
-
-    let response = await this.service.get(REQUESTS.BUDGET_REQUESTS, {
-      params: {
-        status,
-        ...filter,
-      },
-    });
-    return { data: response.data.data, meta: response.data.meta };
-  }
-
-  async getBudgetRequestsItems(status, filter) {
-    filter = filter || { sort_by: "date", sort_order: "desc" };
-
-    let response = await this.service.get(REQUESTS.BUDGET_REQUESTS + "/items", {
-      params: {
-        status,
-        ...filter,
-      },
-    });
-    return { data: response.data.data, meta: response.data.meta };
-  }
-
-  async getBudgetRequest(id) {
-    let response = await this.service.get(REQUESTS.BUDGET_REQUESTS + "/" + id);
-    return response.data.data;
-  }
-
-  async createBudgetRequest({
-    request_type,
-    expense_dt,
-    expense_type_id,
-    expense_car_id,
-    expense_branch_id,
-    investor_id,
-    notes,
-    items,
-  }) {
-    const params = {
-      request_type,
-      expense_type_id,
-      expense_car_id,
-      expense_dt,
-      expense_branch_id,
-      investor_id,
-      notes,
-      items,
-    };
-
-    console.log(JSON.stringify(params));
-
-    let response = await this.service.post(REQUESTS.BUDGET_REQUESTS, params);
-    return response.data.data;
-  }
-
-  async createBudgetRequest2({ request_type, notes, recipient_user_id, items }) {
-    const params = {
-      request_type,
-      notes,
-      recipient_user_id,
-      items,
-    };
-
-    console.log(JSON.stringify(params));
-
-    let response = await this.service.post(REQUESTS.BUDGET_REQUESTS + "2", params);
-    return response.data.data;
-  }
-
-  async updateBudgetRequest(expense) {
-    let response = await this.service.put(REQUESTS.BUDGET_REQUESTS + "/" + expense.id, expense);
-    return response.data.data;
-  }
-
-  async updateBudgetRequest2(expense) {
-    let response = await this.service.put(REQUESTS.BUDGET_REQUESTS + "2" + "/" + expense.id, expense);
-    return response.data.data;
-  }
-
-  async deleteBudgetRequest(expense_id) {
-    let response = await this.service.delete(REQUESTS.BUDGET_REQUESTS + "/" + expense_id);
-    return response.data.data;
-  }
-
-  async getBudgetRequestsCount(request_type) {
-    const filter = { request_type };
-    let response = await this.service.get(REQUESTS.BUDGET_REQUESTS + "/count", {
-      params: {
-        ...filter,
-      },
-    });
-    return response.data.data;
-  }
-
-  async stageBudgetRequest(request_id, status, notes) {
-    const params = {
-      notes,
-    };
-
-    let response = await this.service.post(REQUESTS.BUDGET_REQUESTS + "/" + request_id + "/stages/" + status, params);
-    return response.data.data;
-  }
-
-  async applyBudgetRequest(request_id) {
-    let response = await this.service.post(REQUESTS.BUDGET_REQUESTS + "/" + request_id + "/apply");
-    return response.data.data;
-  }
-
-  async getBudgetRequestStages(request_id, filter) {
-    filter = filter || { sort_by: "date", sort_order: "desc" };
-
-    let response = await this.service.get(REQUESTS.BUDGET_REQUESTS + "/" + request_id + "/stages", {
-      params: {
-        ...filter,
-      },
-    });
-    return response.data.data;
-  }
-
-  /**
    * Expense categories
    */
 
@@ -1263,7 +1139,8 @@ class APIService extends APIServiceCore {
       notes: good.notes ?? "",
       sostav: good.sostav,
       width: parseInt(good.width),
-      measure_id: parseInt(good.measure_id),
+      category_id: parseInt(good.category_id),
+      specs: JSON.stringify(good.specs),
     };
 
     return params;
@@ -1293,7 +1170,17 @@ class APIService extends APIServiceCore {
 
   async getGood(id) {
     let response = await this.service.get(REQUESTS.GOODS + "/" + id);
-    return response.data.data;
+
+    var data = response.data.data;
+    if (response.data.data.specs) {
+      data.specs = JSON.parse(response.data.data.specs) ?? {};
+    } else {
+      data.specs = {};
+    }
+    if (response.data.data.specs_meta) {
+      data.specs_meta = JSON.parse(response.data.data.specs_meta);
+    }
+    return data;
   }
 
   async getGoodRemains(id) {
@@ -1521,6 +1408,19 @@ class APIService extends APIServiceCore {
     };
 
     let response = await this.service.get("/options/measures", { params: params });
+
+    return response.data.data;
+  }
+
+  async getGoodCategories(filter) {
+    filter = filter || { sort_by: "id", sort_order: "asc" };
+
+    const params = {
+      sort_by: filter.sort_by,
+      sort_order: filter.sort_order,
+    };
+
+    let response = await this.service.get("/options/goods_categories", { params: params });
 
     return response.data.data;
   }

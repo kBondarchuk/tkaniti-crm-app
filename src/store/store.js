@@ -1,16 +1,8 @@
-// import Vue from "vue";
-// import Vuex from "vuex";
 import { createStore as _createStore } from "vuex";
-import investors from "./modules/investors.js";
-// import investments from "./modules/investments.js";
-// import contracts from "./modules/contracts.js";
 import auth from "./modules/auth.js";
-// import expenses from "./modules/expenses.js";
 import prefs from "./modules/prefs.js";
 import * as config from "../../package.json";
 const APP_VERSION = config.version;
-
-// Vue.use(Vuex);
 
 export function createStore(router, env) {
   return _createStore({
@@ -57,18 +49,14 @@ export function createStore(router, env) {
       getStaticPrefix: (state) => {
         const regexp = /^(.*)\..*\./;
         const match = state.siteHost.match(regexp);
-        console.warn("static prefix:", match);
+        // console.warn("static prefix:", match);
 
         return match[1];
       },
     },
     actions: {},
     modules: {
-      investors,
-      // investments,
       auth,
-      // contracts,
-      // expenses,
       prefs,
     },
   });

@@ -2,11 +2,12 @@
   <LayoutPage no-vertical-paddings>
     <!-- Toolbar -->
     <template #toolbar>
-      <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back" />
+      <!-- Back -->
+      <YBackButton :to="isEditMode ? RouteNames.Goods.Details : RouteNames.Goods.List" force />
       <UISpacer />
+      <!-- Save -->
       <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
     </template>
-    <!-- /Toolbar -->
 
     <!-- Form -->
     <form
@@ -19,56 +20,62 @@
       <!-- Grid -->
       <div class="ui grid" style="height: 100%">
         <!-- fist column -->
-        <div class="twelve wide column">
-          <div class="three fields">
+        <div class="six wide column">
+          <div class="two fields">
             <!-- Бренд -->
             <UITextfield v-model.trim.lazy="good.brand" label="Бренд" />
             <!-- Наименование -->
             <UITextfield v-model.trim.lazy="good.name" label="Наименование" />
-            <!-- Код -->
+          </div>
+
+          <!-- Артикул -->
+          <div class="two fields">
             <UITextfield v-model.trim.lazy="good.code" label="Артикул" />
           </div>
 
-          <div class="fields">
-            <!-- Ширина -->
-            <UIInputNumber v-model="good.width" label="Ширина, см" class="two wide field" />
-            <!-- Состав -->
-            <UITextfield v-model.trim.lazy="good.sostav" label="Состав" class="six wide field" />
-          </div>
+          <!-- <div class="two fields">
+            <UIInputNumber v-model="good.width" label="Ширина, см" />
+            <UITextfield v-model.trim.lazy="good.sostav" label="Состав" />
+          </div> -->
 
-          <div class="two fields">
-            <!-- Цена -->
-            <UITextAria v-model="good.description" label="Описание" />
-            <!-- Комментарий -->
-            <UITextAria
-              v-model="good.notes"
-              label="Комментарий"
-              placeholder="Для внутреннего использования. Не публикуется."
-            />
-          </div>
+          <!-- Цена -->
+          <UITextAria v-model="good.description" label="Описание" />
+
+          <!-- Комментарий -->
+          <UITextAria
+            v-model="good.notes"
+            label="Комментарий"
+            placeholder="Для внутреннего использования. Не публикуется."
+          />
 
           <div class="ui hidden divider"></div>
 
           <!-- <a class="negative ui button">Удалить запись</a> -->
           <div class="ui error message"></div>
         </div>
-        <!-- second column -->
+
+        <!-- 2 column -->
+        <div class="six wide second column">
+          <UITextfield v-for="item in categorySpecs" :key="item[0]" v-model="good.specs[item[0]]" :label="item[1]" />
+        </div>
+
+        <!-- 3 column -->
         <div class="four wide second column">
-          <!-- Единицы измерения -->
+          <!-- Категория товара -->
           <UIInputDropdown
-            v-model="good.measure_id"
-            label="Единицы измерения"
-            :options="optionsMeasures"
+            v-model="good.category_id"
+            label="Категория товара"
+            :options="optionsCategories"
             :disabled="isEditMode"
           />
-          <!-- :class="validateCompany" -->
+
           <!-- Остаток -->
           <UIInputMoney
-            :key="'ost' + decimalScale"
+            :key="'ost' + measureFraction"
             v-model="good.quantity"
-            label="Исходный остаток"
-            :disabled="!good.measure_id"
-            :decimal-scale="decimalScale"
+            :label="'Исходный остаток ' + measureName"
+            :disabled="!good.category_id"
+            :decimal-scale="measureFraction"
           />
 
           <!-- Цена -->
@@ -76,15 +83,7 @@
         </div>
       </div>
       <br />
-      <!-- <input
-        @click.prevent="actionsSave"
-        name="submit"
-        type="submit"
-        value="Сохранить"
-        class="ui primary submit button"
-      />-->
     </form>
-    <!-- /Form -->
 
     <!------->
   </LayoutPage>
@@ -93,13 +92,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
+import RouteNames from "@/router/routeNames";
 
 import GoodObject from "@/objects/Good";
 
 export default {
   name: "GoodEditView",
-
-  components: {},
 
   mixins: [viewMixin],
 
@@ -114,13 +112,15 @@ export default {
     return {
       // model data
       good: Object.assign({}, GoodObject),
-      measures: [],
+      // measures: [],
+      categories: [],
       // view
       view: {
         title: "Товар",
         subTitle: "Редактирование товара",
       },
       isLoading: false,
+      RouteNames,
     };
   },
 
@@ -128,14 +128,17 @@ export default {
     isEditMode() {
       return this.goodId ? true : false;
     },
-    selectedInvestor() {
-      if (this.investor === undefined) {
-        return "";
-      } else return this.investor.last_name + " " + this.investor.first_name + " " + this.investor.second_name;
-    },
-    optionsMeasures() {
+    // optionsMeasures() {
+    //   let menu = [{ name: "Не выбран", value: null }].concat(
+    //     this.measures.map((item) => {
+    //       return { name: item.name, value: item.id };
+    //     })
+    //   );
+    //   return menu;
+    // },
+    optionsCategories() {
       let menu = [{ name: "Не выбран", value: null }].concat(
-        this.measures.map((item) => {
+        this.categories.map((item) => {
           return { name: item.name, value: item.id };
         })
       );
@@ -143,71 +146,47 @@ export default {
     },
     measureFraction() {
       const self = this;
-      const _item = this.measures.find((item) => item.id == self.good.measure_id);
-      return _item?.system_fraction;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.measure_system_fraction;
     },
-    decimalScale() {
-      // if (this.measureFraction == 0) return 0;
-      // if (this.measureFraction == 1) return 1;
-      // if (this.measureFraction == 2) return 2;
-      // if (this.measureFraction == 3) return 3;
-      return this.measureFraction;
+    measureName() {
+      const self = this;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.measure_name;
     },
-    // Validate
-    // validatePlateNumber() {
-    //   var check = plate_number_regx.test(this.car.plate_number);
-
-    //   return {
-    //     success: this.car.plate_number ? this.car.plate_number.length >= 8 && check : false,
-    //     error: this.car.plate_number ? !check : false,
-    //   };
-    // },
-    // validateVIN() {
-    //   var check = vin_regx.test(this.car.vin);
-
-    //   return {
-    //     success: this.car.vin ? this.car.vin.length >= 8 && check : false,
-    //     error: this.car.vin ? !check : false,
-    //   };
-    // },
-    // validateFrameNo() {
-    //   var check = frame_regx.test(this.car.frame_no);
-
-    //   return {
-    //     success: this.car.frame_no ? this.car.frame_no.length >= 8 && check : false,
-    //     error: this.car.frame_no ? !check : false,
-    //   };
-    // },
-    // validateChassisNo() {
-    //   var check = vin_regx.test(this.car.chassis_no);
-
-    //   return {
-    //     success: this.car.chassis_no ? this.car.chassis_no.length >= 8 && check : false,
-    //     error: this.car.chassis_no ? !check : false,
-    //   };
-    // },
+    categorySpecs() {
+      const self = this;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.specs_meta ? Object.entries(JSON.parse(_item?.specs_meta)) : null;
+    },
     validateSubmit() {
       return {
-        disabled: false,
+        disabled:
+          !this.good.category_id ||
+          !this.good.price ||
+          !this.good.quantity ||
+          !this.good.brand ||
+          !this.good.description,
       };
     },
   },
 
   async created() {
-    console.log("Created Params.id: " + this.$route.params);
-    this.reset();
+    console.log("Created goodId: " + this.goodId);
+
+    await this.fetchCategories();
+
     this.setTitle();
+    this.reset();
 
     if (this.goodId) {
-      this.fetchBranchesThenItem(this.goodId);
-    } else {
-      await this.fetchMeasures();
+      await this.fetchGood(this.goodId);
     }
   },
 
   methods: {
     setTitle() {
-      if (this.goodId === null) {
+      if (!this.isEditMode) {
         this.view.title = "Новый товар";
         this.view.subTitle = "Создание нового товара";
       } else {
@@ -216,20 +195,19 @@ export default {
     },
     // ---
     reset() {
-      if (this.goodId === null) {
-        this.good.name = "Ткань ";
+      if (!this.isEditMode) {
+        // If NEW good
+        // Set default Good Category and Name
+        const defaultCatId = this.categories.find((item) => item.default == 1);
+        this.good.category_id = defaultCatId.id;
+        this.good.name = defaultCatId?.name;
+        // console.warn(defaultCatId.id);
       }
     },
-    back() {
-      if (this.goodId) {
-        this.$router.push({ name: "goods_details", id: this.goodId });
-      } else {
-        this.$router.push({ name: "goods" });
-      }
-    },
+
     actionsSave() {
       console.log("[SAVE] " + JSON.stringify(this.good));
-      if (this.good.id == null) {
+      if (!this.isEditMode) {
         console.log("create");
         this.create();
       } else {
@@ -239,29 +217,19 @@ export default {
     },
 
     // Networking
-    async fetchBranchesThenItem(car_id) {
-      // await this.fetchBranches();
-      await this.fetchMeasures();
-      await this.fetchItem(car_id);
-    },
-    async fetchItem(good_id) {
+    async fetchGood(good_id) {
       this.isLoading = true;
       try {
-        let result = await apiService.getGood(good_id);
-        this.good = result;
-        // if (this.car.investor_id > 0) {
-        //   this.fetchInvestor(this.car.investor_id);
-        // }
+        this.good = await apiService.getGood(good_id);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
       this.isLoading = false;
     },
-
-    async fetchMeasures() {
+    async fetchCategories() {
       this.isLoading = true;
       try {
-        this.measures = await apiService.getMeasures();
+        this.categories = await apiService.getGoodCategories();
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
@@ -273,7 +241,7 @@ export default {
       try {
         let result = await apiService.createGood(this.good);
         this.good = result;
-        this.$router.push({ name: "goods_details", params: { id: result.id } });
+        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
       } catch (error) {
         console.error("!!!! " + error);
         this.$UIService.showNetworkError(error);
@@ -286,9 +254,8 @@ export default {
       try {
         let result = await apiService.updateGood(this.good.id, this.good);
         this.good = result;
-        this.$router.push({ name: "goods_details", params: { id: result.id } });
+        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
       } catch (error) {
-        console.log("!!!! " + error);
         this.$UIService.showNetworkError(error);
       }
       this.isLoading = false;

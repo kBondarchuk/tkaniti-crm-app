@@ -1,4 +1,5 @@
 import LayoutView from "@/views/LayoutView.vue";
+import RouteNames from "@/router/routeNames";
 
 export default [
   {
@@ -6,7 +7,6 @@ export default [
     name: "login",
     component: () => import("@/views/LoginView.vue"),
   },
-
   {
     path: "/logoff",
     name: "logoff",
@@ -23,32 +23,6 @@ export default [
         component: () => import("@/views/OrdersView.vue"),
       },
       {
-        path: ":id",
-        name: "order_details",
-        props: (route) => ({ orderId: Number(route.params.id), tab_name: route.params.tab_name }),
-        component: () => import("@/views/OrderDetailsView.vue"),
-        redirect: {
-          name: "order_details_general",
-        },
-        children: [
-          {
-            path: "general",
-            name: "order_details_general",
-            component: () => import("@/components/TKOrderDetailsTab_General.vue"),
-          },
-          {
-            path: "operations",
-            name: "order_details_operations",
-            component: () => import("@/components/TKOrderDetailsTab_Transactions.vue"),
-          },
-          {
-            path: "history",
-            name: "order_details_history",
-            component: () => import("@/components/TKOrderDetailsTab_History.vue"),
-          },
-        ],
-      },
-      {
         path: "new",
         name: "order_new",
         props: (route) => ({ orderId: null }),
@@ -62,6 +36,35 @@ export default [
         meta: { ignoreHistory: true },
         component: () => import("@/views/OrderEdit.vue"),
       },
+      {
+        path: ":id",
+        name: "order_details",
+        props: (route) => ({ orderId: Number(route.params.id) }),
+        component: () => import("@/views/OrderDetailsView.vue"),
+        redirect: {
+          name: "order_details_general",
+        },
+        children: [
+          {
+            path: "general",
+            name: "order_details_general",
+            meta: { historyGroup: "order" },
+            component: () => import("@/components/TKOrderDetailsTab_General.vue"),
+          },
+          {
+            path: "operations",
+            name: "order_details_operations",
+            meta: { historyGroup: "order" },
+            component: () => import("@/components/TKOrderDetailsTab_Transactions.vue"),
+          },
+          {
+            path: "history",
+            name: "order_details_history",
+            meta: { historyGroup: "order" },
+            component: () => import("@/components/TKOrderDetailsTab_History.vue"),
+          },
+        ],
+      },
     ],
   },
   {
@@ -70,13 +73,27 @@ export default [
     children: [
       {
         path: "",
-        name: "goods",
+        name: RouteNames.Goods.List,
         component: () => import("@/views/GoodsView.vue"),
       },
       {
+        path: "new",
+        name: RouteNames.Goods.New,
+        // props: (route) => ({ goodId: null }),
+        meta: { ignoreHistory: true },
+        component: () => import("@/views/GoodEditView.vue"),
+      },
+      {
+        path: ":id/edit",
+        name: RouteNames.Goods.Edit,
+        props: (route) => ({ goodId: Number(route.params.id) }),
+        meta: { ignoreHistory: true, historyGroup: "goods" },
+        component: () => import("@/views/GoodEditView.vue"),
+      },
+      {
         path: ":id",
-        name: "goods_details",
-        props: (route) => ({ goodId: Number(route.params.id), tab_name: route.params.tab_name }),
+        name: RouteNames.Goods.Details,
+        props: (route) => ({ goodId: Number(route.params.id) }),
         component: () => import("@/views/GoodsDetailsView.vue"),
         redirect: {
           name: "goods_details_general",
@@ -85,33 +102,22 @@ export default [
           {
             path: "general",
             name: "goods_details_general",
+            meta: { historyGroup: "goods" },
             component: () => import("@/components/TKGoodsDetailsTab_General.vue"),
           },
           {
             path: "photos",
             name: "goods_details_photos",
+            meta: { historyGroup: "goods" },
             component: () => import("@/components/TKGoodsDetailsTab_PhotoGallery.vue"),
           },
           {
             path: "orders",
             name: "goods_details_orders",
+            meta: { historyGroup: "goods" },
             component: () => import("@/components/TKGoodsDetailsTab_Orders.vue"),
           },
         ],
-      },
-      {
-        path: "new",
-        name: "good_new",
-        // props: (route) => ({ goodId: null }),
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/GoodEditView.vue"),
-      },
-      {
-        path: ":id/edit",
-        name: "good_edit",
-        props: (route) => ({ goodId: Number(route.params.id) }),
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/GoodEditView.vue"),
       },
     ],
   },
@@ -131,6 +137,12 @@ export default [
         component: () => import("@/views/TKCustomersEditView.vue"),
       },
       {
+        path: ":id/edit",
+        name: "customers_edit",
+        meta: { ignoreHistory: true },
+        component: () => import("@/views/TKCustomersEditView.vue"),
+      },
+      {
         path: ":id",
         name: "customers_details",
         props: (route) => ({ customerId: Number(route.params.id), tab_name: route.params.tab_name }),
@@ -142,38 +154,16 @@ export default [
           {
             path: "general",
             name: "customers_details_general",
+            meta: { historyGroup: "customers" },
             component: () => import("@/components/TKCustomersDetailsTab_General.vue"),
           },
           {
             path: "orders",
             name: "customers_details_orders",
+            meta: { historyGroup: "customers" },
             component: () => import("@/components/TKCustomersDetailsTab_Orders.vue"),
           },
         ],
-      },
-      {
-        path: ":id/edit",
-        name: "customers_edit",
-        meta: { ignoreHistory: true },
-        component: () => import("@/views/TKCustomersEditView.vue"),
-      },
-    ],
-  },
-
-  // Aquiring
-  {
-    path: "/cashier/transactions",
-    component: LayoutView,
-    children: [
-      {
-        path: "",
-        name: "cashier",
-        component: () => import("@/views/CashierView.vue"),
-      },
-      {
-        path: ":id",
-        name: "acquiringTransactions_details",
-        component: () => import("@/views/CashierDetails.vue"),
       },
     ],
   },

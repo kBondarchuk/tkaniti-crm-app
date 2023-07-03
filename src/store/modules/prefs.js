@@ -1,18 +1,7 @@
 import apiService from "@/services/api.service.js";
 
 // initial state
-const state = {
-  // percentTable: [],
-  calc: {
-    //   default_car_price: 420000,
-    //   default_down_payment: 42000,
-    //   default_daily_percentage: 0.26,
-    //   default_days: 365,
-    //   default_desired_payment: 1000,
-    desired_payment_factor: 0.002778,
-    //   max_days_allowed: 1095,
-  },
-};
+const state = {};
 
 // getters
 const getters = {

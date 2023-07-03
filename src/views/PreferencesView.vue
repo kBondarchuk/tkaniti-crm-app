@@ -2,7 +2,7 @@
   <LayoutPage :no-paddings="currentPaddings">
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
+      <LayoutSideMenu v-model="viewShowSideMenu" :items="menu" :sticky-at="56" />
     </template>
     <!-- <h1>Заглавная страница</h1> -->
     <UITransition mode="out-in" duration="0.3s">
@@ -95,7 +95,6 @@ export default {
       view: { title: "Настройки", subTitle: "" },
       // Menu
       menu: [],
-      menuSelectedId: 1,
     };
   },
 
@@ -108,9 +107,9 @@ export default {
     },
     currentComponent() {
       // if (!this.menu.length) return null;
-      // console.warn(this.menuSelectedId);
+      // console.warn(this.viewShowSideMenu);
 
-      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+      const item = this.menu.find((obj) => obj.id == this.viewShowSideMenu);
 
       // console.warn(item);
       if (item) {
@@ -120,7 +119,7 @@ export default {
       }
     },
     currentPaddings() {
-      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+      const item = this.menu.find((obj) => obj.id == this.viewShowSideMenu);
 
       // console.warn(item);
       if (item?.noPaddings) {
@@ -158,7 +157,7 @@ export default {
 
       this.menu = this.parseMenu(_menu_items);
 
-      this.menuSelectedId = this.menu[0].id;
+      this.viewShowSideMenu = this.menu[0].id;
     },
 
     checkAccess(role) {

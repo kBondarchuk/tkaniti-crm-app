@@ -6,15 +6,25 @@
       <UIListSection header="Описание товара">
         <UIListItem name="Наименование" :value="good?.name" />
         <UIListItem name="Бренд" :value="good?.brand"></UIListItem>
+        <UIListItem name="Категория" :value="good?.category_name" />
         <UIListItem name="Артикул" :value="good?.code" />
-        <!-- <UIListItem name="Описание" :value="good?.description" /> -->
         <UIListItem name="Описание" :value="good?.description" />
       </UIListSection>
       <!--  -->
-      <UIListSection header="Характеристики">
+      <!-- <UIListSection header="Характеристики">
         <UIListItem name="Ширина" :value="good?.width" />
         <UIListItem name="Состав" :value="good?.sostav" />
+      </UIListSection> -->
+      <!--  -->
+      <UIListSection v-if="good && good?.specs && Object.keys(good?.specs).length > 0" header="Характеристики (new)">
+        <UIListItem
+          v-for="key in Object.keys(good?.specs)"
+          :key="key"
+          :name="good?.specs_meta?.[key] ?? key"
+          :value="good?.specs[key]"
+        />
       </UIListSection>
+
       <!--  -->
       <UIListSection>
         <UIListItem name="UUID" :value="good?.uuid" />

@@ -9,13 +9,13 @@ const _good = {
   price: null,
   quantity: null,
   sostav: null,
-  specs: null,
+  specs: {},
   stats: { remains: null, sold: null },
   // remains: null,
   status_id: null,
   uuid: null,
   width: null,
-  measure_id: null,
+  category_id: null,
 };
 
 export default _good;
