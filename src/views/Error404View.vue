@@ -5,18 +5,18 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
-
-import LayoutPage from "@/components/LayoutPage.vue";
+import { useView } from "@/composables/view";
 
 export default {
   name: "Error404View",
-  components: { LayoutPage },
-  mixins: [viewMixin],
-  data() {
-    return {
-      view: { title: "404", subTitle: "Страница не найдена" },
-    };
+
+  setup() {
+    const { view } = useView("Error404View");
+
+    view.title = "404";
+    view.subTitle = "Страница не найдена";
+
+    return { view };
   },
 };
 </script>
