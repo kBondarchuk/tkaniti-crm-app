@@ -33,11 +33,6 @@
             <UITextfield v-model.trim.lazy="good.code" label="Артикул" />
           </div>
 
-          <!-- <div class="two fields">
-            <UIInputNumber v-model="good.width" label="Ширина, см" />
-            <UITextfield v-model.trim.lazy="good.sostav" label="Состав" />
-          </div> -->
-
           <!-- Цена -->
           <UITextAria v-model="good.description" label="Описание" />
 
