@@ -86,15 +86,14 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import { viewMixin } from "@/mixins/ViewMixin.js";
+
+import { useView } from "@/composables/view";
 import RouteNames from "@/router/routeNames";
 
 import GoodObject from "@/objects/Good";
 
 export default {
   name: "GoodEditView",
-
-  mixins: [viewMixin],
 
   props: {
     goodId: {
@@ -103,17 +102,25 @@ export default {
     },
   },
 
+  setup() {
+    const { view } = useView("CarsView");
+
+    view.title = "Товар";
+    view.subTitle = "Редактирование товара";
+
+    return { view };
+  },
+
   data() {
     return {
       // model data
       good: Object.assign({}, GoodObject),
-      // measures: [],
       categories: [],
       // view
-      view: {
-        title: "Товар",
-        subTitle: "Редактирование товара",
-      },
+      // view: {
+      //   title: "Товар",
+      //   subTitle: "Редактирование товара",
+      // },
       isLoading: false,
       RouteNames,
     };
@@ -123,14 +130,6 @@ export default {
     isEditMode() {
       return this.goodId ? true : false;
     },
-    // optionsMeasures() {
-    //   let menu = [{ name: "Не выбран", value: null }].concat(
-    //     this.measures.map((item) => {
-    //       return { name: item.name, value: item.id };
-    //     })
-    //   );
-    //   return menu;
-    // },
     optionsCategories() {
       let menu = [{ name: "Не выбран", value: null }].concat(
         this.categories.map((item) => {
