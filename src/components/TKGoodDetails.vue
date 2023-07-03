@@ -11,10 +11,10 @@
         <UIListItem name="Описание" :value="good?.description" />
       </UIListSection>
       <!--  -->
-      <UIListSection header="Характеристики">
+      <!-- <UIListSection header="Характеристики">
         <UIListItem name="Ширина" :value="good?.width" />
         <UIListItem name="Состав" :value="good?.sostav" />
-      </UIListSection>
+      </UIListSection> -->
       <!--  -->
       <UIListSection v-if="good && good?.specs && Object.keys(good?.specs).length > 0" header="Характеристики (new)">
         <UIListItem
