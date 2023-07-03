@@ -1174,6 +1174,8 @@ class APIService extends APIServiceCore {
     var data = response.data.data;
     if (response.data.data.specs) {
       data.specs = JSON.parse(response.data.data.specs) ?? {};
+    } else {
+      data.specs = {};
     }
     if (response.data.data.specs_meta) {
       data.specs_meta = JSON.parse(response.data.data.specs_meta);
