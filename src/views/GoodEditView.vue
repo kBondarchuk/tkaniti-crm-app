@@ -3,12 +3,11 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Back -->
-      <YBackButton to="goods" />
+      <YBackButton :to="isEditMode ? RouteNames.Goods.Details : RouteNames.Goods.List" force />
       <UISpacer />
       <!-- Save -->
       <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
     </template>
-    <!-- /Toolbar -->
 
     <!-- Form -->
     <form
@@ -28,7 +27,8 @@
             <!-- Наименование -->
             <UITextfield v-model.trim.lazy="good.name" label="Наименование" />
           </div>
-          <!-- Код -->
+
+          <!-- Артикул -->
           <div class="two fields">
             <UITextfield v-model.trim.lazy="good.code" label="Артикул" />
           </div>
@@ -40,6 +40,7 @@
 
           <!-- Цена -->
           <UITextAria v-model="good.description" label="Описание" />
+
           <!-- Комментарий -->
           <UITextAria
             v-model="good.notes"
@@ -70,11 +71,11 @@
 
           <!-- Остаток -->
           <UIInputMoney
-            :key="'ost' + decimalScale"
+            :key="'ost' + measureFraction"
             v-model="good.quantity"
             :label="'Исходный остаток ' + measureName"
             :disabled="!good.category_id"
-            :decimal-scale="decimalScale"
+            :decimal-scale="measureFraction"
           />
 
           <!-- Цена -->
@@ -82,15 +83,7 @@
         </div>
       </div>
       <br />
-      <!-- <input
-        @click.prevent="actionsSave"
-        name="submit"
-        type="submit"
-        value="Сохранить"
-        class="ui primary submit button"
-      />-->
     </form>
-    <!-- /Form -->
 
     <!------->
   </LayoutPage>
@@ -99,13 +92,12 @@
 <script>
 import apiService from "@/services/api.service.js";
 import { viewMixin } from "@/mixins/ViewMixin.js";
+import RouteNames from "@/router/routeNames";
 
 import GoodObject from "@/objects/Good";
 
 export default {
   name: "GoodEditView",
-
-  components: {},
 
   mixins: [viewMixin],
 
@@ -128,6 +120,7 @@ export default {
         subTitle: "Редактирование товара",
       },
       isLoading: false,
+      RouteNames,
     };
   },
 
@@ -161,9 +154,6 @@ export default {
       const _item = this.categories.find((item) => item.id == self.good.category_id);
       return _item?.measure_name;
     },
-    decimalScale() {
-      return this.measureFraction;
-    },
     categorySpecs() {
       const self = this;
       const _item = this.categories.find((item) => item.id == self.good.category_id);
@@ -171,26 +161,32 @@ export default {
     },
     validateSubmit() {
       return {
-        disabled: false,
+        disabled:
+          !this.good.category_id ||
+          !this.good.price ||
+          !this.good.quantity ||
+          !this.good.brand ||
+          !this.good.description,
       };
     },
   },
 
   async created() {
-    console.log("Created Params.id: " + this.$route.params);
-    this.reset();
+    console.log("Created goodId: " + this.goodId);
+
+    await this.fetchCategories();
+
     this.setTitle();
+    this.reset();
 
     if (this.goodId) {
-      this.fetchBranchesThenItem(this.goodId);
-    } else {
-      await this.fetchCategories();
+      await this.fetchGood(this.goodId);
     }
   },
 
   methods: {
     setTitle() {
-      if (this.goodId === null) {
+      if (!this.isEditMode) {
         this.view.title = "Новый товар";
         this.view.subTitle = "Создание нового товара";
       } else {
@@ -199,20 +195,19 @@ export default {
     },
     // ---
     reset() {
-      if (this.goodId === null) {
-        this.good.name = "Ткань ";
+      if (!this.isEditMode) {
+        // If NEW good
+        // Set default Good Category and Name
+        const defaultCatId = this.categories.find((item) => item.default == 1);
+        this.good.category_id = defaultCatId.id;
+        this.good.name = defaultCatId?.name;
+        // console.warn(defaultCatId.id);
       }
     },
-    back() {
-      if (this.goodId) {
-        this.$router.push({ name: "goods_details", id: this.goodId });
-      } else {
-        this.$router.push({ name: "goods" });
-      }
-    },
+
     actionsSave() {
       console.log("[SAVE] " + JSON.stringify(this.good));
-      if (this.good.id == null) {
+      if (!this.isEditMode) {
         console.log("create");
         this.create();
       } else {
@@ -222,34 +217,15 @@ export default {
     },
 
     // Networking
-    async fetchBranchesThenItem(car_id) {
-      // await this.fetchBranches();
-      await this.fetchCategories();
-      await this.fetchItem(car_id);
-    },
-    async fetchItem(good_id) {
+    async fetchGood(good_id) {
       this.isLoading = true;
       try {
-        let result = await apiService.getGood(good_id);
-        this.good = result;
-        // if (this.car.investor_id > 0) {
-        //   this.fetchInvestor(this.car.investor_id);
-        // }
+        this.good = await apiService.getGood(good_id);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
       this.isLoading = false;
     },
-
-    // async fetchMeasures() {
-    //   this.isLoading = true;
-    //   try {
-    //     this.measures = await apiService.getMeasures();
-    //   } catch (error) {
-    //     this.$UIService.showNetworkError(error);
-    //   }
-    //   this.isLoading = false;
-    // },
     async fetchCategories() {
       this.isLoading = true;
       try {
@@ -265,7 +241,7 @@ export default {
       try {
         let result = await apiService.createGood(this.good);
         this.good = result;
-        this.$router.push({ name: "goods_details", params: { id: result.id } });
+        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
       } catch (error) {
         console.error("!!!! " + error);
         this.$UIService.showNetworkError(error);
@@ -278,7 +254,7 @@ export default {
       try {
         let result = await apiService.updateGood(this.good.id, this.good);
         this.good = result;
-        this.$router.push({ name: "goods_details", params: { id: result.id } });
+        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
