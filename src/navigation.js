@@ -35,7 +35,12 @@ function setNavigation(router, store) {
   });
 }
 
-function navigateBack(router, store, pathName) {
+function navigateBack(router, store, pathName, force = false) {
+  if (force) {
+    router.push({ name: pathName });
+    return;
+  }
+
   const lastRoutePath = store.getters["getLastRoutePath"];
   const currentRoutePath = router.currentRoute.path;
 

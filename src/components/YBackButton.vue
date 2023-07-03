@@ -1,5 +1,5 @@
 <template>
-  <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back(to)" />
+  <UIButton text="Назад" icon="left arrow" type="basic labeled" @click="back(to, force)" />
 </template>
 
 <script setup>
@@ -19,11 +19,15 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  force: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Functions
 
-function back(pathName) {
-  navigateBack(router, store, pathName);
+function back(pathName, force) {
+  navigateBack(router, store, pathName, force);
 }
 </script>
