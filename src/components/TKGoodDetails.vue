@@ -16,11 +16,11 @@
         <UIListItem name="Состав" :value="good?.sostav" />
       </UIListSection>
       <!--  -->
-      <UIListSection v-if="good && Object.keys(good?.specs).length > 0" header="Характеристики (new)">
+      <UIListSection v-if="good && good?.specs && Object.keys(good?.specs).length > 0" header="Характеристики (new)">
         <UIListItem
           v-for="key in Object.keys(good?.specs)"
           :key="key"
-          :name="good?.specs_meta[key] ?? key"
+          :name="good?.specs_meta?.[key] ?? key"
           :value="good?.specs[key]"
         />
       </UIListSection>

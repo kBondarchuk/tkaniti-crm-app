@@ -1172,8 +1172,12 @@ class APIService extends APIServiceCore {
     let response = await this.service.get(REQUESTS.GOODS + "/" + id);
 
     var data = response.data.data;
-    data.specs = JSON.parse(response.data.data.specs) ?? {};
-    data.specs_meta = JSON.parse(response.data.data.specs_meta);
+    if (response.data.data.specs) {
+      data.specs = JSON.parse(response.data.data.specs) ?? {};
+    }
+    if (response.data.data.specs_meta) {
+      data.specs_meta = JSON.parse(response.data.data.specs_meta);
+    }
     return data;
   }
 
