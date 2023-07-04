@@ -64,6 +64,7 @@ export default {
           { id: "status_id", name: "Статус", class: "" },
           { id: "name", name: "Название", class: "" },
           { id: "brand", name: "Бренд", class: "" },
+          { id: "category_name", name: "Категория", class: "" },
           { id: "code", name: "Артикул", class: "" },
           { id: "price", name: "Цена", class: "right aligned" },
           { id: "remains", name: "Остаток", class: "right aligned" },

@@ -17,7 +17,11 @@
     <td>
       {{ item.brand }}
     </td>
-    <!--  -->
+
+    <td>
+      {{ item.category_name }}
+    </td>
+
     <td>
       {{ item.code }}
     </td>
