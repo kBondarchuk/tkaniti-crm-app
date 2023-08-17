@@ -1,5 +1,6 @@
 const _order = {
   id: null,
+  company_id: null,
   // customer_fio: "Пупсик Иван Иванович",
   customer_fio: "",
   customer_id: null,

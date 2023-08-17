@@ -18,19 +18,18 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { useView } from "@/composables/view";
 
 export default {
   name: "CMHomeManager",
 
-  components: {},
+  setup() {
+    const { view } = useView("CMHomeManager");
 
-  mixins: [viewMixin],
+    view.title = "Начальная страница менеджера";
+    view.subTitle = "";
 
-  data() {
-    return {
-      view: { title: "Начальная страница менеджера", subTitle: "" },
-    };
+    return { view };
   },
 };
 </script>

@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "UIDetailsTabs",
+  name: "YDetailsTabs",
 
   props: {
     tabs: {
@@ -38,3 +38,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.item:not(.active) {
+  cursor: pointer;
+}
+</style>

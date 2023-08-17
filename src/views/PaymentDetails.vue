@@ -19,8 +19,9 @@
       <UIButton
         v-if="invoice.payment_acq"
         text="Обновить статус оплаты"
+        :class="{ 'disabled loading': loadingRefresh['acq'] }"
         icon="refresh"
-        :type="['basic labeled', { 'disabled loading': loadingRefresh['acq'] }]"
+        type="basic labeled"
         @click="refreshAcqPaymentStatus"
       />
       <!-- СБП -->
@@ -88,7 +89,7 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { useView } from "@/composables/view";
 
 import CMPaymentsInvoiceDetails from "@/components/CMPaymentsInvoiceDetails.vue";
 // import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
@@ -105,8 +106,6 @@ export default {
     CMPaymentsAcqOrderDetails,
   },
 
-  mixins: [viewMixin],
-
   props: {
     invoiceId: {
       type: Number,
@@ -114,9 +113,17 @@ export default {
     },
   },
 
+  setup() {
+    const { view } = useView("PaymentDetails");
+
+    view.title = "Платежная операция";
+    view.subTitle = "Детализация";
+
+    return { view };
+  },
+
   data() {
     return {
-      view: { title: "Платежная операция", subTitle: "Детализация" },
       isLoading: false,
       invoice: {},
       receiptStatus: null,
@@ -143,9 +150,6 @@ export default {
     setTitle() {
       this.view.title = this.view.title + " " + this.invoiceId;
     },
-    // back() {
-    //   this.$router.push({ name: "payments_invoices" });
-    // },
 
     // Actions
     refreshReceiptStatus() {

@@ -2,19 +2,18 @@
   <LayoutPage :no-paddings="currentPaddings">
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="viewShowSideMenu" :items="menu" :sticky-at="56" />
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
     <!-- <h1>Заглавная страница</h1> -->
     <UITransition mode="out-in" duration="0.3s">
-      <!-- <transition mode="out-in" name="fade2" appear> -->
       <component :is="currentComponent" />
-      <!-- </transition> -->
     </UITransition>
   </LayoutPage>
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { useView } from "@/composables/view";
+import { useDetailsTabs } from "@/composables/detailsTabs";
 
 import LayoutPage from "@/components/LayoutPage.vue";
 import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
@@ -47,21 +46,6 @@ const _menu_items = [
   },
   // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
   { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
-  // {
-  //   id: 9,
-  //   name: "Таблица процентов",
-  //   icon: "percent",
-  //   component: "CMPrefsPercentTable",
-  //   access: "admin",
-  // },
-  // { id: 5, name: "Филиалы", icon: "landmark", component: "CMPrefsBranches", access: "sysadmin" },
-  // {
-  //   id: 6,
-  //   name: "Статьи расхода",
-  //   icon: "piggy bank",
-  //   component: "CMPrefsExpensesCategories",
-  //   access: "sysadmin",
-  // },
   // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Юр. лица", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 9, name: "Эквайринг", icon: "visa", component: "CMPrefsAcquiring", access: "admin" },
@@ -74,8 +58,6 @@ export default {
   name: "PreferencesView",
 
   components: {
-    LayoutPage,
-    LayoutSideMenu,
     CMPrefsUsers,
     CMPrefsProfile,
     // CMPrefsTemplates,
@@ -87,14 +69,22 @@ export default {
     CMPrefsSystem,
   },
 
-  mixins: [viewMixin],
+  setup() {
+    const { view } = useView("PreferencesView");
+
+    view.title = "Настройки";
+    view.subTitle = "Заготовка страницы";
+
+    const { tabs: menu } = useDetailsTabs(_menu_items);
+
+    // console.warn("Menu: ", menu);
+
+    return { view, menu: menu.filter((item) => item.disabled == false), useDetailsTabs };
+  },
 
   data() {
     return {
-      // View
-      view: { title: "Настройки", subTitle: "" },
-      // Menu
-      menu: [],
+      menuSelectedId: 1,
     };
   },
 
@@ -102,31 +92,17 @@ export default {
     authData() {
       return this.$store.getters["auth/getAuthData"];
     },
-    authRights() {
-      return this.$store.getters["auth/getAuthRights"];
+    menuFiltered() {
+      return this.menu.filter((item) => item.disabled == false);
     },
     currentComponent() {
-      // if (!this.menu.length) return null;
-      // console.warn(this.viewShowSideMenu);
-
-      const item = this.menu.find((obj) => obj.id == this.viewShowSideMenu);
-
-      // console.warn(item);
-      if (item) {
-        return item.component;
-      } else {
-        return null;
-      }
+      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+      return item ? item.component : null;
     },
     currentPaddings() {
-      const item = this.menu.find((obj) => obj.id == this.viewShowSideMenu);
-
-      // console.warn(item);
-      if (item?.noPaddings) {
-        return true;
-      } else {
-        return false;
-      }
+      if (!this.menu) return null;
+      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
+      return item?.noPaddings ? true : false;
     },
   },
 
@@ -134,49 +110,14 @@ export default {
     authData: {
       immediate: true,
       handler(newValue) {
-        // console.warn(newValue);
+        // console.warn("authdata: ", newValue);
 
         if (newValue !== null) {
-          this.mountMenu();
+          // this.mountMenu();
+          const { tabs } = useDetailsTabs(_menu_items);
+          this.menu = tabs.filter((item) => item.disabled == false);
         }
       },
-    },
-  },
-
-  // created() {
-  //   console.warn("[PreferencesView]: created ");
-
-  //   // this.mountMenu();
-  // },
-
-  methods: {
-    mountMenu() {
-      // console.warn("mountMenu");
-
-      this.menu = [];
-
-      this.menu = this.parseMenu(_menu_items);
-
-      this.viewShowSideMenu = this.menu[0].id;
-    },
-
-    checkAccess(role) {
-      return this.authRights.includes(role);
-    },
-    parseMenu(menuItems) {
-      const parsedMenu = [];
-
-      menuItems.forEach((item) => {
-        if (this.checkMenuItem(item)) {
-          parsedMenu.push(item);
-        }
-
-        return true;
-      });
-      return parsedMenu;
-    },
-    checkMenuItem(item) {
-      return this.checkAccess(item.access) || item.access === undefined;
     },
   },
 };

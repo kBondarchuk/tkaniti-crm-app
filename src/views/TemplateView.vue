@@ -5,18 +5,18 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
-
-import LayoutPage from "@/components/LayoutPage.vue";
+import { useView } from "@/composables/view";
 
 export default {
   name: "TemplateView",
-  components: { LayoutPage },
-  mixins: [viewMixin],
-  data() {
-    return {
-      view: { title: "Шаблон", subTitle: "Заготовка страницы" },
-    };
+
+  setup() {
+    const { view } = useView("TemplateView");
+
+    view.title = "Шаблон";
+    view.subTitle = "Заготовка страницы";
+
+    return { view };
   },
 };
 </script>

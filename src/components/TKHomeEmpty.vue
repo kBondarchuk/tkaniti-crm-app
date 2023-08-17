@@ -18,19 +18,18 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { useView } from "@/composables/view";
 
 export default {
   name: "TKHomeEmpty",
 
-  components: {},
+  setup() {
+    const { view } = useView("TKHomeEmpty");
 
-  mixins: [viewMixin],
+    view.title = "Пустая начальная страница";
+    view.subTitle = "";
 
-  data() {
-    return {
-      view: { title: "Пустая начальная страница", subTitle: "" },
-    };
+    return { view };
   },
 };
 </script>

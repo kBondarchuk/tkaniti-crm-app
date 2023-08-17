@@ -27,7 +27,6 @@
     <!-- <template #toolbar>
       <UIButton icon="plus" type="labeled" style="visibility: hidden">x</UIButton>
     </template> -->
-    <!-- /Toolbar -->
 
     <!-- List -->
     <CMPaymentsInvoicesList :key="key" :filter="filter" :header-sticked-at="42" @event-details="handleDetails" />
@@ -35,7 +34,8 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { useView } from "@/composables/view";
+
 import CMPaymentsInvoicesList from "@/components/CMPaymentsInvoicesList.vue";
 
 export default {
@@ -45,11 +45,17 @@ export default {
     CMPaymentsInvoicesList,
   },
 
-  mixins: [viewMixin],
+  setup() {
+    const { view } = useView("PaymentsView");
+
+    view.title = "Касса";
+    view.subTitle = "Список счетов на оплату";
+
+    return { view };
+  },
 
   data() {
     return {
-      view: { title: "Касса", subTitle: "Список счетов на оплату" },
       // Keys
       key: 0,
       // Data

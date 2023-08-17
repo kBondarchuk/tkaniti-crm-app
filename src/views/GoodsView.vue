@@ -64,7 +64,7 @@ export default {
   },
 
   setup() {
-    const { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue } = useView("CarsView");
+    const { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue } = useView("GoodsView");
 
     view.title = "Товары";
     view.subTitle = "Справочник товаров";

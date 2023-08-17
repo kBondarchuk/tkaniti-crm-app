@@ -21,7 +21,7 @@
     </template>
 
     <!-- Tabs -->
-    <UIDetailsTabs :tabs="tabs" @tab-select="tabLink" />
+    <YDetailsTabs :tabs="tabs" @tab-select="tabLink" />
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
