@@ -19,8 +19,31 @@
     >
       <!-- Grid -->
       <div class="ui grid" style="height: 100%">
-        <!-- fist column -->
-        <div class="six wide column">
+        <!-- 3 column -->
+        <div class="three wide column" style="background-color: #22242605">
+          <!-- Категория товара -->
+          <UIInputDropdown
+            v-model="good.category_id"
+            label="Категория товара"
+            :options="optionsCategories"
+            :disabled="isEditMode"
+          />
+
+          <!-- Остаток -->
+          <UIInputMoney
+            :key="'ost' + measureFraction"
+            v-model="good.quantity"
+            :label="quantityLabel"
+            :disabled="!good.category_id"
+            :decimal-scale="measureFraction"
+          />
+
+          <!-- Цена -->
+          <UIInputMoney v-model="good.price" :label="priceLabel" />
+        </div>
+
+        <!-- second column -->
+        <div class="seven wide second column">
           <div class="two fields">
             <!-- Бренд -->
             <UITextfield v-model.trim.lazy="good.brand" label="Бренд" />
@@ -52,29 +75,6 @@
         <!-- 2 column -->
         <div class="six wide second column">
           <UITextfield v-for="item in categorySpecs" :key="item[0]" v-model="good.specs[item[0]]" :label="item[1]" />
-        </div>
-
-        <!-- 3 column -->
-        <div class="four wide second column">
-          <!-- Категория товара -->
-          <UIInputDropdown
-            v-model="good.category_id"
-            label="Категория товара"
-            :options="optionsCategories"
-            :disabled="isEditMode"
-          />
-
-          <!-- Остаток -->
-          <UIInputMoney
-            :key="'ost' + measureFraction"
-            v-model="good.quantity"
-            :label="'Исходный остаток ' + measureName"
-            :disabled="!good.category_id"
-            :decimal-scale="measureFraction"
-          />
-
-          <!-- Цена -->
-          <UIInputMoney v-model="good.price" label="Цена" />
         </div>
       </div>
       <br />
@@ -148,10 +148,21 @@ export default {
       const _item = this.categories.find((item) => item.id == self.good.category_id);
       return _item?.measure_name;
     },
+    measureNameShort() {
+      const self = this;
+      const _item = this.categories.find((item) => item.id == self.good.category_id);
+      return _item?.measure_short_name;
+    },
     categorySpecs() {
       const self = this;
       const _item = this.categories.find((item) => item.id == self.good.category_id);
       return _item?.specs_meta ? Object.entries(JSON.parse(_item?.specs_meta)) : null;
+    },
+    priceLabel() {
+      return "Цена" + (this.measureNameShort ? " за " + this.measureNameShort : "");
+    },
+    quantityLabel() {
+      return "Исходный остаток " + (this.measureName ? " (" + this.measureName + ")" : "");
     },
     validateSubmit() {
       return {
