@@ -60,6 +60,8 @@
           <div class="two fields">
             <!-- Метод оплаты -->
             <UIInputDropdown v-model="order.payment_method_id" label="Метод оплаты" :options="optionsPaymentMethod" />
+            <!-- Юр. лицо -->
+            <CUISelectCompany v-model="order.company_id" :class="{ error: !validateCompany }" />
           </div>
 
           <div class="ui hidden divider"></div>
@@ -129,6 +131,7 @@ import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
 
 import CUISelectCustomer from "@/components/CUISelectCustomer.vue";
+import CUISelectCompany from "@/components/CUISelectCompany.vue";
 
 import OrderObject from "@/objects/Order";
 
@@ -139,6 +142,7 @@ export default {
     TKOrderBasketEdit,
     TKOrderBasket,
     CUISelectCustomer,
+    CUISelectCompany,
   },
 
   mixins: [viewMixin, CheckAuthMixin],
@@ -193,13 +197,14 @@ export default {
     // Validate
     validateSubmit() {
       return {
-        disabled: false,
-        // this.car.branch_id === null ||
-        // this.car.branch_id === undefined ||
-        // !this.car.model ||
-        // !this.car.brand ||
-        // this.car.year_of_issue.toString().length != 4,
+        disabled: !this.validateCompany,
       };
+    },
+    validateCompany() {
+      if (this.order.payment_method_id == 1) {
+        return this.order.company_id > 0;
+      }
+      return true;
     },
   },
 

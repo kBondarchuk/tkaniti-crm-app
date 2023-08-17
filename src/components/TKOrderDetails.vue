@@ -67,6 +67,7 @@
 
     <!-- Customer -->
     <UIListSection header="Оплата">
+      <UIListItem name="Юр. лицо" :value="order?.company_name" />
       <UIListItem name="Метод оплаты" :value="order?.payment_method_name" />
       <UIListItem name="Статус оплаты">
         <TKOrderPaymentStatus :value="order?.payment_status_id" />

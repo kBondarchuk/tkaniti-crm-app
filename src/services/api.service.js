@@ -912,6 +912,7 @@ class APIService extends APIServiceCore {
     const params = {
       id: order.id,
       date: order.date,
+      company_id: parseInt(order.company_id),
       customer_id: parseInt(order.customer_id),
       customer_fio: order.customer_fio,
       customer_phone: order.customer_phone,
