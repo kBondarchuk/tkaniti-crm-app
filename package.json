@@ -1,46 +1,46 @@
 {
-    "name": "tkaniti-crm-app",
-    "version": "0.11.0",
-    "private": true,
-    "scripts": {
-        "dev": "vite",
-        "dev2": "vite --mode development2",
-        "build": "vite build",
-        "serve": "vite preview",
-        "serve-prod": "vite --mode staging",
-        "serve-prod2": "vite --mode staging2",
-        "build2": "vite build --mode production2",
-        "lint": "eslint 'src/**/*.{js,vue}'",
-        "lint-fix": "eslint --fix 'src/**/*.{js,vue}'"
-    },
-    "dependencies": {
-        "@kbond/vue-ui": "file:../../vue-ui",
-        "axios": "^0.21.1",
-        "chartjs-plugin-datalabels": "^2.0.0",
-        "cleave.js": "^1.6.0",
-        "jquery-tablesort": "^0.0.11",
-        "jwt-decode": "^3.1.2",
-        "uuid": "^8.3.2",
-        "vue": "^3.2.0",
-        "vue-chartjs": "^4.0.0",
-        "vue-easy-lightbox": "^1.4.1",
-        "vue-router": "^4.0.0",
-        "vuex": "^4.0.0"
-    },
-    "devDependencies": {
-        "@vitejs/plugin-vue": "^4.0.0",
-        "@vue/eslint-config-prettier": "^7.0.0",
-        "eslint": "^8.14.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-vue": "^9.0.0",
-        "prettier": "^2.2.1",
-        "sass": "^1.53.0",
-        "stylelint": "^14.6.1",
-        "stylelint-config-prettier": "^9.0.3",
-        "stylelint-config-recommended-vue": "^1.4.0"
-    },
-    "browserslist": [
-        "last 2 Chrome versions",
-        "last 2 Safari versions"
-    ]
+  "name": "tkaniti-crm-app",
+  "version": "0.11.0",
+  "private": true,
+  "scripts": {
+    "dev": "bunx vite",
+    "dev2": "bunx vite --mode development2",
+    "build": "bunx vite build",
+    "serve": "bunx vite preview",
+    "serve-prod": "bunx vite --mode staging",
+    "serve-prod2": "bunx vite --mode staging2",
+    "build2": "bunx vite build --mode production2",
+    "lint": "eslint 'src/**/*.{js,vue}'",
+    "lint-fix": "eslint --fix 'src/**/*.{js,vue}'"
+  },
+  "dependencies": {
+    "@kbond/vue-ui": "file:../../vue-ui",
+    "axios": "^0.21.1",
+    "chartjs-plugin-datalabels": "^2.0.0",
+    "cleave.js": "^1.6.0",
+    "jquery-tablesort": "^0.0.11",
+    "jwt-decode": "^3.1.2",
+    "uuid": "^8.3.2",
+    "vue": "^3.2.0",
+    "vue-chartjs": "^4.0.0",
+    "vue-easy-lightbox": "^1.4.1",
+    "vue-router": "^4.0.0",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "eslint": "^8.14.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^2.2.1",
+    "sass": "^1.53.0",
+    "stylelint": "^14.6.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-recommended-vue": "^1.4.0"
+  },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Safari versions"
+  ]
 }
