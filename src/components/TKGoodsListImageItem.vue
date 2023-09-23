@@ -19,10 +19,11 @@
             background: rgba(0, 0, 0, 0.05);
           "
         >
+          <!-- :src="baseUrl + '?file=images/' + item.thumbnail + '&jwt=' + token" -->
           <img
-            v-if="item.thumbnail && token && baseUrl"
+            v-if="item.thumbnail && baseUrl"
             loading="lazy"
-            :src="baseUrl + '?file=images/' + item.thumbnail + '&jwt=' + token"
+            :src="baseUrl + '/store/thumbnails/' + item.thumbnail"
             :alt="item.name"
             width="60"
             height="45"

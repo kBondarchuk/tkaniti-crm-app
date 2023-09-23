@@ -13,7 +13,7 @@
       v-for="item in items"
       :key="item.id + '-goods-'"
       :item="item"
-      :base-url="urlDownloadBase"
+      :base-url="apiBaseUrl"
       :token="token"
       @event-details="$emit('eventDetails', item)"
       @event-edit="$emit('eventEdit', item.id)"
@@ -90,7 +90,8 @@ export default {
       items: [],
       isLoading: false,
       filter: {},
-      urlDownloadBase: this.$store.state.url_download_base,
+      // urlDownloadBase: this.$store.state.url_download_base,
+      apiBaseUrl: import.meta.env.VUE_APP_API_BASE,
       token: null,
     };
   },
@@ -123,7 +124,7 @@ export default {
       // console.log("delete clicked: " + expense_id);
     },
     async getTokenAndRefetch() {
-      await this.fetchToken();
+      // await this.fetchToken();
       await this.refetch(this.filter);
     },
     async refetch(tableFilters) {
