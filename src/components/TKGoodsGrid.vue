@@ -11,11 +11,17 @@
     <!-- Items -->
     <div v-for="item in items" :key="item.id" class="item" @click="$emit('eventDetails', item)">
       <img
+        v-if="item.thumbnail"
+        loading="lazy"
+        :src="apiBaseUrl + '/store/thumbnails/' + item.thumbnail"
+        :alt="item.name"
+      />
+      <!-- <img
         v-if="item.thumbnail && token"
         loading="lazy"
         :src="url_download_base + '?file=images/' + item.thumbnail + '&jwt=' + token"
         :alt="item.name"
-      />
+      /> -->
       <div class="description">
         <span>{{ item.brand }}</span
         ><br />{{ item.name }}
@@ -98,8 +104,9 @@ export default {
       items: [],
       isLoading: false,
       filter: {},
-      url_download_base: this.$store.state.url_download_base,
+      // url_download_base: this.$store.state.url_download_base,
       token: null,
+      apiBaseUrl: import.meta.env.VUE_APP_API_BASE,
     };
   },
 
@@ -116,7 +123,7 @@ export default {
   },
 
   async created() {
-    await this.fetchToken();
+    // await this.fetchToken();
     this.refetch(this.filter);
   },
 
