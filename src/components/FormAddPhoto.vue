@@ -45,6 +45,8 @@
 <script>
 import apiService from "@/services/api.service.js";
 
+const _MAX_FILE_SIZE = 10;
+
 export default {
   name: "FormAddPhoto",
   components: {},
@@ -90,7 +92,7 @@ export default {
       for (var i = 0; i < this.selectedFiles.length; i++) {
         // получаем сам файл
         let file = this.selectedFiles[i];
-        if (file.size > 1024 * 1024 * 2) {
+        if (file.size > 1024 * 1024 * _MAX_FILE_SIZE) {
           fileNames.push(file.name);
         }
       }
@@ -136,7 +138,7 @@ export default {
       for (var i = 0; i < this.selectedFiles.length; i++) {
         // получаем сам файл
         let file = this.selectedFiles[i];
-        if (file.size <= 1024 * 1024 * 2) {
+        if (file.size <= 1024 * 1024 * _MAX_FILE_SIZE) {
           console.log(file.name + " upload. ", file);
 
           this.fetchUpload(file);
