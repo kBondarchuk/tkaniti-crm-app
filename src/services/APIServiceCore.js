@@ -21,80 +21,15 @@ export class APIServiceCore {
       },
     });
 
-    const handleError = (error) => {
-      if (
-        !Object.prototype.hasOwnProperty.call(error, "response") ||
-        (Object.prototype.hasOwnProperty.call(error, "response") && !error.response)
-      ) {
-        console.log("[APIService]: Error (no response): " + error);
-        return Promise.reject(error);
-      }
-      // console.log(this.callback);
-      switch (error.response.status) {
-        case 401:
-          console.warn("[APIService]: 🚫 401 ", error.config.url);
-
-          // If login ???
-          // If Refresh Token broken then logoff
-          if (
-            error.config.url === APIServiceCore.REQUESTS.TOKEN ||
-            error.config.url === APIServiceCore.REQUESTS.LOGIN
-          ) {
-            // this.();
-            this.logoutCallback("token 401");
-            return Promise.reject(error);
-          }
-
-          // Check retry
-          if (error.config.__isRetry) {
-            // this.logoutCallback("Got 401 at retry: " + error.config.url);
-            console.warn("[APIService]: Got 401 at retry: " + error.config.url);
-            return Promise.reject(error);
-          }
-
-          // General request
-          var self = this;
-          return this.makeRefreshCall()
-            .then((data) => {
-              this.refreshingCall = null;
-              console.log("[APIService]: 🔄", data);
-
-              error.config.headers["Authorization"] = "Bearer " + data.jwt;
-              error.config.baseURL = undefined;
-              error.config.__isRetry = true;
-              return this.service.request(error.config);
-            })
-            .catch(function () {
-              if (!error.config.__isRetry) {
-                self.logoutCallback("makeRefreshCall 401");
-                error.hide = true;
-              }
-              return Promise.reject(error);
-            });
-
-        // break;
-        // case 404:
-        //   // Not found
-        //   this.redirectTo("/404");
-        //   break;
-        default:
-          // Internal server error
-          console.error(
-            "[APIService]: Error response: " + error.response.status + " " + JSON.stringify(error.response)
-          );
-          // this.redirectTo("/500");
-          break;
-      }
-      return Promise.reject(error);
-    };
-
     // Add a request interceptor
     service.interceptors.request.use(this.handleRequest, this.handleRequestError);
 
     // Add a response interceptor
-    service.interceptors.response.use(this.handleSuccess, handleError);
+    service.interceptors.response.use(this.handleResponseSuccess, this.handleResponseError);
 
     this.service = service;
+
+    this.pendingRequests = {};
 
     // Callback
     this.loginCallback = null;
@@ -122,7 +57,7 @@ export class APIServiceCore {
     this.loadRefreshToken();
   }
 
-  handleRequest(config) {
+  handleRequest = (config) => {
     // Check Auth token exist
     // if (!["/login", "/token"].includes(config.url) && !config.headers.common["Authorization"]) {
     //   console.log("[APIService]: ❌ Request:", "(" + config.method.toUpperCase() + ")", config.url, config.params);
@@ -137,10 +72,25 @@ export class APIServiceCore {
     //     url: "",
     //   };
     // }
+    // console.warn(this, config?.url);
+    // Add to Pending
+    // we only want to cancel requests if config.cancelPreviousRequests is true
+    // if the config.url exists
+    // if the config doesn't contain AbortController.signal already, in this case we let the developer handle it himself
+    if (config?.cancelPreviousRequests && config?.url && !config.signal) {
+      // remove request URL from pending requests and also abort ongoing call with same URL
+      this.removePendingRequest(config.url, true);
+      // console.warn(config.url);
+      const abortController = new AbortController(); //create new AbortController
+      config.signal = abortController.signal; // assign it's signal into request config
+      this.pendingRequests[config.url] = abortController; // store AbortController in the pending requests map
+      console.log("[APIService]: pendingRequests: ", this.pendingRequests);
+    }
+
     // Do something before request is sent
     console.log("[APIService]: ⬆️ Request:", "(" + config.method.toUpperCase() + ")", config.url, config.params);
     return config;
-  }
+  };
 
   handleRequestError(error) {
     // Do something with request error
@@ -148,7 +98,7 @@ export class APIServiceCore {
     return error;
   }
 
-  handleSuccess(response) {
+  handleResponseSuccess = (response) => {
     console.log(
       "[APIService]: ✅ Response: " + response.status,
       response.statusText,
@@ -156,8 +106,94 @@ export class APIServiceCore {
       response.config.url,
       response.config.params
     );
+    // remove pending request without aborting the call, call is finished
+    this.removePendingRequest(response.config.url);
     return response;
-  }
+  };
+
+  handleResponseError = (error) => {
+    // remove pending request without aborting the call, call is finished with error
+    this.removePendingRequest(error.config?.url);
+
+    if (
+      !Object.prototype.hasOwnProperty.call(error, "response") ||
+      (Object.prototype.hasOwnProperty.call(error, "response") && !error.response)
+    ) {
+      console.log("[APIService]: Error (no response): " + error);
+      return Promise.reject(error);
+    }
+    // console.log(this.callback);
+    switch (error.response.status) {
+      case 401:
+        console.warn("[APIService]: 🚫 401 ", error.config.url);
+
+        // If login ???
+        // If Refresh Token broken then logoff
+        if (error.config.url === APIServiceCore.REQUESTS.TOKEN || error.config.url === APIServiceCore.REQUESTS.LOGIN) {
+          // this.();
+          this.logoutCallback("token 401");
+          return Promise.reject(error);
+        }
+
+        // Check retry
+        if (error.config.__isRetry) {
+          // this.logoutCallback("Got 401 at retry: " + error.config.url);
+          console.warn("[APIService]: Got 401 at retry: " + error.config.url);
+          return Promise.reject(error);
+        }
+
+        // General request
+        var self = this;
+        return this.makeRefreshCall()
+          .then((data) => {
+            this.refreshingCall = null;
+            console.log("[APIService]: 🔄", data);
+
+            error.config.headers["Authorization"] = "Bearer " + data.jwt;
+            error.config.baseURL = undefined;
+            error.config.__isRetry = true;
+            return this.service.request(error.config);
+          })
+          .catch(function () {
+            if (!error.config.__isRetry) {
+              self.logoutCallback("makeRefreshCall 401");
+              error.hide = true;
+            }
+            return Promise.reject(error);
+          });
+
+      // break;
+      // case 404:
+      //   // Not found
+      //   this.redirectTo("/404");
+      //   break;
+      default:
+        // Internal server error
+        if (error.response) {
+          console.error(
+            "[APIService]: Error response: " + error.response.status + " " + JSON.stringify(error.response.data)
+          );
+        }
+
+        // this.redirectTo("/500");
+        break;
+    }
+    return Promise.reject(error);
+  };
+
+  removePendingRequest = (url, abort = false) => {
+    // check if pendingRequests contains our request URL
+    if (url && this.pendingRequests[url]) {
+      // if we want to abort ongoing call, abort it
+      if (abort) {
+        console.warn("[APIService]: Aborting request..");
+        this.pendingRequests[url].abort();
+      }
+      // remove the request URL from pending requests
+      console.log("[APIService]: Removing from pending..", url);
+      delete this.pendingRequests[url];
+    }
+  };
 
   loadRefreshToken() {
     // Load refreshToken
@@ -275,7 +311,9 @@ export class APIServiceCore {
       return this.refreshingCall;
     }
 
-    const call = this.refreshTokens();
+    const call = this.refreshTokens().catch((error) => {
+      console.log("[APIService]: " + error);
+    });
 
     this.refreshingCall = call;
 
