@@ -15,14 +15,12 @@
   },
   "dependencies": {
     "@kbond/vue-ui": "file:../../vue-ui",
-    "axios": "^0.21.1",
-    "chartjs-plugin-datalabels": "^2.0.0",
+    "axios": "^1.6.0",
     "cleave.js": "^1.6.0",
     "jquery-tablesort": "^0.0.11",
     "jwt-decode": "^3.1.2",
     "uuid": "^8.3.2",
     "vue": "^3.2.0",
-    "vue-chartjs": "^4.0.0",
     "vue-easy-lightbox": "^1.4.1",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.0"
