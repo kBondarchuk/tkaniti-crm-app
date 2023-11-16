@@ -851,7 +851,7 @@ class APIService extends APIServiceCore {
       branch_id: branchId,
     };
 
-    let response = await this.service.get(REQUESTS.CUSTOMERS, { params: params });
+    let response = await this.service.get(REQUESTS.CUSTOMERS, { params: params, cancelPreviousRequests: true });
 
     return response.data.data;
   }
@@ -956,7 +956,7 @@ class APIService extends APIServiceCore {
       params["good_id"] = filter.good_id;
     }
 
-    let response = await this.service.get(REQUESTS.ORDERS, { params: params });
+    let response = await this.service.get(REQUESTS.ORDERS, { params: params, cancelPreviousRequests: true });
     return response.data.data;
   }
 
@@ -1160,7 +1160,7 @@ class APIService extends APIServiceCore {
       params["status"] = status_arr.join(",");
     }
 
-    let response = await this.service.get(REQUESTS.GOODS, { params: params });
+    let response = await this.service.get(REQUESTS.GOODS, { params: params, cancelPreviousRequests: true });
     return response.data.data;
   }
 

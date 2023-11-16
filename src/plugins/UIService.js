@@ -65,6 +65,9 @@ const UIService = {
     });
   },
   showNetworkError(error) {
+    // Do not show if request is cancelled
+    if (error.code == "ERR_CANCELED") return;
+    //
     if (Object.prototype.hasOwnProperty.call(error, "response") && error.response) {
       console.warn("[UIService]: ", JSON.stringify(error.response.data));
       if (error.hide && error.hide === true) return;
