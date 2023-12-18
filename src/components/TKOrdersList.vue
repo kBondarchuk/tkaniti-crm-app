@@ -59,6 +59,7 @@ export default {
         { id: "id", name: "No.", class: "" },
         { id: "status_id", name: "Статус", class: "" },
         { id: "payment_status_id", name: "Оплата", class: "" },
+        { id: "payment_method_id", name: "МО", class: "" },
         { id: "date", name: "Дата заказа", class: "" },
         { id: "delivery_date", name: "Отправка", class: "" },
         { id: "goods_count", name: "Товаров", class: "right aligned" },

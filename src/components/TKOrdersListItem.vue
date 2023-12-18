@@ -8,7 +8,8 @@
     <td><TKOrderStatus :value="item.status_id" /></td>
     <!--  -->
     <td><TKOrderPaymentStatus :value="item.payment_status_id" /></td>
-    <!--  -->
+    <!-- Метод оплаты -->
+    <td class="center aligned"><TKOrderPaymentMethod :value="item.payment_method_id" /></td>
     <td>
       {{ $filters.date(item.date) }}
     </td>
@@ -50,6 +51,7 @@
 <script>
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
 import TKOrderPaymentStatus from "@/components/TKOrderPaymentStatus.vue";
+import TKOrderPaymentMethod from "@/components/TKOrderPaymentMethod.vue";
 
 export default {
   name: "TKOrdersListItem",
@@ -57,6 +59,7 @@ export default {
   components: {
     TKOrderStatus,
     TKOrderPaymentStatus,
+    TKOrderPaymentMethod,
   },
 
   props: {
