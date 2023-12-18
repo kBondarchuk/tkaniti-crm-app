@@ -12,7 +12,7 @@ export default defineConfig(({ command, mode }) => {
     // plugins: [createVuePlugin()],
     plugins: [
       vue(),
-      htmlPlugin(env),
+      // htmlPlugin(env),
       // vue({
       //   template: {
       //     compilerOptions: {
@@ -56,18 +56,3 @@ export default defineConfig(({ command, mode }) => {
     },
   };
 });
-
-/**
- * Replace env variables in index.html
- * @see https://github.com/vitejs/vite/issues/3105#issuecomment-939703781
- * @see https://vitejs.dev/guide/api-plugin.html#transformindexhtml
- */
-function htmlPlugin(env) {
-  return {
-    name: "html-transform",
-    transformIndexHtml: {
-      enforce: "pre",
-      transform: (html) => html.replace(/%(.*?)%/g, (match, p1) => env[p1] ?? match),
-    },
-  };
-}

@@ -59,7 +59,12 @@
 
           <div class="two fields">
             <!-- Метод оплаты -->
-            <UIInputDropdown v-model="order.payment_method_id" label="Метод оплаты" :options="optionsPaymentMethod" />
+            <UIInputDropdown
+              v-model="order.payment_method_id"
+              label="Метод оплаты"
+              :options="optionsPaymentMethod"
+              :class="{ error: !validatePaymentMethod }"
+            />
             <!-- Юр. лицо -->
             <CUISelectCompany v-model="order.company_id" :class="{ error: !validateCompany }" />
           </div>
@@ -134,6 +139,7 @@ import CUISelectCustomer from "@/components/CUISelectCustomer.vue";
 import CUISelectCompany from "@/components/CUISelectCompany.vue";
 
 import OrderObject from "@/objects/Order";
+import { OrderStatusEnum } from "@/enums/index";
 
 export default {
   name: "OrderEdit",
@@ -197,8 +203,20 @@ export default {
     // Validate
     validateSubmit() {
       return {
-        disabled: !this.validateCompany,
+        disabled: !this.validateCompany || !this.validatePaymentMethod,
       };
+    },
+    validatePaymentMethod() {
+      // Проверка метода оплаты только если заказ в статусе Проверка
+      if (this.order.status_id != OrderStatusEnum.Check) {
+        return true;
+      }
+
+      if (this.order.payment_method_id) {
+        return this.order.payment_method_id > 0;
+      } else {
+        return false;
+      }
     },
     validateCompany() {
       if (this.order.payment_method_id == 1) {
