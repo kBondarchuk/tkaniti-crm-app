@@ -103,18 +103,45 @@ const kActions = [
   },
   {
     id: 3,
-    text: "В подготовку",
+    text: "Заказ собран",
     icon: "box",
   },
   {
     id: 4,
-    text: "Отправлен",
+    text: "Заказ отправлен",
     icon: "truck",
   },
   {
     id: 5,
     text: "Заказ получен",
     icon: "grin stars",
+  },
+];
+
+const kTitles = [
+  {
+    id: OrderStatusEnum.New,
+    text: "Новый заказ",
+  },
+  {
+    id: OrderStatusEnum.Check,
+    text: "Проверка заказа",
+  },
+  {
+    id: OrderStatusEnum.Payment,
+    text: "Ожидание оплаты заказа",
+  },
+  {
+    id: OrderStatusEnum.Picking,
+    text: "Комплектация заказа",
+  },
+  {
+    id: OrderStatusEnum.ReadyToShip,
+    text: "Заказ готов к отправке",
+  },
+  {
+    id: OrderStatusEnum.Shipped,
+    text: "Заказ отправлен",
   },
 ];
 
@@ -148,6 +175,7 @@ export default {
       },
       // UI
       actions: kActions,
+      titles: kTitles,
     };
   },
 
@@ -176,7 +204,7 @@ export default {
   methods: {
     setTitle() {
       this.view.title = "Заказ " + this.orderId + " ";
-      // this.view.subTitle = this.car.car_status;
+      this.view.subTitle = this.titles.find((item) => item.id == this.order?.status_id)?.text ?? "Работа с заказом";
     },
     // ---
     edit() {
@@ -191,22 +219,22 @@ export default {
     actionSetNextStatus(status) {
       var text;
       switch (status) {
-        case 1:
+        case OrderStatusEnum.Check:
           text = "Вы действительно хотите взять заказ в работу?";
           break;
-        case 2:
+        case OrderStatusEnum.Payment:
           text = "Вы действительно хотите утвердить заказ?";
           break;
-        case 3:
-          text = "Вы действительно хотите отправить заказ на подготовку?";
+        case OrderStatusEnum.ReadyToShip:
+          text = "Заказ готов к отправке?";
           break;
-        case 4:
+        case OrderStatusEnum.Shipped:
           text = "Заказ отправлен?";
           break;
-        case 5:
+        case OrderStatusEnum.Received:
           text = "Отметить заказ как полученный покупателем?";
           break;
-        case 6:
+        case OrderStatusEnum.Canceled:
           text = "Вы действительно хотите отменить заказ?";
           break;
 
