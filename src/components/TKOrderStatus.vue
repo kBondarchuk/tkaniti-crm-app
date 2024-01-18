@@ -19,7 +19,6 @@ const props = defineProps({
 /// COMPUTED
 
 const status = computed(() => {
-  const sid = 1;
   return statuses.find((item) => item.id == props.value);
 });
 
