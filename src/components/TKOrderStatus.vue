@@ -1,11 +1,11 @@
 <template>
-  <UIBadge :text="status?.name" :class="status?.class" />
+  <UIStatusBadge :value="value" :statuses="statuses" />
 </template>
 
 <script setup>
-import { computed } from "vue";
-
 // name: "TKOrderStatus",
+
+import UIStatusBadge from "@/components/UIStatusBadge.vue";
 
 /// PROPS
 
@@ -14,12 +14,6 @@ const props = defineProps({
     type: Number,
     default: null,
   },
-});
-
-/// COMPUTED
-
-const status = computed(() => {
-  return statuses.find((item) => item.id == props.value);
 });
 
 /// DATA
