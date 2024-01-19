@@ -36,7 +36,6 @@
 
 <script>
 import CMInvoiceStatus from "@/components/CMInvoiceStatus.vue";
-import CMAcquiringTypeStatus from "@/components/CMAcquiringTypeStatus.vue";
 import CMOfdStatus from "@/components/CMOfdStatus.vue";
 import CMInvoicePaymentMethod from "@/components/CMInvoicePaymentMethod.vue";
 
@@ -45,7 +44,6 @@ export default {
 
   components: {
     CMInvoiceStatus,
-    CMAcquiringTypeStatus,
     CMOfdStatus,
     CMInvoicePaymentMethod,
   },
