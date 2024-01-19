@@ -15,7 +15,7 @@
 
 <script>
 import CMMainMenu from "@/components/CMMainMenu.vue";
-import LayoutFooter from "@/components/LayoutFooter.vue";
+import LayoutFooter from "@/Layouts/LayoutFooter.vue";
 
 export default {
   name: "LayoutView",

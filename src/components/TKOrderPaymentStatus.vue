@@ -1,34 +1,25 @@
 <template>
-  <UIBadge :text="status?.name" :class="status?.class" />
+  <UIStatusBadge :value="value" :statuses="statuses" />
 </template>
 
-<script>
-export default {
-  name: "TKOrderPaymentStatus",
+<script setup>
+// name: "TKOrderPaymentStatus"
 
-  components: {},
+import UIStatusBadge from "@/components/UIStatusBadge.vue";
 
-  props: {
-    value: {
-      type: Number,
-      default: null,
-    },
+/// PROPS
+
+const props = defineProps({
+  value: {
+    type: Number,
+    default: null,
   },
+});
 
-  data() {
-    return {
-      statuses: [
-        { id: "0", icon: "", name: "Не оплачен", class: "background-color-red text-color-white" },
-        { id: "1", icon: "", name: "Оплачен", class: "background-color-green text-color-white" },
-      ],
-    };
-  },
+/// DATA
 
-  computed: {
-    status() {
-      const sid = 1;
-      return this.statuses.find((item) => item.id == this.value);
-    },
-  },
-};
+const statuses = [
+  { id: "0", icon: "", name: "Не оплачен", class: "background-color-red text-color-white" },
+  { id: "1", icon: "", name: "Оплачен", class: "background-color-green text-color-white" },
+];
 </script>

@@ -2,7 +2,7 @@
   <!--  -->
   <div>
     <!-- Filter Form -->
-    <CMReportForm date-type="date" @report-request="requestReport" @report-save="saveReport" />
+    <YReportForm date-type="date" @report-request="requestReport" @report-save="saveReport" />
     <div class="ui divider"></div>
     <!-- Loading block -->
     <div v-if="isLoading && !items.length" class="ui center aligned disabled segment">
@@ -40,13 +40,13 @@
 
 <script>
 import apiService from "@/services/api.service.js";
-import CMReportForm from "@/components/CMReportForm.vue";
+import YReportForm from "@/components/YReportForm.vue";
 
 export default {
   name: "TKReportQuantityDaily",
 
   components: {
-    CMReportForm,
+    YReportForm,
   },
 
   data() {

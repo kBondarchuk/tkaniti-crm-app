@@ -15,8 +15,8 @@
 import { useView } from "@/composables/view";
 import { useDetailsTabs } from "@/composables/detailsTabs";
 
-import LayoutPage from "@/components/LayoutPage.vue";
-import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
+import LayoutPage from "@/Layouts/LayoutPage.vue";
+import LayoutSideMenu from "@/Layouts/LayoutSideMenu.vue";
 import CMPrefsUsers from "@/components/CMPrefsUsers.vue";
 import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
 // import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";

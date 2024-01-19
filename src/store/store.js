@@ -1,6 +1,5 @@
 import { createStore as _createStore } from "vuex";
 import auth from "./modules/auth.js";
-import prefs from "./modules/prefs.js";
 import * as config from "../../package.json";
 const APP_VERSION = config.version;
 
@@ -57,7 +56,6 @@ export function createStore(router, env) {
     actions: {},
     modules: {
       auth,
-      prefs,
     },
   });
 }

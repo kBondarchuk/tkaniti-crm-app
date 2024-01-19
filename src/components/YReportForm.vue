@@ -34,7 +34,7 @@
 import { getCurrentDate, getCurrentMonthFirstDate, getFirstMonthOfYearDate } from "@/utils/utils.js";
 
 export default {
-  name: "CMReportForm",
+  name: "YReportForm",
 
   props: {
     showSave: {
