@@ -3,9 +3,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-
 // name: "TKOrderPaymentMethod",
+
+import { computed } from "vue";
 
 /// PROPS
 
