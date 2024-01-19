@@ -13,8 +13,8 @@
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
-import LayoutPage from "@/components/LayoutPage.vue";
-import LayoutSideMenu from "@/components/LayoutSideMenu.vue";
+import LayoutPage from "@/Layouts/LayoutPage.vue";
+import LayoutSideMenu from "@/Layouts/LayoutSideMenu.vue";
 import TKReportDaily from "@/components/TKReportDaily.vue";
 import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
