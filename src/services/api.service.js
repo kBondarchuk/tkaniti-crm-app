@@ -1447,32 +1447,33 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
-  async createCompany(company) {
-    const params = {
+  parseCompany(company) {
+    console.log(JSON.stringify(company.payments.settings));
+    return {
       name: company.name,
       details: company.details,
       bank_details: company.bank_details,
       notes: company.notes,
-      inn: company.inn,
-      acq_settings_id: company.acq_settings_id,
-      sbp_settings_id: company.sbp_settings_id,
-      ofd_settings_id: company.ofd_settings_id,
+
+      // PAYMENTS SETTINGS:
+      payments_settings: company.payments.settings,
+
+      // inn: company.inn,
+      // acq_settings_id: company.acq_settings_id,
+      // sbp_settings_id: company.sbp_settings_id,
+      // acq_ofd_settings_id: company.acq_ofd_settings_id,
+      // sbp_ofd_settings_id: company.sbp_ofd_settings_id,
     };
+  }
+
+  async createCompany(company) {
+    const params = this.parseCompany(company);
     let response = await this.service.post(REQUESTS.COMPANIES, params);
     return response.data.data;
   }
 
   async updateCompany(company) {
-    const params = {
-      name: company.name,
-      details: company.details,
-      bank_details: company.bank_details,
-      notes: company.notes,
-      inn: company.inn,
-      acq_settings_id: company.acq_settings_id,
-      sbp_settings_id: company.sbp_settings_id,
-      ofd_settings_id: company.ofd_settings_id,
-    };
+    const params = this.parseCompany(company);
     let response = await this.service.put(REQUESTS.COMPANIES + "/" + company.id, params);
     return response.data.data;
   }

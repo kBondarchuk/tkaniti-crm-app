@@ -3,13 +3,12 @@
     <UIButton
       icon="plus"
       type="right labeled"
+      text="Новое юр. лицо"
       @click="
         selectedBranch = null;
         modals.branch = true;
       "
-    >
-      Новые реквизиты
-    </UIButton>
+    />
 
     <UITableList
       :id="$options.name"
@@ -60,11 +59,12 @@ export default {
         { id: "id", name: "ID", class: "" },
         { id: "name", name: "Название", class: "" },
         // { id: "inn", name: "ИНН", class: "" },
-        { id: "acq_settings_name", name: "Эквайринг", class: "" },
-        { id: "sbp_settings_name", name: "СБП", class: "" },
-        { id: "ofd_settings_name", name: "Касса", class: "" },
+        // { id: "acq_settings_name", name: "Эквайринг", class: "" },
+        // { id: "sbp_settings_name", name: "СБП", class: "" },
+        // { id: "acq_ofd_settings_name", name: "Касса экв.", class: "" },
+        // { id: "sbp_ofd_settings_name", name: "Касса СБП", class: "" },
         { id: "details", name: "Реквизиты", class: "" },
-        // { id: "bank_details", name: "Банковские реквизиты", class: "" },
+        { id: "bank_details", name: "Банковские реквизиты", class: "" },
       ],
       filter: {},
       branches: [],

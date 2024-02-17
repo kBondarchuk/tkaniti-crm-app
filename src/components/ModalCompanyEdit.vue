@@ -18,18 +18,55 @@
         <!-- <UITextfield v-model="params.inn" placeholder="" label="ИНН" /> -->
       </div>
 
-      <h5>НАСТРОЙКИ ПЛАТЕЖНОЙ СИСТЕМЫ</h5>
+      <template v-for="key in Object.keys(params.payments?.settings ?? {})" :key="key">
+        <h5>НАСТРОЙКИ ПЛАТЕЖНЫХ СИСТЕМ {{ key }}</h5>
+
+        <div class="two fields">
+          <!-- Acquiring -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['acq'].settings_id"
+            label="Эквайринг"
+            :options="optionsAcq"
+          />
+          <!-- Касса / OFD -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['acq'].ofd_settings_id"
+            label="Онлайн касса"
+            :options="optionsOfd"
+          />
+        </div>
+
+        <!-- <div class="ui divider"></div> -->
+
+        <div class="two fields">
+          <!-- СБП -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['sbp'].settings_id"
+            label="СБП"
+            :options="optionsSbp"
+          />
+          <!-- Касса / OFD -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['sbp'].ofd_settings_id"
+            label="Онлайн касса"
+            :options="optionsOfd"
+          />
+        </div>
+      </template>
+
+      <!-- <h5>НАСТРОЙКИ ПЛАТЕЖНЫХ СИСТЕМ</h5>
 
       <div class="two fields">
-        <!-- Acquiring -->
         <UIInputDropdown v-model="params.acq_settings_id" label="Эквайринг" :options="optionsAcq" />
-        <!-- СБП -->
-        <UIInputDropdown v-model="params.sbp_settings_id" label="СБП" :options="optionsSbp" />
+        <UIInputDropdown v-model="params.acq_ofd_settings_id" label="Онлайн касса" :options="optionsOfd" />
       </div>
+
+      <div class="ui divider"></div>
+
       <div class="two fields">
-        <!-- Касса / OFD -->
-        <UIInputDropdown v-model="params.ofd_settings_id" label="Онлайн касса" :options="optionsOfd" />
-      </div>
+        <UIInputDropdown v-model="params.sbp_settings_id" label="СБП" :options="optionsSbp" />
+        <UIInputDropdown v-model="params.sbp_ofd_settings_id" label="Онлайн касса" :options="optionsOfd" />
+      </div> -->
 
       <h5>РЕКВИЗИТЫ ДЛЯ ДОГОВОРОВ</h5>
 
@@ -52,7 +89,10 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 import apiService from "@/services/api.service.js";
+import { useOfdOptions } from "@/composables/ofdOptions";
 
 import CompanyObject from "@/objects/CompanyObject";
 
@@ -71,14 +111,38 @@ export default {
       },
     },
   },
+
   emits: ["hide", "didChange"],
+
+  setup(props) {
+    const { optionsOfd } = useOfdOptions();
+
+    /// DATA
+
+    const params = ref(Object.assign({}, CompanyObject));
+
+    console.warn(Object.entries(params.value.payments.settings));
+
+    /// FUNCTIONS
+
+    function getCompany(id) {
+      apiService
+        .getCompany(props.selectedItem.id)
+        .then((data) => (params.value = data))
+        .catch((error) => console.warn(error.message));
+    }
+
+    /// RUN
+    console.warn(props.selectedItem.id);
+
+    return { optionsOfd, params, getCompany };
+  },
 
   data() {
     return {
-      params: Object.assign({}, CompanyObject),
       acqItems: [],
       sbpItems: [],
-      ofdItems: [],
+      // ofdItems: [],
       // UI
       title: "Новые реквизиты",
       isLoading: false,
@@ -106,24 +170,12 @@ export default {
       );
       return menu;
     },
-    optionsOfd() {
-      let menu = [{ name: "Нет", value: null }].concat(
-        this.ofdItems.map((item) => {
-          return { name: item.name, value: item.id };
-        })
-      );
-      return menu;
-    },
   },
 
   methods: {
     // Modal
     reset() {
       this.params = this.currentCompany;
-      // this.params.id = this.selectedItem.id;
-      // this.params.name = this.selectedItem.name;
-      // this.params.details = this.selectedItem.details;
-      // this.params.bank_details = this.selectedItem.bank_details;
       this.api_error = "";
       if (this.currentCompany.id) {
         this.title = "Редактирование реквизитов";
@@ -136,6 +188,9 @@ export default {
       // console.log("didShow: " + modal_id);
       this.reset();
       this.getOptions();
+      if (this.selectedItem?.id) {
+        this.getCompany(this.selectedItem.id);
+      }
     },
     modalApproved(modal_id) {
       console.log("approved: " + modal_id);
@@ -203,7 +258,7 @@ export default {
     async getPaymentsSettings(filter) {
       this.isLoading = true;
 
-      filter["settings_type"] = "ofd";
+      // filter["settings_type"] = "ofd";
 
       try {
         let result = await apiService.getPaymentsSettings(filter);
@@ -216,28 +271,13 @@ export default {
     },
     async getOptions() {
       this.isLoading = true;
-      this.ofdItems = await apiService.getPaymentsSettings({ settings_type: "ofd", enabled: 1 });
+      // this.ofdItems = await apiService.getPaymentsSettings({ settings_type: "ofd", enabled: 1 });
       this.acqItems = await apiService.getPaymentsSettings({ settings_type: "acq", enabled: 1 });
       this.sbpItems = await apiService.getPaymentsSettings({ settings_type: "sbp", enabled: 1 });
       this.isLoading = false;
     },
 
-    async delete() {
-      // this.isLoading = true;
-      // try {
-      //   // let result = await apiService.deleteDTP(this.params.id);
-      //   // console.log(result);
-      //   this.$UIService.showInfo(null, "Юр. лицо " + this.params.id + " удалён.");
-      //   // saved
-      //   this.$emit("didChange");
-      //   // close modal
-      //   this.$emit("hide");
-      // } catch (error) {
-      //   // console.log("!!!! " + error);
-      //   this.$UIService.showNetworkError(error);
-      // }
-      // this.isLoading = false;
-    },
+    async delete() {},
   },
 };
 </script>
@@ -248,5 +288,6 @@ h5 {
   color: #a0a0a0 !important;
   font-size: 12px;
   font-weight: 400;
+  text-transform: uppercase;
 }
 </style>
