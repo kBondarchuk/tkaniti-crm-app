@@ -1,5 +1,5 @@
-import LayoutPage from "@/Layouts/LayoutPage.vue";
-import LayoutTwoColumns from "@/Layouts/LayoutTwoColumns.vue";
+import LayoutPage from "@/layouts/LayoutPage.vue";
+import LayoutTwoColumns from "@/layouts/LayoutTwoColumns.vue";
 import UITextfieldHinted from "@/components/UITextfieldHinted.vue";
 import UITableRow from "@/components/UITableRow.vue";
 import UITableDividerRow from "@/components/UITableDividerRow.vue";

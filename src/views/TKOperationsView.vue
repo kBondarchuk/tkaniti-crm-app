@@ -91,7 +91,7 @@
 <script>
 import { viewMixin } from "@/mixins/ViewMixin.js";
 
-import LayoutPage from "@/Layouts/LayoutPage.vue";
+import LayoutPage from "@/layouts/LayoutPage.vue";
 import TKOperationsList from "@/components/TKOperationsList.vue";
 
 export default {

@@ -1,4 +1,4 @@
-import LayoutView from "@/Layouts/LayoutView.vue";
+import LayoutView from "@/layouts/LayoutView.vue";
 import RouteNames from "@/router/routeNames";
 
 export default [
