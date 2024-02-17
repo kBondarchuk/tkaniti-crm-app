@@ -3,7 +3,7 @@
   "version": "0.15.0",
   "private": true,
   "scripts": {
-    "dev": "bunx vite",
+    "dev": "open -n /Applications/Chromium.app --args -u http://localhost:6137 && vite --port 6137",
     "dev2": "bunx vite --mode development2",
     "build": "bunx vite build",
     "serve": "bunx vite preview",
@@ -26,7 +26,8 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^5.0.12",
+    "@vitejs/plugin-vue": "^4.6.2",
     "@vue/eslint-config-prettier": "^7.0.0",
     "eslint": "^8.14.0",
     "eslint-plugin-prettier": "^4.0.0",

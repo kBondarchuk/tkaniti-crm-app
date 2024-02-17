@@ -9,24 +9,11 @@ export default defineConfig(({ command, mode }) => {
   console.log(env);
 
   return {
-    // plugins: [createVuePlugin()],
-    plugins: [
-      vue(),
-      // htmlPlugin(env),
-      // vue({
-      //   template: {
-      //     compilerOptions: {
-      //       compatConfig: {
-      //         MODE: 2,
-      //       },
-      //     },
-      //   },
-      // }),
-    ],
+    plugins: [vue()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
-        // vue: "@vue/compat",
+        "#": path.resolve(__dirname, "./src/components"),
       },
       dedupe: ["vue"],
     },
