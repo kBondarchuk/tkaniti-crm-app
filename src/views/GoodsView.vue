@@ -3,8 +3,10 @@
     <!-- Toolbar -->
     <template #toolbar>
       <YTogglePanelButton :show="view.showSidePanel" @click="toggleSidePanel" />
+      <!-- Refresh -->
+      <UIButton icon="refresh" type="icon basic" title="Обновить список" @click="reload" />
       <!-- View Mode -->
-      <UIOptButtons v-model="viewMode" :options="modeOptions" type="icon" style="margin-left: 4.5rem" />
+      <UIOptButtons v-model="viewMode" :options="modeOptions" type="icon" style="margin-left: 3.5rem" />
       <UISpacer />
 
       <!-- Поиск -->
@@ -22,6 +24,7 @@
     <!-- List -->
     <TKGoodsGrid
       v-if="viewMode == 2"
+      :key="seq"
       :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
@@ -30,6 +33,7 @@
     />
     <TKGoodsList
       v-else
+      :key="viewMode + seq"
       :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
@@ -40,6 +44,8 @@
 </template>
 
 <script>
+import { ref, computed, watch } from "vue";
+
 import { useView } from "@/composables/view";
 import combineMenu from "@/utils/combine";
 
@@ -69,20 +75,48 @@ export default {
     view.title = "Товары";
     view.subTitle = "Справочник товаров";
 
-    return { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue };
+    /// DATA
+
+    const menu = ref([
+      { id: null, name: "Все", icon: "folder" },
+      { id: 0, name: "Новый", icon: "edit" },
+      { id: 1, name: "На складе", icon: "warehouse", label: "" },
+      { id: 2, name: "В продаже", icon: "store" },
+      { id: 4, name: "Приостановлено", icon: "hourglass half" },
+      { id: 3, name: "Продано", icon: "thumbs up" },
+    ]);
+    const seq = ref(0);
+
+    /// FUNCTIONS
+
+    async function fetchGoodsCount() {
+      await apiService
+        .getGoodsCount()
+        .then((counts) => combineMenu(counts, menu.value))
+        .catch(console.error);
+    }
+
+    function reload() {
+      seq.value++;
+      fetchGoodsCount();
+    }
+
+    return {
+      view,
+      seq,
+      menu,
+      reload,
+      checkAuthRole,
+      toggleSidePanel,
+      storageSaveValue,
+      storageLoadValue,
+      fetchGoodsCount,
+    };
   },
 
   data() {
     return {
       // UI
-      menu: [
-        { id: null, name: "Все", icon: "folder" },
-        { id: 0, name: "Новый", icon: "edit" },
-        { id: 1, name: "На складе", icon: "warehouse", label: "" },
-        { id: 2, name: "В продаже", icon: "store" },
-        { id: 4, name: "Приостановлено", icon: "hourglass half" },
-        { id: 3, name: "Продано", icon: "thumbs up" },
-      ],
       modeOptions: [
         { id: 0, name: "", title: "Текстовый табличный вид", icon: "table" },
         { id: 1, name: "", title: "Табличный вид с фото", icon: "list" },
@@ -117,16 +151,6 @@ export default {
     },
     handleDetails(item) {
       this.$router.push({ name: RouteNames.Goods.Details, params: { id: item.id } });
-    },
-
-    // Networking
-    async fetchGoodsCount() {
-      try {
-        var result = await apiService.getGoodsCount();
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      }
-      combineMenu(result, this.menu);
     },
   },
 };
