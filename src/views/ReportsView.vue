@@ -2,7 +2,7 @@
   <LayoutPage>
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="viewSideMenuSelectedId" :items="menu" />
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
     </template>
     <!-- Reports -->
     <component :is="currentReport" />
@@ -11,7 +11,8 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { ref, computed, watch } from "vue";
+import { useView } from "@/composables/view";
 
 import LayoutPage from "@/layouts/LayoutPage.vue";
 import LayoutSideMenu from "@/layouts/LayoutSideMenu.vue";
@@ -32,11 +33,27 @@ export default {
     TKReportQuantityDaily,
   },
 
-  mixins: [viewMixin],
+  setup() {
+    const { view, checkAuthRole } = useView("ReportsView");
+
+    view.title = "Отчёты";
+    view.subTitle = "";
+
+    /// DATA
+
+    const menuSelectedId = ref(0);
+
+    /// COMPUTED
+
+    // const checkAuthNewCustomer = computed(() => {
+    //   return checkAuthRole(AccessRightsEnum.CustomersEdit);
+    // });
+
+    return { view, menuSelectedId, checkAuthRole };
+  },
 
   data() {
     return {
-      view: { title: "Отчёты", subTitle: "" },
       menu: [],
       // Reports
       reports: [
@@ -81,41 +98,27 @@ export default {
 
   computed: {
     currentReport() {
-      if (!this.viewSideMenuSelectedId) return null;
+      if (!this.menuSelectedId) return null;
 
       let self = this;
       // console.log(">>>", this.reports);
 
       return this.reports.find((obj) => {
-        // console.log("++", self.viewSideMenuSelectedId);
-
-        return obj.id == self.viewSideMenuSelectedId;
+        return obj.id == self.menuSelectedId;
       }).component;
-      // [this.viewSideMenuSelectedId - 1].component;
-    },
-    userRights() {
-      return this.$store.getters["auth/getAuthRights"];
+      // [this.menuSelectedId - 1].component;
     },
   },
 
   mounted() {
     // Build menu
     const menu = this.reports.filter((report) => {
-      const rights = this.userRights.filter((value) => report.access.split(",").includes(value));
-      return rights.length > 0;
+      return this.checkAuthRole(report.access);
     });
 
-    console.log(menu);
     this.menu = menu;
 
-    this.viewSideMenuSelectedId = this.menu[0]?.id;
-  },
-
-  methods: {
-    checkAuthRole(role) {
-      return this.$store.getters["auth/getAuthRights"].includes(role);
-    },
-    // Networking
+    this.menuSelectedId = this.menu[0]?.id;
   },
 };
 </script>
