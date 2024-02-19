@@ -40,10 +40,13 @@
 </template>
 
 <script>
+import { ref } from "vue";
+
 import { viewMixin } from "@/mixins/ViewMixin.js";
 import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
 
 import apiService from "@/services/api.service.js";
+import combineMenu from "@/utils/combine";
 
 import TKOrdersList from "@/components/TKOrdersList.vue";
 
@@ -56,22 +59,41 @@ export default {
 
   mixins: [viewMixin, CheckAuthMixin],
 
+  setup() {
+    /// DATA
+
+    const menu = ref([
+      { id: null, name: "Все", icon: "folder" },
+      { id: 0, name: "Новый", icon: "shopping cart" },
+      { id: 1, name: "Проверка", icon: "check square", label: "" },
+      { id: 2, name: "Оплата", icon: "dollar sign" },
+      { id: 7, name: "Сборка", icon: "boxes" },
+      { id: 3, name: "К отправке", icon: "box" },
+      { id: 4, name: "Отправлен", icon: "shipping fast" },
+      { id: 5, name: "Получен", icon: "grin stars" },
+      { id: 6, name: "Отменён", icon: "times circle" },
+    ]);
+
+    /// FUNCTIONS
+
+    async function fetchOrdersCount() {
+      await apiService
+        .getOrdersCount()
+        .then((counts) => combineMenu(counts, menu.value))
+        .catch(console.error);
+    }
+
+    fetchOrdersCount();
+
+    /// EXPOSE
+    return { fetchOrdersCount, menu };
+  },
+
   data() {
     return {
       searchString: "",
       // UI
       view: { title: "Заказы", subTitle: "Работа с заказами" },
-      menu: [
-        { id: null, name: "Все", icon: "folder" },
-        { id: 0, name: "Новый", icon: "shopping cart" },
-        { id: 1, name: "Проверка", icon: "check square", label: "" },
-        { id: 2, name: "Оплата", icon: "dollar sign" },
-        { id: 7, name: "Сборка", icon: "boxes" },
-        { id: 3, name: "К отправке", icon: "box" },
-        { id: 4, name: "Отправлен", icon: "shipping fast" },
-        { id: 5, name: "Получен", icon: "grin stars" },
-        { id: 6, name: "Отменён", icon: "times circle" },
-      ],
       seq: 0,
     };
   },
@@ -90,31 +112,6 @@ export default {
     },
     viewSideMenuSelected(id) {
       this.fetchOrdersCount();
-    },
-    async fetchOrdersCount() {
-      try {
-        let result = await apiService.getOrdersCount();
-        this.combineMenu(result);
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      }
-    },
-    combineMenu(counts) {
-      this.menu
-        .filter((item) => {
-          return item.id >= 0;
-        })
-        .forEach((menuItem) => {
-          const result = counts.find((obj) => obj.status_id == menuItem.id);
-
-          if (result) {
-            if (parseInt(result.count) > 10000) {
-              let digit = Number((result.count / 1000).toFixed(1));
-              result.count = digit.toString() + "K";
-            }
-            menuItem["label"] = result.count;
-          }
-        });
     },
   },
 };
