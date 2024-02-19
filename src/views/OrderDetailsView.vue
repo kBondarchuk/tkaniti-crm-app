@@ -73,11 +73,11 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
-import { TabsMixin } from "@/mixins/TabsMixin.js";
+import { useView } from "@/composables/view";
+import { useDetailsTabs } from "@/composables/detailsTabs";
 
 import { OrderStatusEnum } from "@/enums/index";
+import { AccessRightsEnum } from "@/enums/index";
 
 import ModalParcelNumberEdit from "@/components/ModalParcelNumberEdit.vue";
 
@@ -152,8 +152,6 @@ export default {
     ModalParcelNumberEdit,
   },
 
-  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
-
   props: {
     orderId: {
       type: Number,
@@ -161,14 +159,21 @@ export default {
     },
   },
 
+  setup() {
+    const { view, checkAuthRole } = useView("OrderDetailsView");
+
+    view.title = "Заказ";
+    view.subTitle = "Детализация заказа";
+
+    const { tabs } = useDetailsTabs(kTABS);
+
+    return { tabs, view, checkAuthRole };
+  },
+
   data() {
     return {
       // Model
       order: null,
-      // View
-      view: { title: "Заказ", subTitle: "Детализация заказа" },
-      // Tabs
-      tabs: [],
       // Modals
       modals: {
         parcel: false,
@@ -180,8 +185,19 @@ export default {
   },
 
   computed: {
+    // Auth
+    checkAuthRevertOrder() {
+      return this.checkAuthRole(AccessRightsEnum.OrdersRevert);
+    },
+    checkAuthForwardOrder() {
+      return this.checkAuthRole(AccessRightsEnum.OrdersForward);
+    },
+    checkAuthCancelOrder() {
+      return this.checkAuthRole(AccessRightsEnum.OrdersCancel);
+    },
+
+    // Validate
     validateEdit() {
-      //
       return this.checkAuthEditOrder && this.order?.status.editable == 1;
     },
   },
@@ -193,9 +209,6 @@ export default {
   },
 
   created() {
-    // console.log(">> ", this.$store.getters["auth/getAuthRights"]);
-    this.createTabs(kTABS);
-    //
     if (this.orderId !== undefined) {
       this.fetchOrder(this.orderId);
     }
@@ -291,7 +304,7 @@ export default {
         console.warn(result);
 
         this.setTitle();
-        this.createTabs(kTABS);
+        // this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
