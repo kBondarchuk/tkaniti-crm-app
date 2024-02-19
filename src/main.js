@@ -93,7 +93,7 @@ APIService.init({
 // const jwt = localStorage.getItem("JWT");
 
 // Load Prefs
-store.dispatch("prefs/fetch");
+// store.dispatch("prefs/fetch");
 
 // Load Auth from local storage
 // store.dispatch("auth/recall");
