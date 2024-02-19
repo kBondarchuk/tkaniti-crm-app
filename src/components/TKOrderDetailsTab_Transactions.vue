@@ -66,7 +66,10 @@
 </template>
 
 <script>
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import { ref, computed, watch } from "vue";
+
+import { useCheckAuth } from "@/composables/checkAuth";
+import AccessRightsEnum from "@/enums/AccessRights";
 
 import TKOperationsList from "@/components/TKOperationsList.vue";
 import TKOrderTransactionsResults from "@/components/TKOrderTransactionsResults.vue";
@@ -89,8 +92,6 @@ export default {
     ModalOrderMakeInvoice,
   },
 
-  mixins: [CheckAuthMixin],
-
   props: {
     order: {
       type: Object,
@@ -99,6 +100,23 @@ export default {
   },
 
   emits: ["update"],
+
+  setup() {
+    const { checkAuthRole } = useCheckAuth();
+
+    const checkAuthPaymentsDeposit = computed(() => {
+      return checkAuthRole(AccessRightsEnum.PaymentsDeposit);
+    });
+
+    const checkAuthPaymentsRefund = computed(() => {
+      return checkAuthRole(AccessRightsEnum.PaymentsRefund);
+    });
+    const checkAuthPaymentsAcquiring = computed(() => {
+      return checkAuthRole(AccessRightsEnum.Acquiring);
+    });
+
+    return { checkAuthPaymentsDeposit, checkAuthPaymentsRefund, checkAuthPaymentsAcquiring };
+  },
 
   data() {
     return {
@@ -115,15 +133,6 @@ export default {
       OrderStatusEnum,
     };
   },
-
-  // computed: {
-  //   checkAuthPaymentsDeposit() {
-  //     return this.checkAuthRole(AccessRightsEnum.PaymentsDeposit);
-  //   },
-  //   checkAuthPaymentsRefund() {
-  //     return this.checkAuthRole(AccessRightsEnum.PaymentsRefund);
-  //   },
-  // },
 
   methods: {
     actionDeposit() {

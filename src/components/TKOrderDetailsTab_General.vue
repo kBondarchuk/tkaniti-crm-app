@@ -22,10 +22,11 @@
 </template>
 
 <script>
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
-
+import { useCheckAuth } from "@/composables/checkAuth";
+import AccessRightsEnum from "@/enums/AccessRights";
 import TKOrderDetails from "@/components/TKOrderDetails.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
+
 // import UILayoutColumns from "@/components/UILayoutColumns.vue";
 
 export default {
@@ -37,8 +38,6 @@ export default {
     // UILayoutColumns,
   },
 
-  mixins: [CheckAuthMixin],
-
   props: {
     order: {
       type: Object,
@@ -46,7 +45,16 @@ export default {
     },
   },
 
+  setup() {
+    const { checkAuthRole } = useCheckAuth();
+
+    return { checkAuthRole };
+  },
+
   computed: {
+    checkAuthEditOrder() {
+      return this.checkAuthRole(AccessRightsEnum.OrdersEdit);
+    },
     validateEdit() {
       //
       // this.order?.status.fixed - это временная затычка
