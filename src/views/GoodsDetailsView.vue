@@ -64,7 +64,7 @@ export default {
   },
 
   setup() {
-    const { view, checkAuthRole } = useView("CarsView");
+    const { view, checkAuthRole } = useView("GoodsDetailsView");
 
     view.title = "Товар";
     view.subTitle = "Детализация";
