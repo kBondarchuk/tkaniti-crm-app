@@ -3,10 +3,7 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Hide / Show -->
-      <UIButton icon="filter" type="labeled basic" style="min-width: 10em; visibility: hidden">
-        <!-- <span v-if="showSideMenu">Скрыть</span> -->
-        <!-- <span v-else>Показать</span> -->
-      </UIButton>
+      <UIButton icon="filter" type="labeled basic" style="min-width: 10em; visibility: hidden"> </UIButton>
       <!--  -->
       <UISpacer />
       <!-- Поиск -->
@@ -28,43 +25,41 @@
   </LayoutPage>
 </template>
 
-<script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+<script setup>
+import { ref, computed, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useView } from "@/composables/view";
+
 import TKCustomersList from "@/components/TKCustomersList.vue";
 
 import { AccessRightsEnum } from "@/enums/index";
 
-export default {
-  name: "TKCustomersView",
+// name: "TKCustomersView",
 
-  components: {
-    TKCustomersList,
-  },
+/// SETUP
+const router = useRouter();
+const { view, checkAuthRole } = useView("CustomersView");
 
-  mixins: [viewMixin],
+view.title = "Клиенты";
+view.subTitle = "Список клиентов";
 
-  data() {
-    return {
-      searchString: "",
-      // View
-      view: { title: "Клиенты", subTitle: "Список клиентов" },
-    };
-  },
+/// DATA
+const searchString = ref("");
 
-  computed: {
-    checkAuthNewCustomer() {
-      return this.checkAuthRole(AccessRightsEnum.CustomersEdit);
-    },
-  },
+/// COMPUTED
 
-  methods: {
-    newCustomer() {
-      this.$router.push({ name: "customers_new" });
-    },
-    handleDetails(item) {
-      console.log("row clicked: " + item.id);
-      this.$router.push({ name: "customers_details", params: { id: item.id } });
-    },
-  },
-};
+const checkAuthNewCustomer = computed(() => {
+  return checkAuthRole(AccessRightsEnum.CustomersEdit);
+});
+
+/// FUNCTIONS
+
+function newCustomer() {
+  router.push({ name: "customers_new" });
+}
+
+function handleDetails(item) {
+  console.log("row clicked: " + item.id);
+  router.push({ name: "customers_details", params: { id: item.id } });
+}
 </script>
