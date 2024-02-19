@@ -108,6 +108,10 @@ export default {
           const result = counts.find((obj) => obj.status_id == menuItem.id);
 
           if (result) {
+            if (parseInt(result.count) > 10000) {
+              let digit = Number((result.count / 1000).toFixed(1));
+              result.count = digit.toString() + "K";
+            }
             menuItem["label"] = result.count;
           }
         });
