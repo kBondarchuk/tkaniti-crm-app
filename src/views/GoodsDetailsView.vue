@@ -46,6 +46,7 @@ import UIOptButtons from "@/components/UIOptButtons.vue";
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "ФОТО", id: "photos" },
+  { name: "ВИДЕО", id: "videos" },
   { name: "ЗАКАЗЫ", id: "orders", access: AccessRightsEnum.OrdersView },
 ];
 

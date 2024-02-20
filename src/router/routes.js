@@ -112,6 +112,12 @@ export default [
             component: () => import("@/components/TKGoodsDetailsTab_PhotoGallery.vue"),
           },
           {
+            path: "videos",
+            name: "goods_details_videos",
+            meta: { historyGroup: "goods" },
+            component: () => import("@/components/TKGoodsDetailsTab_Videos.vue"),
+          },
+          {
             path: "orders",
             name: "goods_details_orders",
             meta: { historyGroup: "goods" },
