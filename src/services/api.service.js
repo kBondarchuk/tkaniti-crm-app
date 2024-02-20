@@ -19,6 +19,7 @@ const REQUESTS = {
   TEMPLATES: "/templates",
   DOWNLOAD: "/download",
   IMAGES: "/images",
+  VIDEOS: "/videos",
   DOCUMENTS: "/documents",
   WARNINGS: "/warnings",
   COMPANIES: "/companies",
@@ -123,6 +124,46 @@ class APIService extends APIServiceCore {
 
   async getDownloadToken() {
     let response = await this.service.get(REQUESTS.DOWNLOAD + "/token");
+    return response.data.data;
+  }
+
+  /**
+   * VIDEOS
+   */
+
+  async uploadVideo(file, album_uuid, description) {
+    // Validate
+    if (!album_uuid) {
+      console.log("[uploadVideo]: album_uuid: ", album_uuid);
+      return Promise.reject("[APIService]: album_uuid == null");
+    }
+
+    // create form data
+    let formData = new FormData();
+    formData.append("video", file);
+    formData.append("album_uuid", album_uuid);
+    formData.append("description", description);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (event) => {
+        console.log(event.loaded, event.total);
+      },
+    };
+
+    let response = await this.service.post(REQUESTS.VIDEOS, formData, config);
+    return response.data.data;
+  }
+
+  async getVideos(album_uuid) {
+    let response = await this.service.get(REQUESTS.VIDEOS, { params: { album_uuid: album_uuid } });
+    return response.data.data;
+  }
+
+  async deleteVideo(id) {
+    let response = await this.service.delete(REQUESTS.VIDEOS + "/" + id);
     return response.data.data;
   }
 
