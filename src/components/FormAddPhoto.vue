@@ -15,7 +15,7 @@
         ref="image_file"
         type="file"
         name="photoFile"
-        accept=".jpg, .jpeg"
+        :accept="acceptedFileTypes"
         multiple
         style="display: none"
         @change="handleFileSelect()"
@@ -25,12 +25,14 @@
         :value="selectedFiles.length ? fileNames : null"
         :class="{ error: api_error && !selectedFiles[0] }"
         @button-did-click="fileSelect('image_file')"
-        >Файл фотографии</UIInputSelect
       >
+        {{ label }}
+      </UIInputSelect>
       <!-- /Select File -->
+
       <!-- Description -->
       <UITextfield v-model.trim.lazy="description" :disabled="isLoading">Описание</UITextfield>
-      <!-- /Description -->
+
       <!-- error -->
       <div v-if="api_error" class="ui error message">
         <p>{{ api_error }}</p>
@@ -43,13 +45,14 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import apiService from "@/services/api.service.js";
 
-const _MAX_FILE_SIZE = 10;
+const _MAX_FILE_SIZE = 200;
 
 export default {
   name: "FormAddPhoto",
-  components: {},
+
   props: {
     active: {
       type: Boolean,
@@ -59,26 +62,57 @@ export default {
       type: String,
       default: null,
     },
+    fileType: {
+      // photo | video
+      type: String,
+      default: "photo",
+    },
   },
+
   emits: ["hide", "saved"],
+
+  setup(props) {
+    console.warn(props);
+    const strings = {
+      photo: { title: "Добавление фото", label: "Файл фотографии", acceptedFileTypes: ".jpg, .jpeg" },
+      video: { title: "Добавление видео", label: "Файл видео", acceptedFileTypes: ".mp4, .mov" },
+    };
+
+    const title = computed(() => {
+      return strings[props.fileType].title;
+    });
+
+    const label = computed(() => {
+      return strings[props.fileType].label;
+    });
+
+    const acceptedFileTypes = computed(() => {
+      return strings[props.fileType].acceptedFileTypes;
+    });
+
+    return { title, label, acceptedFileTypes };
+  },
+
   data() {
     return {
       selectedFiles: [],
       description: "",
       // View
-      title: "Добавление фото",
+
       isLoading: false,
       api_error: "",
     };
   },
+
   computed: {
     fileNames() {
       // console.log(this.selectedFiles);
       return Array.from(this.selectedFiles)
-        .map((x) => x.name)
+        .map((x) => x.name + "(" + Number(x.size / 1024 / 1024).toFixed(1) + "mb)")
         .join(", ");
     },
   },
+
   methods: {
     fileSelect(name) {
       this.$refs[name].click();
@@ -89,6 +123,7 @@ export default {
 
       // обходит файлы используя цикл
       let fileNames = [];
+
       for (var i = 0; i < this.selectedFiles.length; i++) {
         // получаем сам файл
         let file = this.selectedFiles[i];
@@ -105,8 +140,7 @@ export default {
     },
     // Modal
     reset() {
-      // this.params.price = "";
-      // this.params.date = "";
+      this.$refs.image_file.value = "";
       this.selectedFiles = [];
       this.description = "";
 
@@ -143,7 +177,7 @@ export default {
 
           this.fetchUpload(file);
         } else {
-          console.log(file.name + "пропущен");
+          console.warn(file.name + "пропущен");
           this.$UIService.showWarning(
             null,
             "Файл " + file.name + " не загружен. Его размер превышает максимально допустимый"
@@ -155,9 +189,15 @@ export default {
     async fetchUpload(file) {
       this.isLoading = true;
       try {
-        let result = await apiService.uploadImage(file, this.albumUuid, this.description);
-        console.log(result);
-        this.$UIService.showSuccess(null, "Новое фото добавлено");
+        if (this.fileType == "video") {
+          let result = await apiService.uploadVideo(file, this.albumUuid, this.description);
+          console.log(result);
+          this.$UIService.showSuccess(null, "Новое видео добавлено");
+        } else {
+          let result = await apiService.uploadImage(file, this.albumUuid, this.description);
+          console.log(result);
+          this.$UIService.showSuccess(null, "Новое фото добавлено");
+        }
         // saved
         this.$emit("saved");
         // close modal
