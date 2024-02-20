@@ -7,6 +7,24 @@
 
       <!-- Refresh -->
       <UIButton icon="refresh" type="icon basic" title="Обновить список" @click="reload" />
+      <!-- <UISpacer /> -->
+      <!-- Pager -->
+      <UIButton
+        icon="left arrow"
+        type="icon basic"
+        title="Предыдущая страница"
+        :disabled="currentPage == 0"
+        style="margin-left: 3.5rem"
+        @click="pageDown"
+      />
+      <UIButton :text="pageText" :type="['basic', { loading: totalPages < 1 }]" />
+      <UIButton
+        icon="right arrow"
+        type="icon basic"
+        title="Следующая страница"
+        :disabled="isPageLast"
+        @click="pageUp"
+      />
       <UISpacer />
 
       <!-- Поиск -->
@@ -29,7 +47,9 @@
       :header-sticked-at="42"
       :search-string="searchString"
       :seq="seq"
+      :current-page="currentPage"
       @event-details="handleDetails"
+      @pager="handlePagerEvent"
     />
   </LayoutPage>
 </template>
@@ -63,6 +83,8 @@ view.subTitle = "Работа с заказами";
 const searchString = ref("");
 const seq = ref(0);
 const menuSelectedId = ref(999);
+const currentPage = ref(0);
+const totalPages = ref(0);
 
 const menu = ref([
   { id: null, name: "Все", icon: "folder" },
@@ -82,14 +104,31 @@ const checkAuthNewOrder = computed(() => {
   return checkAuthRole(AccessRightsEnum.OrdersEdit);
 });
 
+const isPageLast = computed(() => {
+  return currentPage.value >= totalPages.value - 1;
+});
+
+const pageText = computed(() => {
+  return `${currentPage.value + 1} из ${totalPages.value}`;
+});
+
 /// WATCHERS
 
 watch(
   () => menuSelectedId.value,
   (newValue, oldValue) => {
     console.warn(newValue);
+    currentPage.value = 0;
     storageSaveValue(_storageID, newValue);
     fetchOrdersCount();
+  }
+);
+
+watch(
+  () => searchString.value,
+  (newValue, oldValue) => {
+    console.warn(newValue);
+    currentPage.value = 0;
   }
 );
 
@@ -111,9 +150,21 @@ function handleDetails(item) {
   router.push({ name: "order_details", params: { id: item.id } });
 }
 
+function handlePagerEvent(event) {
+  totalPages.value = event.total_pages;
+  currentPage.value = event.current_page;
+}
+
 function reload() {
   seq.value++;
   fetchOrdersCount();
+}
+
+function pageUp() {
+  currentPage.value++;
+}
+function pageDown() {
+  currentPage.value--;
 }
 
 /// RUN

@@ -49,9 +49,13 @@ export default {
       type: Number,
       default: 0,
     },
+    currentPage: {
+      type: Number,
+      default: 0,
+    },
   },
 
-  emits: ["eventDetails", "eventEdit", "eventDelete"],
+  emits: ["eventDetails", "eventEdit", "eventDelete", "pager"],
 
   data() {
     return {
@@ -74,7 +78,7 @@ export default {
       ],
       items: [],
       isLoading: false,
-      filter: {},
+      filter: { sort: {}, pagination: {} },
     };
   },
 
@@ -92,11 +96,15 @@ export default {
     seq() {
       this.refetch(this.filter);
     },
+    currentPage() {
+      this.filter.pagination.page = this.currentPage;
+      this.refetch(this.filter);
+    },
   },
 
   methods: {
     handleHeaderSort(item) {
-      this.filter = item;
+      this.filter.sort = item;
       this.refetch(item);
     },
     handleDelete() {
@@ -104,13 +112,34 @@ export default {
       // console.log("delete clicked: " + expense_id);
     },
     async refetch(tableFilters) {
+      this.filter.pagination.page = this.currentPage;
+      var filter = { ...tableFilters.sort, ...this.filter.pagination };
+      console.warn("filter", filter);
       this.isLoading = true;
+      let data, meta;
+
       try {
-        let result = await apiService.getOrders(tableFilters, this.filterStatus, this.searchString);
-        this.items = result;
+        let result = await apiService.getOrders(filter, this.filterStatus, this.searchString);
+        data = result.data;
+        meta = result.meta;
+        console.warn(result);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
+
+      // Items
+      this.items = data || [];
+      let pagination = { total_count: 0, total_pages: 0, current_page: 0 };
+      // Meta
+      if (meta) {
+        console.log(meta);
+        pagination.total_count = meta.total_count;
+        pagination.total_pages = meta.total_pages;
+        pagination.current_page = meta.current_page;
+      }
+
+      this.$emit("pager", pagination);
+
       this.isLoading = false;
     },
   },
