@@ -945,6 +945,8 @@ class APIService extends APIServiceCore {
     const params = {
       sort_by: filter.sort_by,
       sort_order: filter.sort_order,
+      page: filter.page,
+      per_page: filter.per_page,
       search: searchString,
     };
 
@@ -957,7 +959,7 @@ class APIService extends APIServiceCore {
     }
 
     let response = await this.service.get(REQUESTS.ORDERS, { params: params, cancelPreviousRequests: true });
-    return response.data.data;
+    return { data: response.data.data, meta: response.data.meta };
   }
 
   async getOrdersForGood({ good_id, filter }) {
