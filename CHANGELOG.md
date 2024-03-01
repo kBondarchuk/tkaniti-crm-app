@@ -4,6 +4,15 @@
 
 ## [UNRELEASED]
 
+## [v0.16.0] - 2024-03-01
+
+### Added
+
+- Good: Videos tab
+- Picking report
+- label formatter
+- Orders paginator
+
 ### Changed
 
 - Обновлены настройки для Payments v0.7
