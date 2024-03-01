@@ -20,6 +20,7 @@ import TKReportDaily from "@/components/TKReportDaily.vue";
 import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
 import TKReportQuantityDaily from "@/components/TKReportQuantityDaily.vue";
+import TKReportPicking from "@/components/TKReportPicking.vue";
 
 export default {
   name: "ReportsView",
@@ -31,6 +32,7 @@ export default {
     TKReportMonthly,
     TKReportQuantityMonthly,
     TKReportQuantityDaily,
+    TKReportPicking,
   },
 
   setup() {
@@ -82,6 +84,13 @@ export default {
           id: 4,
           component: "TKReportQuantityDaily",
           name: "Кол-во по дням",
+          icon: "table",
+          access: "user",
+        },
+        {
+          id: 5,
+          component: "TKReportPicking",
+          name: "Товар к сборке",
           icon: "table",
           access: "user",
         },
