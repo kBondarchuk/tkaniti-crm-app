@@ -29,7 +29,7 @@
       />
     </UITableList>
     <!-- New Expense Modal -->
-    <ModalAcquiringPrefItemEdit
+    <ModalPrefsAcquiringItemEdit
       :active="modals.item"
       :selected-item="selectedItem"
       @hide="modals.item = false"
@@ -42,14 +42,14 @@
 <script>
 import apiService from "@/services/api.service.js";
 import CMPrefsAcquiringListItem from "@/components/CMPrefsAcquiringListItem.vue";
-import ModalAcquiringPrefItemEdit from "@/components/ModalAcquiringPrefItemEdit.vue";
+import ModalPrefsAcquiringItemEdit from "@/components/ModalPrefsAcquiringItemEdit.vue";
 
 export default {
   name: "CMPrefsAcquiring",
 
   components: {
     CMPrefsAcquiringListItem,
-    ModalAcquiringPrefItemEdit,
+    ModalPrefsAcquiringItemEdit,
   },
 
   emits: ["eventEdit", "eventDelete"],

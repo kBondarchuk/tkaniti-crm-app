@@ -17,7 +17,22 @@
         <UITextfield v-model="params.name" label="Название" />
         <UITextfield v-model="params.notes" label="Описание" />
       </div>
-      <UICheckbox id="enabled" v-model="params.enabled" label="Включено" />
+
+      <h5>ОПЦИИ</h5>
+
+      <div class="two fields">
+        <div class="field">
+          <UICheckbox id="enabled" v-model="params.enabled" label="Включено" style="margin-top: 0" />
+        </div>
+        <div class="field">
+          <UICheckbox
+            id="send_cart"
+            v-model="params.payload.send_cart"
+            label="Отправлять корзину"
+            style="margin-top: 0"
+          />
+        </div>
+      </div>
 
       <h5>НАСТРОЙКИ API</h5>
 
@@ -27,8 +42,8 @@
       </div>
 
       <UITextfield v-model="params.payload.api_url" label="API URL" />
-      <UITextfield v-model="params.payload.success_url" label="Success URL" />
-      <UITextfield v-model="params.payload.fail_url" label="Fail URL" />
+      <UITextfield v-model="params.payload.success_url" label="Success callback URL" />
+      <UITextfield v-model="params.payload.fail_url" label="Fail callback URL" />
 
       <!-- error -->
       <div v-if="api_error" class="ui error message">
@@ -44,19 +59,8 @@
 import apiService from "@/services/api.service.js";
 import PaymentsSettingsAcqObject from "@/objects/PaymentsSettingsAcqObject";
 
-// const _acqPrefObject = {
-//   id: null,
-//   name: "",
-//   description: "",
-//   api_username: "",
-//   api_password: "",
-//   api_url: "",
-//   success_url: "",
-//   fail_url: "",
-// };
-
 export default {
-  name: "ModalAcquiringPrefItemEdit",
+  name: "ModalPrefsAcquiringItemEdit",
 
   props: {
     active: {

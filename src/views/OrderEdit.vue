@@ -128,9 +128,9 @@
 <script>
 import { toRaw } from "vue";
 
+import { useView } from "@/composables/view";
+
 import apiService from "@/services/api.service.js";
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
 
 import TKOrderBasketEdit from "@/components/TKOrderBasketEdit.vue";
 import TKOrderBasket from "@/components/TKOrderBasket.vue";
@@ -151,8 +151,6 @@ export default {
     CUISelectCompany,
   },
 
-  mixins: [viewMixin, CheckAuthMixin],
-
   props: {
     orderId: {
       type: Number,
@@ -160,13 +158,17 @@ export default {
     },
   },
 
+  setup() {
+    const { view, checkAuthRole } = useView("OrderEditView");
+
+    view.title = "Заказ";
+    view.subTitle = "Редактирование заказа";
+
+    return { view, checkAuthRole };
+  },
+
   data() {
     return {
-      // view
-      view: {
-        title: "Заказ",
-        subTitle: "Редактирование заказа",
-      },
       // model data
       // order: {
       //   // company_id: null,

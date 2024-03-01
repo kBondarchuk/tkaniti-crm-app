@@ -1,4 +1,4 @@
-import LayoutView from "@/Layouts/LayoutView.vue";
+import LayoutView from "@/layouts/LayoutView.vue";
 import RouteNames from "@/router/routeNames";
 
 export default [
@@ -110,6 +110,12 @@ export default [
             name: "goods_details_photos",
             meta: { historyGroup: "goods" },
             component: () => import("@/components/TKGoodsDetailsTab_PhotoGallery.vue"),
+          },
+          {
+            path: "videos",
+            name: "goods_details_videos",
+            meta: { historyGroup: "goods" },
+            component: () => import("@/components/TKGoodsDetailsTab_Videos.vue"),
           },
           {
             path: "orders",

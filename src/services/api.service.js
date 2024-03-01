@@ -19,6 +19,7 @@ const REQUESTS = {
   TEMPLATES: "/templates",
   DOWNLOAD: "/download",
   IMAGES: "/images",
+  VIDEOS: "/videos",
   DOCUMENTS: "/documents",
   WARNINGS: "/warnings",
   COMPANIES: "/companies",
@@ -123,6 +124,46 @@ class APIService extends APIServiceCore {
 
   async getDownloadToken() {
     let response = await this.service.get(REQUESTS.DOWNLOAD + "/token");
+    return response.data.data;
+  }
+
+  /**
+   * VIDEOS
+   */
+
+  async uploadVideo(file, album_uuid, description) {
+    // Validate
+    if (!album_uuid) {
+      console.log("[uploadVideo]: album_uuid: ", album_uuid);
+      return Promise.reject("[APIService]: album_uuid == null");
+    }
+
+    // create form data
+    let formData = new FormData();
+    formData.append("video", file);
+    formData.append("album_uuid", album_uuid);
+    formData.append("description", description);
+
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (event) => {
+        console.log(event.loaded, event.total, (event.loaded / event.total) * 100, "%");
+      },
+    };
+
+    let response = await this.service.post(REQUESTS.VIDEOS, formData, config);
+    return response.data.data;
+  }
+
+  async getVideos(album_uuid) {
+    let response = await this.service.get(REQUESTS.VIDEOS, { params: { album_uuid: album_uuid } });
+    return response.data.data;
+  }
+
+  async deleteVideo(id) {
+    let response = await this.service.delete(REQUESTS.VIDEOS + "/" + id);
     return response.data.data;
   }
 
@@ -945,6 +986,8 @@ class APIService extends APIServiceCore {
     const params = {
       sort_by: filter.sort_by,
       sort_order: filter.sort_order,
+      page: filter.page,
+      per_page: filter.per_page,
       search: searchString,
     };
 
@@ -957,7 +1000,7 @@ class APIService extends APIServiceCore {
     }
 
     let response = await this.service.get(REQUESTS.ORDERS, { params: params, cancelPreviousRequests: true });
-    return response.data.data;
+    return { data: response.data.data, meta: response.data.meta };
   }
 
   async getOrdersForGood({ good_id, filter }) {
@@ -1447,32 +1490,33 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
-  async createCompany(company) {
-    const params = {
+  parseCompany(company) {
+    console.log(JSON.stringify(company.payments.settings));
+    return {
       name: company.name,
       details: company.details,
       bank_details: company.bank_details,
       notes: company.notes,
-      inn: company.inn,
-      acq_settings_id: company.acq_settings_id,
-      sbp_settings_id: company.sbp_settings_id,
-      ofd_settings_id: company.ofd_settings_id,
+
+      // PAYMENTS SETTINGS:
+      payments_settings: company.payments.settings,
+
+      // inn: company.inn,
+      // acq_settings_id: company.acq_settings_id,
+      // sbp_settings_id: company.sbp_settings_id,
+      // acq_ofd_settings_id: company.acq_ofd_settings_id,
+      // sbp_ofd_settings_id: company.sbp_ofd_settings_id,
     };
+  }
+
+  async createCompany(company) {
+    const params = this.parseCompany(company);
     let response = await this.service.post(REQUESTS.COMPANIES, params);
     return response.data.data;
   }
 
   async updateCompany(company) {
-    const params = {
-      name: company.name,
-      details: company.details,
-      bank_details: company.bank_details,
-      notes: company.notes,
-      inn: company.inn,
-      acq_settings_id: company.acq_settings_id,
-      sbp_settings_id: company.sbp_settings_id,
-      ofd_settings_id: company.ofd_settings_id,
-    };
+    const params = this.parseCompany(company);
     let response = await this.service.put(REQUESTS.COMPANIES + "/" + company.id, params);
     return response.data.data;
   }

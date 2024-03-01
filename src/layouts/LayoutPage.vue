@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import LayoutPageTitle from "@/Layouts/LayoutPageTitle.vue";
-import LayoutToolbar from "@/Layouts/LayoutToolbar.vue";
+import LayoutPageTitle from "@/layouts/LayoutPageTitle.vue";
+import LayoutToolbar from "@/layouts/LayoutToolbar.vue";
 
 export default {
   name: "LayoutPage",

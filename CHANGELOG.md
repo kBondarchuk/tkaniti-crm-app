@@ -2,6 +2,21 @@
 
 Все заметные изменения в проекте будут отражены в этом файле.
 
+## [v0.16.0]
+
+## [v0.16.0] - 2024-03-01
+
+### Added
+
+- Good: Videos tab
+- Picking report
+- label formatter
+- Orders paginator
+
+### Changed
+
+- Обновлены настройки для Payments v0.7
+
 ## [v0.15.0] - 19.01.2024
 
 ### Добавлено

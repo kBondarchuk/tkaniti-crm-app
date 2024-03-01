@@ -89,9 +89,10 @@
 </template>
 
 <script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
+import { ref, computed, watch } from "vue";
+import { useView } from "@/composables/view";
 
-import LayoutPage from "@/Layouts/LayoutPage.vue";
+import LayoutPage from "@/layouts/LayoutPage.vue";
 import TKOperationsList from "@/components/TKOperationsList.vue";
 
 export default {
@@ -102,16 +103,27 @@ export default {
     TKOperationsList,
   },
 
-  mixins: [viewMixin],
+  setup() {
+    const { view, checkAuthRole } = useView("OperationsView");
+
+    view.title = "Финансовые операции";
+    view.subTitle = "Просмотр всех операций";
+
+    /// DATA
+
+    const menuSelectedId = ref(1);
+
+    /// COMPUTED
+
+    // const checkAuthNewCustomer = computed(() => {
+    //   return checkAuthRole(AccessRightsEnum.CustomersEdit);
+    // });
+
+    return { view, menuSelectedId, checkAuthRole };
+  },
 
   data() {
     return {
-      view: { title: "Финансовые операции", subTitle: "Просмотр всех операций" },
-      // menu: [
-      //   { id: 1, name: "Затраты", icon: "" },
-      //   { id: 2, name: "Счета", icon: "" },
-      // ],
-      menuSelectedId: 1,
       showTotals: false,
       // Data
       filter: {
@@ -169,9 +181,6 @@ export default {
   },
 
   methods: {
-    checkAuthRole(role) {
-      return this.$store.getters["auth/getAuthRights"].includes(role);
-    },
     dropDownChanged(value) {
       const selected = this.options.find((x) => x.value === value);
       this.filter.operations_type = selected.type;

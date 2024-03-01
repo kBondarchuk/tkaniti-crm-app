@@ -3,7 +3,7 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Back -->
-      <YBackButton />
+      <YBackButton to="customers" />
       <UISpacer />
       <!-- Save -->
       <UIButton
@@ -77,40 +77,41 @@
       </div>
     </form>
     <!-- /Form -->
-    <!-- New Customers Browser -->
-    <!-- <BrowseCustomers
-      component="CMCustomersList"
-      :active="modals.browseCustomers"
-      @hide="modals.browseCustomers = false"
-      @selected="referrerSelected"
-    /> -->
-    <!------->
   </LayoutPage>
 </template>
 
 <script>
-import apiService from "@/services/api.service.js";
+import { ref, computed, watch } from "vue";
 
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+import apiService from "@/services/api.service.js";
+import { useView } from "@/composables/view";
+import { AccessRightsEnum } from "@/enums/index";
 
 import CustomerObject from "@/objects/Customer";
 
 export default {
   name: "CMCustomersEditView",
 
-  mixins: [viewMixin, CheckAuthMixin],
+  setup() {
+    const { view, checkAuthRole } = useView("CustomersEditView");
+
+    view.title = "Клиент";
+    view.subTitle = "Редактирование клиента";
+
+    /// COMPUTED
+
+    const checkAuthNewCustomer = computed(() => {
+      return checkAuthRole(AccessRightsEnum.CustomersEdit);
+    });
+
+    return { view, checkAuthRole, checkAuthNewCustomer };
+  },
 
   data() {
     return {
-      view: { title: "Клиент", subTitle: "Редактирование клиента" },
       customer: Object.assign({}, CustomerObject),
       paramId: null,
       isLoading: false,
-      // Modals
-      // modals: {
-      //   browseCustomers: false,
-      // },
     };
   },
 

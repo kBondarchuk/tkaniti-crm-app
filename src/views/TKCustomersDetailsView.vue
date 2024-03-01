@@ -24,9 +24,8 @@
 <script>
 import apiService from "@/services/api.service.js";
 
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
-import { TabsMixin } from "@/mixins/TabsMixin.js";
+import { useView } from "@/composables/view";
+import { useDetailsTabs } from "@/composables/detailsTabs";
 
 import { AccessRightsEnum } from "@/enums/index";
 
@@ -38,8 +37,6 @@ const kTABS = [
 export default {
   name: "TKCustomersDetailsView",
 
-  mixins: [viewMixin, CheckAuthMixin, TabsMixin],
-
   props: {
     customerId: {
       type: Number,
@@ -47,18 +44,22 @@ export default {
     },
   },
 
+  setup() {
+    const { view, checkAuthRole } = useView("CustomersDetailsView");
+
+    view.title = "Клиент";
+    view.subTitle = "Детализация";
+
+    const { tabs } = useDetailsTabs(kTABS);
+
+    return { tabs, view, checkAuthRole };
+  },
+
   data() {
     return {
       customer: null,
       paramId: null,
       // UI
-      view: {
-        title: "Клиент",
-        subTitle: "Детализация",
-      },
-      tabsComponent: 1,
-      // Tabs
-      tabs: [],
       // Keys
       keys: { details: 0, history: 0, transactions: 0 },
       // Modals
@@ -69,10 +70,15 @@ export default {
     };
   },
 
+  computed: {
+    // Auth
+    checkAuthEditCustomer() {
+      return this.checkAuthRole(AccessRightsEnum.CustomersEdit);
+    },
+  },
+
   created() {
     // console.log("Created Params.id: " + this.$route.params.id);
-    this.createTabs(kTABS);
-
     if (this.customerId !== undefined) {
       this.fetchCustomer(this.customerId);
     }
@@ -120,7 +126,6 @@ export default {
       try {
         this.customer = await apiService.getCustomer(customer_id);
         this.setTitle();
-        this.createTabs(kTABS);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }

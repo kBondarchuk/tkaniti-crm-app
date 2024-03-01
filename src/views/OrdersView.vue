@@ -3,15 +3,28 @@
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Toggle -->
-      <!-- <ToolbarSideMenuToggleButton :id="$options.name" /> -->
-
-      <UIButton icon="filter" type="labeled basic" style="min-width: 10em" @click="viewToggleSideMenu">
-        <span v-if="viewShowSideMenu">Скрыть</span>
-        <span v-else>Показать</span>
-      </UIButton>
+      <YTogglePanelButton :show="view.showSidePanel" @click="toggleSidePanel" />
 
       <!-- Refresh -->
       <UIButton icon="refresh" type="icon basic" title="Обновить список" @click="reload" />
+      <!-- <UISpacer /> -->
+      <!-- Pager -->
+      <UIButton
+        icon="left arrow"
+        type="icon basic"
+        title="Предыдущая страница"
+        :disabled="currentPage == 0"
+        style="margin-left: 3.5rem"
+        @click="pageDown"
+      />
+      <UIButton :text="pageText" :type="['basic', { loading: totalPages < 1 }]" />
+      <UIButton
+        icon="right arrow"
+        type="icon basic"
+        title="Следующая страница"
+        :disabled="isPageLast"
+        @click="pageUp"
+      />
       <UISpacer />
 
       <!-- Поиск -->
@@ -24,94 +37,137 @@
     <!-- /Toolbar -->
 
     <!-- Side Menu -->
-    <template v-if="viewShowSideMenu" #side>
-      <LayoutSideMenu v-model="viewSideMenuSelectedId" :items="menu" :sticky-at="56" />
+    <template v-if="view.showSidePanel" #side>
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
 
     <!-- List -->
     <TKOrdersList
-      :filter-status="[viewSideMenuSelectedId]"
+      :filter-status="[menuSelectedId]"
       :header-sticked-at="42"
       :search-string="searchString"
       :seq="seq"
+      :current-page="currentPage"
       @event-details="handleDetails"
+      @pager="handlePagerEvent"
     />
   </LayoutPage>
 </template>
 
-<script>
-import { viewMixin } from "@/mixins/ViewMixin.js";
-import { CheckAuthMixin } from "@/mixins/CheckAuthMixin.js";
+<script setup>
+import { ref, computed, watch } from "vue";
+import { useRouter } from "vue-router";
 
 import apiService from "@/services/api.service.js";
-
+import { useView } from "@/composables/view";
+import combineMenu from "@/utils/combine";
 import TKOrdersList from "@/components/TKOrdersList.vue";
 
-export default {
-  name: "OrdersView",
+import AccessRightsEnum from "@/enums/AccessRights";
+import RouteNames from "@/router/routeNames";
 
-  components: {
-    TKOrdersList,
-  },
+const _storageID = "OrdersView.list.selected_menu";
 
-  mixins: [viewMixin, CheckAuthMixin],
+// name: "OrdersView",
 
-  data() {
-    return {
-      searchString: "",
-      // UI
-      view: { title: "Заказы", subTitle: "Работа с заказами" },
-      menu: [
-        { id: null, name: "Все", icon: "folder" },
-        { id: 0, name: "Новый", icon: "shopping cart" },
-        { id: 1, name: "Проверка", icon: "check square", label: "" },
-        { id: 2, name: "Оплата", icon: "dollar sign" },
-        { id: 7, name: "Сборка", icon: "boxes" },
-        { id: 3, name: "К отправке", icon: "box" },
-        { id: 4, name: "Отправлен", icon: "shipping fast" },
-        { id: 5, name: "Получен", icon: "grin stars" },
-        { id: 6, name: "Отменён", icon: "times circle" },
-      ],
-      seq: 0,
-    };
-  },
+/// SETUP
 
-  methods: {
-    newOrder() {
-      this.$router.push({ name: "order_new" });
-    },
-    handleDetails(item) {
-      // console.log("row clicked: " + item.id);
-      this.$router.push({ name: "order_details", params: { id: item.id } });
-    },
-    reload() {
-      this.seq++;
-      this.fetchOrdersCount();
-    },
-    viewSideMenuSelected(id) {
-      this.fetchOrdersCount();
-    },
-    async fetchOrdersCount() {
-      try {
-        let result = await apiService.getOrdersCount();
-        this.combineMenu(result);
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      }
-    },
-    combineMenu(counts) {
-      this.menu
-        .filter((item) => {
-          return item.id >= 0;
-        })
-        .forEach((menuItem) => {
-          const result = counts.find((obj) => obj.status_id == menuItem.id);
+const router = useRouter();
+const { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue } = useView("OrdersView");
 
-          if (result) {
-            menuItem["label"] = result.count;
-          }
-        });
-    },
-  },
-};
+view.title = "Заказы";
+view.subTitle = "Работа с заказами";
+
+/// DATA
+
+const searchString = ref("");
+const seq = ref(0);
+const menuSelectedId = ref(999);
+const currentPage = ref(0);
+const totalPages = ref(0);
+
+const menu = ref([
+  { id: null, name: "Все", icon: "folder" },
+  { id: 0, name: "Новый", icon: "shopping cart" },
+  { id: 1, name: "Проверка", icon: "check square", label: "" },
+  { id: 2, name: "Оплата", icon: "dollar sign" },
+  { id: 7, name: "Сборка", icon: "boxes" },
+  { id: 3, name: "К отправке", icon: "box" },
+  { id: 4, name: "Отправлен", icon: "shipping fast" },
+  { id: 5, name: "Получен", icon: "grin stars" },
+  { id: 6, name: "Отменён", icon: "times circle" },
+]);
+
+/// COMPUTED
+
+const checkAuthNewOrder = computed(() => {
+  return checkAuthRole(AccessRightsEnum.OrdersEdit);
+});
+
+const isPageLast = computed(() => {
+  return currentPage.value >= totalPages.value - 1;
+});
+
+const pageText = computed(() => {
+  return `${currentPage.value + 1} из ${totalPages.value}`;
+});
+
+/// WATCHERS
+
+watch(
+  () => menuSelectedId.value,
+  (newValue, oldValue) => {
+    console.warn(newValue);
+    currentPage.value = 0;
+    storageSaveValue(_storageID, newValue);
+    fetchOrdersCount();
+  }
+);
+
+watch(
+  () => searchString.value,
+  (newValue, oldValue) => {
+    console.warn(newValue);
+    currentPage.value = 0;
+  }
+);
+
+/// FUNCTIONS
+
+async function fetchOrdersCount() {
+  await apiService
+    .getOrdersCount()
+    .then((counts) => combineMenu(counts, menu.value))
+    .catch(console.error);
+}
+
+function newOrder() {
+  router.push({ name: "order_new" });
+}
+
+function handleDetails(item) {
+  // console.log("row clicked: " + item.id);
+  router.push({ name: "order_details", params: { id: item.id } });
+}
+
+function handlePagerEvent(event) {
+  totalPages.value = event.total_pages;
+  currentPage.value = event.current_page;
+}
+
+function reload() {
+  seq.value++;
+  fetchOrdersCount();
+}
+
+function pageUp() {
+  currentPage.value++;
+}
+function pageDown() {
+  currentPage.value--;
+}
+
+/// RUN
+
+menuSelectedId.value = storageLoadValue(_storageID);
 </script>
