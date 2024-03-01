@@ -149,7 +149,7 @@ class APIService extends APIServiceCore {
         "Content-Type": "multipart/form-data",
       },
       onUploadProgress: (event) => {
-        console.log(event.loaded, event.total);
+        console.log(event.loaded, event.total, (event.loaded / event.total) * 100, "%");
       },
     };
 
