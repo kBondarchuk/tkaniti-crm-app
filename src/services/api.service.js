@@ -1003,12 +1003,13 @@ class APIService extends APIServiceCore {
     return { data: response.data.data, meta: response.data.meta };
   }
 
-  async getOrdersForGood({ good_id, filter }) {
+  async getOrdersForGood({ good_id, order_status_id, filter }) {
     filter = filter || { sort_by: "id", sort_order: "desc" };
 
     const params = {
       sort_by: filter.sort_by,
       sort_order: filter.sort_order,
+      order_status_id: order_status_id,
     };
 
     let response = await this.service.get(REQUESTS.ORDERS + "/good/" + good_id, { params: params });
