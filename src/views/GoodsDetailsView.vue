@@ -15,6 +15,8 @@
       />
       <UISpacer />
 
+      <!-- Print -->
+      <UIButton type="basic labeled" text="На сборку" icon="print" @click="print" />
       <!-- Edit -->
       <UIButton type="basic labeled" text="Изменить" icon="edit" :disabled="!checkAuthEditGood" @click="edit" />
       <!--  -->
@@ -109,6 +111,86 @@ export default {
     // ---
     edit() {
       this.$router.push({ name: RouteNames.Goods.Edit });
+    },
+
+    async print() {
+      const orders = await apiService.getOrdersForGood({ good_id: this.goodId, order_status_id: 7 });
+
+      const good_name = this.good?.name + ", " + this.good?.brand;
+      const good_id = this.goodId;
+      let sum = 0;
+
+      let htmlTable = `<table>
+        <tr>
+          <th>№</th>
+          <th>ID заказа</th>
+          <th>Клиент</th>
+          <th>Количество</th>
+        </tr>
+      `;
+
+      orders.forEach((item, index) => {
+        htmlTable =
+          htmlTable +
+          "<tr><td>" +
+          (index + 1) +
+          "</td><td>" +
+          item.order_id +
+          "</td><td>" +
+          item.customer_fio +
+          "</td><td class='a_right'>" +
+          item.good_quantity +
+          "</td></tr>";
+
+        sum = sum + parseFloat(item.good_quantity);
+      });
+
+      htmlTable =
+        htmlTable +
+        `<tfoot>
+          <tr>
+            <td colspan="3" class="a_right">Итого:</td>
+            <td class="a_right">${sum.toFixed(2)}</td>
+          </tr>
+        </tfoot>
+      </table>`;
+
+      // Open the print window
+      const WinPrint = window.open("", "", "left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0");
+
+      WinPrint.document.write(`<!DOCTYPE html>
+        <html>
+          <head>
+            <title>${good_name}</title>
+            <style>
+            table, th, td {
+              font-family: monospace;
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+            th, td {
+              padding: 0.3em 0.6em;
+            }
+            td.a_right {
+              text-align: right;
+            }
+            tfoot {
+              font-weight: bold;
+            }
+            </style>
+          </head>
+          <body>
+            <h1>Задание на сборку</h1>
+            <h2>${good_name} (ID: ${good_id})</h2><br/>
+
+            ${htmlTable}
+          </body>
+        </html>`);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      // WinPrint.close();
     },
 
     // Tabs
