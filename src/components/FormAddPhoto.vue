@@ -33,7 +33,7 @@
       <!-- Description -->
       <UITextfield v-model.trim.lazy="description" :disabled="isLoading">Описание</UITextfield>
 
-      <div>Загрузка: {{ progress }}%</div>
+      <div v-if="progress">Загрузка: {{ progress }}%</div>
 
       <!-- error -->
       <div v-if="api_error" class="ui error message">
