@@ -33,6 +33,8 @@
       <!-- Description -->
       <UITextfield v-model.trim.lazy="description" :disabled="isLoading">Описание</UITextfield>
 
+      <div>Загрузка: {{ progress }}%</div>
+
       <!-- error -->
       <div v-if="api_error" class="ui error message">
         <p>{{ api_error }}</p>
@@ -98,7 +100,7 @@ export default {
       selectedFiles: [],
       description: "",
       // View
-
+      progress: null,
       isLoading: false,
       api_error: "",
     };
@@ -143,6 +145,7 @@ export default {
       this.$refs.image_file.value = "";
       this.selectedFiles = [];
       this.description = "";
+      this.progress = null;
 
       this.api_error = "";
     },
@@ -187,10 +190,17 @@ export default {
     },
     // Network
     async fetchUpload(file) {
+      // const progressCallback = (progress) => {
+      //   console.warn(progress);
+      // };
+
       this.isLoading = true;
       try {
         if (this.fileType == "video") {
-          let result = await apiService.uploadVideo(file, this.albumUuid, this.description);
+          let result = await apiService.uploadVideo(file, this.albumUuid, this.description, (progress) => {
+            console.warn(progress);
+            this.progress = progress;
+          });
           console.log(result);
           this.$UIService.showSuccess(null, "Новое видео добавлено");
         } else {

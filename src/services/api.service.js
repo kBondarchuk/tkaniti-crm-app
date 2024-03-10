@@ -131,7 +131,14 @@ class APIService extends APIServiceCore {
    * VIDEOS
    */
 
-  async uploadVideo(file, album_uuid, description) {
+  async uploadVideo(
+    file,
+    album_uuid,
+    description,
+    progressCallback = (progress) => {
+      console.log(progress, "%");
+    }
+  ) {
     // Validate
     if (!album_uuid) {
       console.log("[uploadVideo]: album_uuid: ", album_uuid);
@@ -149,7 +156,9 @@ class APIService extends APIServiceCore {
         "Content-Type": "multipart/form-data",
       },
       onUploadProgress: (event) => {
-        console.log(event.loaded, event.total, (event.loaded / event.total) * 100, "%");
+        const progress = Math.round((event.loaded / event.total) * 100);
+
+        progressCallback(progress);
       },
     };
 
