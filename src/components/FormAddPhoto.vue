@@ -50,7 +50,7 @@
 import { computed } from "vue";
 import apiService from "@/services/api.service.js";
 
-const _MAX_FILE_SIZE = 200;
+const _MAX_FILE_SIZE = 300;
 
 export default {
   name: "FormAddPhoto",
