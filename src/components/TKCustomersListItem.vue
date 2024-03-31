@@ -5,6 +5,7 @@
     <td class="nobr">{{ $filters.phone(item.phone) }}</td>
     <td class="nobr">{{ item.email }}</td>
     <td>{{ item.address_fact }}</td>
+    <td>{{ item.options.skip_order_confirm ? "Да" : "" }}</td>
     <td :title="item.notes" v-html="$filters.truncate(item.notes, 30)"></td>
   </tr>
 </template>

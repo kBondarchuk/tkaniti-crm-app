@@ -169,6 +169,12 @@ export default [
             meta: { historyGroup: "customers" },
             component: () => import("@/components/TKCustomersDetailsTab_Orders.vue"),
           },
+          {
+            path: "options",
+            name: "customers_details_options",
+            meta: { historyGroup: "customers" },
+            component: () => import("@/components/TKCustomersDetailsTab_Options.vue"),
+          },
         ],
       },
     ],
