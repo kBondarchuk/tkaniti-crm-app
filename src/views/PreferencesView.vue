@@ -22,6 +22,7 @@ import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
 // import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
 import CMPrefsParams from "@/components/CMPrefsParams.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
+import CMPrefsSettings from "@/components/CMPrefsSettings.vue";
 import CMPrefsAcquiring from "@/components/CMPrefsAcquiring.vue";
 import CMPrefsPaymentsSbp from "@/components/CMPrefsPaymentsSbp.vue";
 import CMPrefsOfd from "@/components/CMPrefsOfd.vue";
@@ -45,6 +46,7 @@ const _menu_items = [
     noPaddings: true,
   },
   // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
+  { id: 15, name: "Настройки", icon: "tools", component: "CMPrefsSettings", access: "prefs.settings" },
   { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
   // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Юр. лица", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
@@ -61,6 +63,7 @@ export default {
     CMPrefsUsers,
     CMPrefsProfile,
     // CMPrefsTemplates,
+    CMPrefsSettings,
     CMPrefsParams,
     CMPrefsCompanies,
     CMPrefsAcquiring,
