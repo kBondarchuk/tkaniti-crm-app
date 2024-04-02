@@ -86,34 +86,35 @@ export default {
     filterStatus(newValue, oldValue) {
       // console.log(newValue, oldValue, arrayEquals(newValue, oldValue));
       if (!arrayEquals(newValue, oldValue)) {
-        this.refetch(this.filter);
+        this.refetch();
       }
     },
     searchString() {
-      this.refetch(this.filter);
+      this.refetch();
     },
     // Just reload
     seq() {
-      this.refetch(this.filter);
+      this.refetch();
     },
     currentPage() {
       this.filter.pagination.page = this.currentPage;
-      this.refetch(this.filter);
+      this.refetch();
     },
   },
 
   methods: {
     handleHeaderSort(item) {
       this.filter.sort = item;
-      this.refetch(item);
+      // console.warn("handleHeaderSort", this.filter.sort);
+      this.refetch();
     },
     handleDelete() {
       // expense_id
       // console.log("delete clicked: " + expense_id);
     },
-    async refetch(tableFilters) {
+    async refetch() {
       this.filter.pagination.page = this.currentPage;
-      var filter = { ...tableFilters.sort, ...this.filter.pagination };
+      var filter = { ...this.filter.sort, ...this.filter.pagination };
       console.warn("filter", filter);
       this.isLoading = true;
       let data, meta;
