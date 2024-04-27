@@ -32,6 +32,7 @@ import { AccessRightsEnum } from "@/enums/index";
 const kTABS = [
   { name: "ОСНОВНОЕ", id: "general" },
   { name: "ЗАКАЗЫ", id: "orders", access: AccessRightsEnum.OrdersView },
+  { name: "НАСТРОЙКИ", id: "options" },
 ];
 
 export default {

@@ -17,7 +17,7 @@
         style="margin-left: 3.5rem"
         @click="pageDown"
       />
-      <UIButton :text="pageText" :type="['basic', { loading: totalPages < 1 }]" />
+      <UIButton :text="pageText" :type="totalPages < 1 ? 'basic loading' : 'basic'" />
       <UIButton
         icon="right arrow"
         type="icon basic"

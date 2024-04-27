@@ -58,6 +58,7 @@ export default {
         { id: "phone", name: "Телефон", class: "" },
         { id: "email", name: "Email", class: "" },
         { id: "address_fact", name: "Адрес", class: "" },
+        { id: "options", name: "Авто", class: "" },
         { id: "notes", name: "Примечание", class: "" },
       ],
       items: [],

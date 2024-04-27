@@ -931,6 +931,14 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async setCustomerOption(customerId, optionName, optionValue) {
+    optionValue = optionValue ? 1 : 0;
+    let response = await this.service.put(
+      REQUESTS.CUSTOMERS + "/" + customerId + "/options/" + optionName + "/" + optionValue
+    );
+    return response.data.data;
+  }
+
   // Actions
   async customerAddBonus(customer_id, amount, notes) {
     const params = {
