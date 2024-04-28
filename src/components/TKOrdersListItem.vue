@@ -52,27 +52,23 @@
   </tr>
 </template>
 
-<script>
+<script setup>
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
 import TKOrderPaymentStatus from "@/components/TKOrderPaymentStatus.vue";
 import TKOrderPaymentMethod from "@/components/TKOrderPaymentMethod.vue";
 
-export default {
-  name: "TKOrdersListItem",
+// name: "TKOrdersListItem",
 
-  components: {
-    TKOrderStatus,
-    TKOrderPaymentStatus,
-    TKOrderPaymentMethod,
+/// PROPS
+
+const props = defineProps({
+  item: {
+    type: Object,
+    default: null,
   },
+});
 
-  props: {
-    item: {
-      type: Object,
-      default: null,
-    },
-  },
+/// EMITS
 
-  emits: ["eventDetails"],
-};
+const emit = defineEmits(["eventDetails"]);
 </script>
