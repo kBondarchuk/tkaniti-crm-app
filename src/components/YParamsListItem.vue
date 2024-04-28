@@ -1,7 +1,7 @@
 <template>
   <tr :class="{ 'text-color-red': model.access_right == 'sysadmin' }">
     <!-- Name -->
-    <td style="width: 70%">
+    <td style="width: 60%">
       <template v-if="model.name">{{ model.name }}</template>
       <template v-else>{{ model.key }}</template>
 
