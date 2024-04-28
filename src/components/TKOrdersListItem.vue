@@ -13,6 +13,10 @@
     <td>
       {{ $filters.date(item.date) }}
     </td>
+
+    <!-- Без проверки? -->
+    <td><template v-if="item.skip_check">Да</template></td>
+
     <!-- Отложено до -->
     <td>
       {{ $filters.date(item.delivery_date) }}
