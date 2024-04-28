@@ -1,20 +1,23 @@
 <template>
-  <form class="ui form" style="width: 20em">
+  <!-- <form class="ui form" style="width: 20em">
     <h2>Заказы</h2>
     <CUISelectCompany v-model="orderCompanyId" :disabled="isLoading" @selected="valueChanged" />
-  </form>
+  </form> -->
+
+  <YParamsList style="width: 40em" />
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import apiService from "@/services/api.service.js";
-import CUISelectCompany from "@/components/CUISelectCompany.vue";
-import Alerts from "@/utils/alerts";
+// import { ref, computed, watch } from "vue";
+// import apiService from "@/services/api.service.js";
+// import CUISelectCompany from "@/components/CUISelectCompany.vue";
+// import Alerts from "@/utils/alerts";
+import YParamsList from "@/components/YParamsList.vue";
 
 // name: "CMPrefsSettings",
 
 /// DATA
-
+/*
 const orderCompanyId = ref(null);
 const isLoading = ref(false);
 
@@ -55,5 +58,6 @@ async function postUpdateValue(intValue) {
 }
 /// RUN
 
-fetchPrefs();
+ fetchPrefs();
+*/
 </script>
