@@ -1,5 +1,5 @@
 <template>
-  <LayoutTwoColumns>
+  <LayoutTwoColumns style="max-width: 105em">
     <!-- Test List -->
     <UIList class="grouped" :is-loading="isLoading">
       <!--  -->

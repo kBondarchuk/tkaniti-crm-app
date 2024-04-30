@@ -1,5 +1,5 @@
 <template>
-  <LayoutTwoColumns>
+  <LayoutTwoColumns style="max-width: 105em">
     <!-- First column -->
     <TKCustomerDetails :customer="customer" :is-loading="isLoading" />
 
