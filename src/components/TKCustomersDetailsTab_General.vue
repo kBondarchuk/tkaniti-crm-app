@@ -1,6 +1,4 @@
 <template>
-  <!-- Grid -->
-  <!-- Grid -->
   <LayoutTwoColumns>
     <!-- First column -->
     <TKCustomerDetails :customer="customer" :is-loading="customer == null" />
@@ -9,21 +7,17 @@
   <!--  -->
 </template>
 
-<script>
+<script setup>
 import TKCustomerDetails from "@/components/TKCustomerDetails.vue";
 
-export default {
-  name: "TKCustomersDetailsTabGeneral",
+// name: "TKCustomersDetailsTabGeneral",
 
-  components: {
-    TKCustomerDetails,
-  },
+/// PROPS
 
-  props: {
-    customer: {
-      type: Object,
-      default: null,
-    },
+const props = defineProps({
+  customer: {
+    type: Object,
+    default: null,
   },
-};
+});
 </script>
