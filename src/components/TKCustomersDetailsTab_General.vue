@@ -1,13 +1,22 @@
 <template>
   <LayoutTwoColumns>
     <!-- First column -->
-    <TKCustomerDetails :customer="customer" :is-loading="customer == null" />
-    <!-- second column -->
+    <TKCustomerDetails :customer="customer" :is-loading="isLoading" />
+
+    <!-- Second column -->
+    <template #second>
+      <UIList :is-loading="isLoading">
+        <UIListSection>
+          <UIListItem name="Кол-во неоплаченных заказов" :value="customer?.unpaid_orders_count" />
+        </UIListSection>
+      </UIList>
+    </template>
   </LayoutTwoColumns>
   <!--  -->
 </template>
 
 <script setup>
+import { computed } from "vue";
 import TKCustomerDetails from "@/components/TKCustomerDetails.vue";
 
 // name: "TKCustomersDetailsTabGeneral",
@@ -19,5 +28,11 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+});
+
+/// COMPUTED
+
+const isLoading = computed(() => {
+  return props.customer == null;
 });
 </script>
