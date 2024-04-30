@@ -91,16 +91,7 @@ export default {
 
       if (this.customer === null) return;
 
-      this.view.title =
-        this.customer?.last_name +
-        " " +
-        this.customer?.first_name +
-        " " +
-        this.customer?.second_name +
-        " " +
-        "(" +
-        this.customerId +
-        ")";
+      this.view.title = this.customer?._fio_full + " " + "(" + this.customerId + ")";
     },
     // ---
     reload() {
