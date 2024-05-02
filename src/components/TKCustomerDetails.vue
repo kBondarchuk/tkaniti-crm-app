@@ -1,17 +1,4 @@
 <template>
-  <!--  -->
-  <!-- <UIStaticTable> -->
-  <!--  -->
-  <!-- <UITableDividerRow /> -->
-  <!-- <UITableRow name="ФИО" :value="customer.last_name + ' ' + customer.first_name + ' ' + customer.second_name" />
-    <UITableRow name="Телефон" :value="customer.phone" type="phone" />
-    <UITableRow name="Email" :value="customer.email" />
-    <UITableRow name="Адрес фактический" :value="address_fact" />
-    <UITableDividerRow />
-    <UITableRow name="Комментарий" :value="customer.notes" /> -->
-  <!--  -->
-  <!-- </UIStaticTable> -->
-
   <UIList :is-loading="isLoading">
     <UIListSection>
       <UIListItem name="ФИО" :value="customer?.last_name + ' ' + customer?.first_name + ' ' + customer?.second_name" />
