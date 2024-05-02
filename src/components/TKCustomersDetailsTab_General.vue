@@ -4,13 +4,13 @@
     <TKCustomerDetails :customer="customer" :is-loading="isLoading" />
 
     <!-- Second column -->
-    <template #second>
+    <!-- <template #second>
       <UIList :is-loading="isLoading">
         <UIListSection>
           <UIListItem name="Кол-во неоплаченных заказов" :value="customer?.unpaid_orders_count" />
         </UIListSection>
       </UIList>
-    </template>
+    </template> -->
   </LayoutTwoColumns>
   <!--  -->
 </template>
