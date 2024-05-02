@@ -29,6 +29,10 @@ const props = defineProps({
   },
 });
 
+/// EMITS
+
+const emit = defineEmits(["update"]);
+
 /// DATA
 
 const optionSkip = ref(false);
@@ -60,6 +64,7 @@ async function updateOption(optionName, optionValue) {
   isLoading.value = true;
   try {
     await apiService.setCustomerOption(props.customer.id, optionName, optionValue);
+    emit("update");
   } catch (error) {
     Alerts.showNetworkError(error);
   } finally {

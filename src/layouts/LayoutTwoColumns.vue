@@ -1,6 +1,6 @@
 <template>
   <!-- Grid -->
-  <div class="ui two column grid">
+  <div class="container">
     <!-- fist column -->
     <div class="column">
       <slot></slot>
@@ -12,8 +12,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "LayoutTwoColumns",
-};
+<script setup>
+// name: "LayoutTwoColumns",
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 1em;
+}
+
+.column {
+  flex: 1;
+}
+
+@media only screen and (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+}
+</style>

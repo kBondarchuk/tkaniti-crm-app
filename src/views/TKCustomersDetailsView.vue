@@ -15,7 +15,7 @@
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
-      <router-view :customer="customer" @update="fetchCustomer()"></router-view>
+      <router-view :customer="customer" @update="reload()"></router-view>
     </div>
     <!--  -->
   </LayoutPage>
@@ -91,20 +91,11 @@ export default {
 
       if (this.customer === null) return;
 
-      this.view.title =
-        this.customer?.last_name +
-        " " +
-        this.customer?.first_name +
-        " " +
-        this.customer?.second_name +
-        " " +
-        "(" +
-        this.customerId +
-        ")";
+      this.view.title = this.customer?._fio_full + " " + "(" + this.customerId + ")";
     },
     // ---
     reload() {
-      console.log("Reload Params.id: " + this.$route.params.id);
+      // console.log("Reload Params.id: " + this.$route.params.id);
 
       // Get ID from params
       if (this.customerId) {

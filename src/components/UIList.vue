@@ -103,6 +103,11 @@ export default {
   background-color: var(--list-grouped-background-color);
   font-size: var(--list-font-size);
   line-height: var(--list-line-height);
+  /* for @container size depending  */
+  /*
+  container-name: ui-list;
+  container-type: size;
+  */
 }
 
 .ui-list > .ui-header
@@ -205,9 +210,24 @@ export default {
   }
 }
 
-@media only screen and (min-width: 1600px) {
-  :root {
-    --list-font-size: 14px;
+/* :root {
+  --list-font-size: 16px;
+  .ui-list-row {
+    font-size: 18px;
   }
-}
+} */
+
+/*
+TODO:
+@container ui-list (width > 600px) {
+  .ui-list-row {
+    font-size: var(--list-font-size-xl);
+  }
+  .ui-header {
+    font-size: var(--list-font-size-xl);
+  }
+  .ui-list-section {
+    font-size: var(--list-font-size-xl);
+  }
+} */
 </style>
