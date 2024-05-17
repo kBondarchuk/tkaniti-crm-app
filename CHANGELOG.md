@@ -2,6 +2,16 @@
 
 Все заметные изменения в проекте будут отражены в этом файле.
 
+## [v0.20.1] - 2024-05-17
+
+### Fixed
+
+- Fixed option_skip_order_confirm sort
+
+### Changed
+
+- Changed back min-width to 1280px
+
 ## [v0.20.0] - 2024-05-02
 
 ### Fixed
