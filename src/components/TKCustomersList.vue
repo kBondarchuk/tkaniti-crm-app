@@ -58,7 +58,7 @@ export default {
         { id: "phone", name: "Телефон", class: "" },
         { id: "email", name: "Email", class: "" },
         { id: "address_fact", name: "Адрес", class: "" },
-        { id: "options", name: "БП", class: "", title: "Без проверки заказа" },
+        { id: "option_skip_order_confirm", name: "БП", class: "", title: "Без проверки заказа" },
         { id: "notes", name: "Примечание", class: "" },
       ],
       items: [],
