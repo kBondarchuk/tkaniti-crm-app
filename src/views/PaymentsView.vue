@@ -72,8 +72,10 @@ export default {
       // UI
       status_options: [
         { name: "Все", value: null },
+        { name: "Ошибка", value: -5 },
         { name: "Отказ", value: -1 },
         { name: "Создан", value: 0 },
+        { name: "Запрошен", value: 3 },
         { name: "Оплачен", value: 1 },
         { name: "Отменён", value: 2 },
       ],
