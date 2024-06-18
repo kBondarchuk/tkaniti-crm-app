@@ -1,7 +1,9 @@
 <template>
   <UIList :is-loading="isLoading">
-    <UIListSection>
+    <UIListSection header="Персональные данные">
       <UIListItem name="ФИО" :value="customer?.last_name + ' ' + customer?.first_name + ' ' + customer?.second_name" />
+    </UIListSection>
+    <UIListSection header="Контактные данные">
       <UIListItem name="Телефон" :value="customer?.phone" type="phone" />
       <UIListItem name="Email" :value="customer?.email" />
     </UIListSection>
