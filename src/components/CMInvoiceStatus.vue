@@ -20,6 +20,8 @@ export default {
   computed: {
     status() {
       switch (this.value) {
+        case -5:
+          return "Ошибка";
         case -1:
           return "Отказ";
         case 0:
@@ -28,6 +30,8 @@ export default {
           return "Оплачен";
         case 2:
           return "Отменён";
+        case 3:
+          return "Запрошен";
         case null:
           return "Неопределен";
         default:
@@ -36,6 +40,8 @@ export default {
     },
     class2() {
       switch (this.value) {
+        case -5:
+          return "background-color-gray text-color-red";
         case -1:
           return "background-color-red text-color-white";
         case 0:
@@ -44,6 +50,8 @@ export default {
           return "background-color-green text-color-white";
         case 2:
           return "background-color-orange text-color-white";
+        case 3:
+          return "background-color-teal text-color-white";
         default:
           return "";
       }
