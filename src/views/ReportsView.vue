@@ -21,6 +21,7 @@ import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
 import TKReportQuantityDaily from "@/components/TKReportQuantityDaily.vue";
 import TKReportPicking from "@/components/TKReportPicking.vue";
+import AccessRightsEnum from "@/enums/AccessRights";
 
 export default {
   name: "ReportsView",
@@ -64,35 +65,35 @@ export default {
           component: "TKReportDaily",
           name: "По дням",
           icon: "table",
-          access: "user",
+          access: AccessRightsEnum.Reports.Finances,
         },
         {
           id: 2,
           component: "TKReportMonthly",
           name: "По месяцам",
           icon: "table",
-          access: "user",
+          access: AccessRightsEnum.Reports.Finances,
         },
         {
           id: 3,
           component: "TKReportQuantityMonthly",
           name: "Кол-во по месяцам",
           icon: "table",
-          access: "user",
+          access: AccessRightsEnum.Reports.Finances,
         },
         {
           id: 4,
           component: "TKReportQuantityDaily",
           name: "Кол-во по дням",
           icon: "table",
-          access: "user",
+          access: AccessRightsEnum.Reports.Finances,
         },
         {
           id: 5,
           component: "TKReportPicking",
           name: "Товар к сборке",
           icon: "table",
-          access: "user",
+          access: AccessRightsEnum.Reports.Logistics,
         },
         // {
         //   id: 2,
