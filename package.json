@@ -6,7 +6,7 @@
     "dev": "open -n /Applications/Chromium.app --args -u http://localhost:6137 && vite --port 6137",
     "dev2": "bunx vite --mode development2",
     "build": "bunx vite build",
-    "serve": "bunx vite preview",
+    "serve": "bunx vite preview --port 7137",
     "serve-prod": "bunx vite --mode staging",
     "serve-prod2": "bunx vite --mode staging2",
     "build2": "bunx vite build --mode production2",
