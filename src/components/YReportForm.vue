@@ -26,10 +26,6 @@
         <div class="ui sub header" style="visibility: hidden">X</div>
         <UIButton type="" style="margin-top: 2px" @click="handleClickSave">Скачать</UIButton>
       </div>
-      <div v-if="showPrint" class="field">
-        <div class="ui sub header" style="visibility: hidden">X</div>
-        <UIButton type="" style="margin-top: 2px" @click="handleClickPrint">Распечатать</UIButton>
-      </div>
     </div>
   </form>
 </template>
@@ -42,10 +38,6 @@ export default {
 
   props: {
     showSave: {
-      type: Boolean,
-      default: false,
-    },
-    showPrint: {
       type: Boolean,
       default: false,
     },
@@ -70,7 +62,7 @@ export default {
     },
   },
 
-  emits: ["reportRequest", "reportSave", "reportPrint"],
+  emits: ["reportRequest", "reportSave"],
 
   data() {
     return {
@@ -165,10 +157,6 @@ export default {
     handleClickSave() {
       console.log("Form: click save");
       this.$emit("reportSave");
-    },
-    handleClickPrint() {
-      console.log("Form: click Print");
-      this.$emit("reportPrint");
     },
   },
 };
