@@ -8,13 +8,13 @@
 
       <UISpacer />
       <!-- Кассовый чек -->
-      <!-- <UIButton
+      <UIButton
         text="Обновить чек"
         icon="refresh"
         type="basic labeled"
         :class="{ disabled: !invoice.receipt_id }"
         @click="refreshReceiptStatus"
-      /> -->
+      />
       <!-- Эквайринг -->
       <UIButton
         v-if="invoice.payment_acq"
@@ -70,7 +70,7 @@
         />
 
         <!-- Чек -->
-        <!-- <CMPaymentsReceiptDetails :key="transaction_key" :receipt="invoice.receipt ?? {}" :is-loading="isLoading" /> -->
+        <CMPaymentsReceiptDetails :key="transaction_key" :receipt="invoice.receipt ?? {}" :is-loading="isLoading" />
 
         <!-- Описание ошибки -->
         <!-- <template v-if="receiptStatus?.Description">
@@ -92,7 +92,7 @@ import apiService from "@/services/api.service.js";
 import { useView } from "@/composables/view";
 
 import CMPaymentsInvoiceDetails from "@/components/CMPaymentsInvoiceDetails.vue";
-// import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
+import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
 import CMPaymentsSbpOrderDetails from "@/components/CMPaymentsSbpOrderDetails.vue";
 import CMPaymentsAcqOrderDetails from "@/components/CMPaymentsAcqOrderDetails.vue";
 
@@ -101,7 +101,7 @@ export default {
 
   components: {
     CMPaymentsInvoiceDetails,
-    // CMPaymentsReceiptDetails,
+    CMPaymentsReceiptDetails,
     CMPaymentsSbpOrderDetails,
     CMPaymentsAcqOrderDetails,
   },
