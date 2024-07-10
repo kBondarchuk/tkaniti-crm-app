@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@kbond/vue-ui": "file:../../vue-ui",
+    "@vueuse/core": "^10.9.0",
     "axios": "^1.6.0",
     "cleave.js": "^1.6.0",
     "jquery-tablesort": "^0.0.11",
