@@ -12,115 +12,100 @@
           <!--  -->
           <UIInputDropdown v-model="filter.status" label="Статус оплаты" :options="status_options" />
           <!--  -->
-          <!-- <UIInputDropdown v-model="filter.company_id" label="Юр. лицо" :options="companies_options" /> -->
+          <CUISelectCompany v-model="filter.company_id" unselected-text="Все" label="Юр. лицо" />
           <!--  -->
           <UIInputDropdownString v-model="filter.payment_method" label="Способ оплаты" :options="payment_methods" />
           <!--  -->
           <UIInputDropdown v-model.number="filter.cleared" label="Зачислено" :options="cleared_options" />
+          <!--  -->
+          <UIInputNumber v-model="filter.subject_id" label="ID заказа" />
           <!--  -->
           <UIButton class="primary">Обновить</UIButton>
         </form>
       </div>
     </template>
 
-    <!-- Toolbar -->
-    <!-- <template #toolbar>
-      <UIButton icon="plus" type="labeled" style="visibility: hidden">x</UIButton>
-    </template> -->
-
     <!-- List -->
     <CMPaymentsInvoicesList :key="key" :filter="filter" :header-sticked-at="42" @event-details="handleDetails" />
   </LayoutPage>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import { useView } from "@/composables/view";
+import { useStorage } from "@vueuse/core";
+import { useRouter } from "vue-router";
+// import { useNavigation } from "@/composables/navigation";
 
 import CMPaymentsInvoicesList from "@/components/CMPaymentsInvoicesList.vue";
+import CUISelectCompany from "@/components/CUISelectCompany.vue";
 
-export default {
-  name: "PaymentsView",
+/// SETUP
 
-  components: {
-    CMPaymentsInvoicesList,
-  },
+const { view } = useView("PaymentsView", { title: "Касса", subTitle: "Список счетов на оплату" });
+const router = useRouter();
+// const { navigateTo } = useNavigation();
 
-  setup() {
-    const { view } = useView("PaymentsView");
+/// DATA
 
-    view.title = "Касса";
-    view.subTitle = "Список счетов на оплату";
+const status_options = [
+  { name: "Все", value: null },
+  { name: "Ошибка", value: -5 },
+  { name: "Отказ", value: -1 },
+  { name: "Создан", value: 0 },
+  { name: "Запрошен", value: 3 },
+  { name: "Оплачен", value: 1 },
+  { name: "Отменён", value: 2 },
+];
+const payment_methods = [
+  { name: "Все", value: null },
+  { name: "Эквайринг", value: "acq" },
+  { name: "СБП", value: "sbp" },
+];
+const cleared_options = [
+  { name: "Все", value: null },
+  { name: "Зачисленные", value: 1 },
+  { name: "Не зачисленные", value: 0 },
+];
 
-    return { view };
-  },
+const ofd_statuses = [
+  { name: "Новый", value: 0 },
+  { name: "Сформирован", value: 1 },
+  { name: "ОФД OK", value: 2 },
+  { name: "Ошибка", value: 3 },
+  { name: "Запрошен", value: 99 },
+  { name: "Нет чека", value: null },
+];
 
-  data() {
-    return {
-      // Keys
-      key: 0,
-      // Data
-      items: [],
-      // Filters
-      filter: {
-        date1: "",
-        date2: "",
-        status: null,
-        company_id: null,
-        payment_method: null,
-        cleared: null,
-      },
-      // UI
-      status_options: [
-        { name: "Все", value: null },
-        { name: "Ошибка", value: -5 },
-        { name: "Отказ", value: -1 },
-        { name: "Создан", value: 0 },
-        { name: "Запрошен", value: 3 },
-        { name: "Оплачен", value: 1 },
-        { name: "Отменён", value: 2 },
-      ],
-      companies_options: [
-        { name: "Все", value: null },
-        { name: "ИП Каратаева Л.М.", value: 1 },
-        { name: "ИП Каратаев Ю.М.", value: 2 },
-      ],
-      payment_methods: [
-        { name: "Все", value: null },
-        { name: "Эквайринг", value: "acq" },
-        { name: "СБП", value: "sbp" },
-      ],
-      cleared_options: [
-        { name: "Все", value: null },
-        { name: "Зачисленные", value: 1 },
-        { name: "Не зачисленные", value: 0 },
-      ],
-    };
-  },
-
-  created() {
-    // Load saved params
-    let filter = JSON.parse(localStorage.getItem("payments.filter"));
-    if (filter != null) {
-      this.filter = filter;
-    }
-  },
-
-  methods: {
-    handleDetails(item) {
-      // console.log("row clicked: " + item.id);
-      this.$router.push({
-        name: "payments_invoice_details",
-        params: { id: item.id },
-      });
-    },
-    reload() {
-      // Save params
-      localStorage.setItem("payments.filter", JSON.stringify(this.filter));
-      // this.refetch(this.filter);
-      this.key++;
-    },
-    // value
-    orderStatusDropDownChanged() {},
-  },
+const _filter = {
+  date1: "",
+  date2: "",
+  status: null,
+  company_id: null,
+  payment_method: null,
+  cleared: null,
+  subject_id: null,
 };
+
+// Keys
+const key = ref(0);
+// Data
+const items = ref([]);
+// bind object
+const filter = useStorage("payments.filter", _filter);
+
+/// FUNCTIONS
+
+function handleDetails(item) {
+  router.push({
+    name: "payments_invoice_details",
+    params: { id: item.id },
+  });
+  // TODO:
+  // navigateTo.Payments.Details({ invoiceId: item.id });
+}
+
+function reload() {
+  key.value++;
+}
 </script>
