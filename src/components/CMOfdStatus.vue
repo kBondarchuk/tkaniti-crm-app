@@ -25,7 +25,7 @@ export default {
         case 1:
           return "Сформирован";
         case 2:
-          return "OK";
+          return "ОФД OK";
         case 3:
           return "Ошибка";
         case 99:

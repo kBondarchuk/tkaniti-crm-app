@@ -2,7 +2,7 @@
 import { onMounted, watch, reactive, inject } from "vue";
 import { useStore } from "vuex";
 
-export function useView(viewId) {
+export function useView(viewId, { title = "", subTitle = "" } = {}) {
   /// SETUP
   if (viewId == undefined) {
     console.warn("[useView]: viewId is undefined!");
@@ -18,8 +18,8 @@ export function useView(viewId) {
   /// DATA
 
   const view = reactive({
-    title: "-",
-    subTitle: "-",
+    title: title,
+    subTitle: subTitle,
     showSidePanel: _sidePanelStatus,
   });
 

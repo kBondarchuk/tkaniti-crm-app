@@ -1,6 +1,6 @@
 {
   "name": "tkaniti-crm-app",
-  "version": "0.23.2",
+  "version": "0.24.0",
   "private": true,
   "scripts": {
     "dev": "open -n /Applications/Chromium.app --args -u http://localhost:6137 && vite --port 6137",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@kbond/vue-ui": "file:../../vue-ui",
+    "@vueuse/core": "^10.9.0",
     "axios": "^1.6.0",
     "cleave.js": "^1.6.0",
     "jquery-tablesort": "^0.0.11",
