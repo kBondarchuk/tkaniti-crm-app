@@ -1,6 +1,6 @@
 {
   "name": "tkaniti-crm-app",
-  "version": "0.23.2",
+  "version": "0.24.0",
   "private": true,
   "scripts": {
     "dev": "open -n /Applications/Chromium.app --args -u http://localhost:6137 && vite --port 6137",
