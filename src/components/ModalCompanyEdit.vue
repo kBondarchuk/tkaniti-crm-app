@@ -52,6 +52,21 @@
             :options="optionsOfd"
           />
         </div>
+
+        <div class="two fields">
+          <!-- Ю-касса -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['yoo'].settings_id"
+            label="Ю-касса"
+            :options="optionsYoo"
+          />
+          <!-- Касса / OFD -->
+          <UIInputDropdown
+            v-model="params.payments.settings[key]['yoo'].ofd_settings_id"
+            label="Онлайн касса"
+            :options="optionsOfd"
+          />
+        </div>
       </template>
 
       <!-- <h5>НАСТРОЙКИ ПЛАТЕЖНЫХ СИСТЕМ</h5>
@@ -142,7 +157,7 @@ export default {
     return {
       acqItems: [],
       sbpItems: [],
-      // ofdItems: [],
+      yooItems: [],
       // UI
       title: "Новые реквизиты",
       isLoading: false,
@@ -165,6 +180,14 @@ export default {
     optionsSbp() {
       let menu = [{ name: "Нет", value: null }].concat(
         this.sbpItems.map((item) => {
+          return { name: item.name, value: item.id };
+        })
+      );
+      return menu;
+    },
+    optionsYoo() {
+      let menu = [{ name: "Нет", value: null }].concat(
+        this.yooItems.map((item) => {
           return { name: item.name, value: item.id };
         })
       );
@@ -274,10 +297,26 @@ export default {
       // this.ofdItems = await apiService.getPaymentsSettings({ settings_type: "ofd", enabled: 1 });
       this.acqItems = await apiService.getPaymentsSettings({ settings_type: "acq", enabled: 1 });
       this.sbpItems = await apiService.getPaymentsSettings({ settings_type: "sbp", enabled: 1 });
+      this.yooItems = await apiService.getPaymentsSettings({ settings_type: "yoo", enabled: 1 });
       this.isLoading = false;
     },
 
-    async delete() {},
+    async delete() {
+      // this.isLoading = true;
+      // try {
+      //   // let result = await apiService.deleteDTP(this.params.id);
+      //   // console.log(result);
+      //   this.$UIService.showInfo(null, "Юр. лицо " + this.params.id + " удалён.");
+      //   // saved
+      //   this.$emit("didChange");
+      //   // close modal
+      //   this.$emit("hide");
+      // } catch (error) {
+      //   // console.log("!!!! " + error);
+      //   this.$UIService.showNetworkError(error);
+      // }
+      // this.isLoading = false;
+    },
   },
 };
 </script>

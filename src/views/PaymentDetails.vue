@@ -1,7 +1,6 @@
 <template>
-  <LayoutPage>
+  <LayoutPage back-button="payments_invoices" view-id="PaymentDetails">
     <!-- Toolbar -->
-    <!-- Back -->
     <template #toolbar>
       <!-- Back -->
       <YBackButton to="payments_invoices" />
@@ -19,7 +18,6 @@
       <UIButton
         v-if="invoice.payment_acq"
         text="Обновить статус оплаты"
-        :class="{ 'disabled loading': loadingRefresh['acq'] }"
         icon="refresh"
         type="basic labeled"
         @click="refreshAcqPaymentStatus"
@@ -31,6 +29,14 @@
         icon="refresh"
         type="basic labeled"
         @click="refreshSbpPaymentStatus"
+      />
+      <!-- СБП -->
+      <UIButton
+        v-if="invoice.payment_yoo"
+        text="Обновить статус платежной операции"
+        icon="refresh"
+        type="basic labeled"
+        @click="refreshYooPaymentStatus"
       />
       <!-- Зачислить -->
       <UIButton
@@ -66,7 +72,15 @@
           v-if="invoice?.payment_method == 'acq' && invoice?.payment_acq"
           :key="transaction_key"
           :order="invoice.payment_acq ?? {}"
-          :is-loading="loadingRefresh['acq']"
+          :is-loading="isLoading"
+        />
+
+        <!-- Платеж Ю-кассы -->
+        <CMPaymentsYooOrderDetails
+          v-if="invoice?.payment_method == 'yoo' && invoice?.payment_yoo"
+          :key="transaction_key"
+          :order="invoice.payment_yoo ?? {}"
+          :is-loading="isLoading"
         />
 
         <!-- Чек -->
@@ -95,6 +109,7 @@ import CMPaymentsInvoiceDetails from "@/components/CMPaymentsInvoiceDetails.vue"
 import CMPaymentsReceiptDetails from "@/components/CMPaymentsReceiptDetails.vue";
 import CMPaymentsSbpOrderDetails from "@/components/CMPaymentsSbpOrderDetails.vue";
 import CMPaymentsAcqOrderDetails from "@/components/CMPaymentsAcqOrderDetails.vue";
+import CMPaymentsYooOrderDetails from "@/components/CMPaymentsYooOrderDetails.vue";
 
 export default {
   name: "PaymentDetails",
@@ -104,6 +119,7 @@ export default {
     CMPaymentsReceiptDetails,
     CMPaymentsSbpOrderDetails,
     CMPaymentsAcqOrderDetails,
+    CMPaymentsYooOrderDetails,
   },
 
   props: {
@@ -114,10 +130,7 @@ export default {
   },
 
   setup() {
-    const { view } = useView("PaymentDetails");
-
-    view.title = "Платежная операция";
-    view.subTitle = "Детализация";
+    const { view } = useView("PaymentDetails", { title: "Платежная операция", subTitle: "Детализация" });
 
     return { view };
   },
@@ -127,11 +140,6 @@ export default {
       isLoading: false,
       invoice: {},
       receiptStatus: null,
-      // Loading
-      loadingRefresh: {
-        acq: false,
-        sbp: false,
-      },
       // Keys
       transaction_key: 0,
     };
@@ -168,6 +176,12 @@ export default {
         this.fetchOrderStatus("sbp", this.invoice.payment_sbp.number);
       }
     },
+    refreshYooPaymentStatus() {
+      console.log("refreshYooPaymentStatus", this.invoice.payment_yoo?.payment_id);
+      if (this.invoice.payment_yoo) {
+        this.fetchOrderStatus("yoo", this.invoice.payment_yoo.payment_id);
+      }
+    },
     depositOrder() {
       console.log("depositOrder", this.invoice.invoice_number);
       this.fetchDepositByInvoice(this.invoice.id);
@@ -185,14 +199,14 @@ export default {
       this.isLoading = false;
     },
     async fetchOrderStatus(paymentMethod, orderId) {
-      this.loadingRefresh[paymentMethod] = true;
+      this.isLoading = true;
       try {
         await apiService.refreshPaymentOrderStatus(paymentMethod, orderId);
         this.fetchInvoice(this.invoiceId);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
-      this.loadingRefresh[paymentMethod] = false;
+      this.isLoading = false;
     },
     async fetchDepositByInvoice(invoiceId) {
       this.isLoading = true;

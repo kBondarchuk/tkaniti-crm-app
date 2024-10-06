@@ -24,9 +24,12 @@ import CMPrefsParams from "@/components/CMPrefsParams.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
 import CMPrefsSettings from "@/components/CMPrefsSettings.vue";
 import CMPrefsAcquiring from "@/components/CMPrefsAcquiring.vue";
+import CMPrefsPaymentsYoo from "@/components/CMPrefsPaymentsYoo.vue";
 import CMPrefsPaymentsSbp from "@/components/CMPrefsPaymentsSbp.vue";
 import CMPrefsOfd from "@/components/CMPrefsOfd.vue";
 import CMPrefsSystem from "@/components/CMPrefsSystem.vue";
+
+import AccessRights from "@/enums/AccessRights";
 
 const _menu_items = [
   {
@@ -51,6 +54,7 @@ const _menu_items = [
   // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 8, name: "Юр. лица", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
   { id: 9, name: "Эквайринг", icon: "visa", component: "CMPrefsAcquiring", access: "admin" },
+  { id: 12, name: "Ю-касса", icon: "visa", component: "CMPrefsPaymentsYoo", access: AccessRights.Admin },
   { id: 11, name: "СБП", icon: "visa", component: "CMPrefsPaymentsSbp", access: "admin" },
   { id: 10, name: "Фискализация", icon: "cash register", component: "CMPrefsOfd", access: "admin" },
   { id: 20, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
@@ -67,6 +71,7 @@ export default {
     CMPrefsParams,
     CMPrefsCompanies,
     CMPrefsAcquiring,
+    CMPrefsPaymentsYoo,
     CMPrefsPaymentsSbp,
     CMPrefsOfd,
     CMPrefsSystem,
