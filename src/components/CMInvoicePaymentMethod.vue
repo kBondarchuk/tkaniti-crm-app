@@ -25,6 +25,8 @@ export default {
           return "Эквайринг";
         case "sbp":
           return "СБП";
+        case "yoo":
+          return "Ю-касса";
         default:
           return this.value;
       }
@@ -34,6 +36,8 @@ export default {
         case "acq":
           return "";
         case "sbp":
+          return "";
+        case "yoo":
           return "";
         default:
           return "";

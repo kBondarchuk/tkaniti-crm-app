@@ -207,6 +207,21 @@ export default [
         name: "Preferences",
         component: () => import("@/views/PreferencesView.vue"),
       },
+
+      // TODO:
+      // {
+      //   path: "/prefs",
+      //   component: () => import("../layouts/LayoutView.vue"),
+      //   children: [
+      //     {
+      //       name: "PrefsPages",
+      //       path: ":pageId",
+      //       props: (route) => ({ pageId: String(route.params.pageId) }),
+      //       component: () => import("../views/PrefsPagesView.vue"),
+      //     },
+      //   ],
+      // },
+
       // Payments
       {
         path: "/cashier/invoices",

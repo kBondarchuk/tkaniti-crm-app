@@ -15,6 +15,7 @@ const _companyObject = {
       order: {
         acq: Object.assign({}, _paymentSettingsItem),
         sbp: Object.assign({}, _paymentSettingsItem),
+        yoo: Object.assign({}, _paymentSettingsItem),
       },
     },
   },
