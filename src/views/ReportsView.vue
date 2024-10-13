@@ -21,6 +21,7 @@ import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
 import TKReportQuantityDaily from "@/components/TKReportQuantityDaily.vue";
 import TKReportPicking from "@/components/TKReportPicking.vue";
+import TKReportPacking from "@/components/TKReportPacking.vue";
 import AccessRightsEnum from "@/enums/AccessRights";
 
 export default {
@@ -34,6 +35,7 @@ export default {
     TKReportQuantityMonthly,
     TKReportQuantityDaily,
     TKReportPicking,
+    TKReportPacking,
   },
 
   setup() {
@@ -92,6 +94,13 @@ export default {
           id: 5,
           component: "TKReportPicking",
           name: "Товар к сборке",
+          icon: "table",
+          access: AccessRightsEnum.Reports.Logistics,
+        },
+        {
+          id: 6,
+          component: "TKReportPacking",
+          name: "Задание на упаковку",
           icon: "table",
           access: AccessRightsEnum.Reports.Logistics,
         },
