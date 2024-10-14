@@ -66,16 +66,12 @@ export default {
       switch (this.align) {
         case "right":
           return "right aligned";
-          break;
         case "left":
           return "left aligned";
-          break;
         case "center":
           return "center aligned";
-          break;
         default:
           return null;
-          break;
       }
     },
   },
