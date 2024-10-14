@@ -2,10 +2,9 @@
   <div>
     <div :key="updateKey" :class="{ loading: isLoading }" class="gallery">
       <div v-for="(image, index) in records" :key="image.id" class="item" style="position: relative">
-        <!-- <a :href="url_download_base+'?file=images/'+image.filename+'&jwt='+token" target="_blank"> -->
         <img
           v-if="token"
-          :src="url_download_base + '?file=images/' + image.filename + '&jwt=' + token"
+          :src="urlDownloadBase + '?file=images/' + image.filename + '&jwt=' + token"
           :alt="image.upload_ts"
           :title="image.upload_ts"
           @click="activeIndex = index"
@@ -44,9 +43,9 @@ import apiService from "@/services/api.service.js";
 
 import FormAddPhoto from "@/components/FormAddPhoto.vue";
 import VueEasyLightbox from "vue-easy-lightbox";
+import { useUiStore } from "@/stores/uiStore";
 // import CoolLightBox from "vue-cool-lightbox";
 // import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
-import { useUiStore } from "@/stores/uiStore";
 
 export default {
   name: "CMPhotoGallery",
