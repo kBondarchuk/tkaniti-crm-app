@@ -48,8 +48,8 @@ export const navigation = (router) => {
         router.push({ name: "OrdersDetails", params: { orderId }, replace: replace });
       },
 
-      Edit: ({ goodId } = {}, replace = false) => {
-        router.push({ name: "OrdersEdit", params: { goodId }, replace: replace });
+      Edit: ({ orderId } = {}, replace = false) => {
+        router.push({ name: "OrdersEdit", params: { orderId }, replace: replace });
       },
     },
     Goods: {
