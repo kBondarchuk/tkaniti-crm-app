@@ -117,14 +117,14 @@ const pageText = computed(() => {
 /// WATCHERS
 
 watchEffect(async () => {
-  console.warn("watchEffect", menuSelectedId.value);
+  // console.warn("watchEffect", menuSelectedId.value);
   await fetchOrdersCount();
 });
 
 watch(
   () => menuSelectedId.value,
   (newValue, oldValue) => {
-    console.warn(newValue);
+    // console.warn(newValue);
     currentPage.value = 0;
     fetchOrdersCount();
   },
@@ -133,7 +133,7 @@ watch(
 watch(
   () => searchString.value,
   (newValue, oldValue) => {
-    console.warn(newValue);
+    // console.warn(newValue);
     currentPage.value = 0;
   },
 );
