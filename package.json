@@ -16,7 +16,8 @@
     "route-build-names": "bun src/router/genNames.js > src/router/names.gen.js && bunx eslint --fix src/router/names.gen.js",
     "route-build-navigation": "bun src/router/genNavigation.js > src/router/navigation.gen.js && bunx eslint --fix src/router/navigation.gen.js",
     "route-build-routes": "bun src/router/genRoutes.js > src/router/routes.gen.js && bunx eslint --fix src/router/routes.gen.js",
-    "route-build-all": "bun run route-build-routes && bun run route-build-navigation && bun run route-build-names"
+    "route-build-all": "bun run route-build-routes && bun run route-build-navigation && bun run route-build-names",
+    "unused VUE": "check-unused-comp ."
   },
   "dependencies": {
     "@kbond/vue-ui": "file:../../vue-ui",
@@ -30,7 +31,6 @@
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "vite": "^5.3.5",
     "@vitejs/plugin-vue": "^5.1.2",
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^9.9.0",
@@ -41,8 +41,10 @@
     "stylelint": "^14.6.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended-vue": "^1.4.0",
+    "vite": "^5.3.5",
     "vite-plugin-html": "^3.2.2",
-    "vue-eslint-parser": "^9.4.3"
+    "vue-eslint-parser": "^9.4.3",
+    "vue-unused-components-checker": "^1.1.2"
   },
   "browserslist": [
     "last 2 Chrome versions",
