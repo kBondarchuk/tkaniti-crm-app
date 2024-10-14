@@ -2,10 +2,10 @@
   <div>
     <div :key="updateKey" :class="{ loading: isLoading }" class="gallery">
       <div v-for="image in records" :key="image.id" class="item" style="position: relative">
-        <a :href="url_download_base + '?file=videos/' + image.filename + '.mp4' + '&jwt=' + token" target="_blank">
+        <a :href="urlDownloadBase + '?file=videos/' + image.filename + '.mp4' + '&jwt=' + token" target="_blank">
           <img
             v-if="token"
-            :src="url_download_base + '?file=videos/' + image.filename + '.jpeg' + '&jwt=' + token"
+            :src="urlDownloadBase + '?file=videos/' + image.filename + '.jpeg' + '&jwt=' + token"
             :alt="image.upload_ts"
             :title="image.upload_ts"
             @click="openVideo(image.filename)"
