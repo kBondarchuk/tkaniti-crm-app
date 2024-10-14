@@ -13,22 +13,22 @@ const routeParentObject = {
   children: [],
 };
 
-const genRoute = (name, path, parentName = null) => {
-  return {
-    path: path,
-    name: name,
-    component: genComponent(name),
-  };
-};
+// const genRoute = (name, path, parentName = null) => {
+//   return {
+//     path: path,
+//     name: name,
+//     component: genComponent(name),
+//   };
+// };
 
-const genTabRoute = (name, path, parentName = null) => {
-  const _name = parentName + "Tab" + "_" + name;
-  return {
-    path: path,
-    name: _name,
-    component: genTabComponent(_name),
-  };
-};
+// const genTabRoute = (name, path, parentName = null) => {
+//   const _name = parentName + "Tab" + "_" + name;
+//   return {
+//     path: path,
+//     name: _name,
+//     component: genTabComponent(_name),
+//   };
+// };
 
 const genParentRoute = (name, object, parentName = null) => {
   if (object.children) {
