@@ -30,7 +30,7 @@
       </tr>
       <!--  -->
       <tr v-for="item in order?.basket" :key="item.id">
-        <td><TKLink :id="item.good_id" path-name="goods_details" />{{ item.good_name }} ({{ item.good_id }})</td>
+        <td><TKLinkGood :id="item.good_id" />{{ item.good_name }} ({{ item.good_id }})</td>
         <td><TKGoodStatus :value="item.good_status_id" /></td>
         <td class="right aligned">{{ item.remains }}</td>
         <td class="right aligned">{{ item.good_quantity }}</td>
@@ -58,14 +58,14 @@
 </template>
 
 <script>
-import TKLink from "@/components/TKLink.vue";
+import TKLinkGood from "@/components/TKLinkGood.vue";
 import TKGoodStatus from "@/components/TKGoodStatus.vue";
 
 export default {
   name: "TKOrderBasket",
 
   components: {
-    TKLink,
+    TKLinkGood,
     TKGoodStatus,
   },
 

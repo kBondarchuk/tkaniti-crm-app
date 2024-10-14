@@ -1,0 +1,58 @@
+export default {
+  Login: "Login",
+  Logoff: "Logoff",
+  Home: "Home",
+  Reports: "Reports",
+  Prefs: {
+    Pages: "PrefsPages",
+  },
+  Operations: "Operations",
+  Payments: {
+    List: "PaymentsList",
+    Details: "PaymentsDetails",
+  },
+  Orders: {
+    List: "OrdersList",
+    New: "OrdersNew",
+    Details: "OrdersDetails",
+    DetailsTabs: {
+      General: "OrdersDetailsTab_General",
+      GeneralPath: "general",
+      Operations: "OrdersDetailsTab_Operations",
+      OperationsPath: "operations",
+      History: "OrdersDetailsTab_History",
+      HistoryPath: "history",
+    },
+    Edit: "OrdersEdit",
+  },
+  Goods: {
+    List: "GoodsList",
+    New: "GoodsNew",
+    Details: "GoodsDetails",
+    DetailsTabs: {
+      General: "GoodsDetailsTab_General",
+      GeneralPath: "general",
+      Photos: "GoodsDetailsTab_Photos",
+      PhotosPath: "photos",
+      Videos: "GoodsDetailsTab_Videos",
+      VideosPath: "videos",
+      Orders: "GoodsDetailsTab_Orders",
+      OrdersPath: "orders",
+    },
+    Edit: "GoodsEdit",
+  },
+  Customers: {
+    List: "CustomersList",
+    New: "CustomersNew",
+    Details: "CustomersDetails",
+    DetailsTabs: {
+      General: "CustomersDetailsTab_General",
+      GeneralPath: "general",
+      Orders: "CustomersDetailsTab_Orders",
+      OrdersPath: "orders",
+      Options: "CustomersDetailsTab_Options",
+      OptionsPath: "options",
+    },
+    Edit: "CustomersEdit",
+  },
+};

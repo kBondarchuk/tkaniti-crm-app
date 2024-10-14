@@ -1,42 +1,39 @@
 <template>
-  <CMHomeManager v-if="checkAuthRole('manager')" />
+  <CMHomeManager v-if="authStore.checkAuthRole('manager')" />
   <!-- <CMHomeInvestor v-else-if="checkAuthRole('investor')" /> -->
   <TKHomeEmpty v-else />
 </template>
 
-<script>
+<script setup>
 import apiService from "@/services/api.service.js";
 
 import CMHomeManager from "@/components/CMHomeManager.vue";
 import TKHomeEmpty from "@/components/TKHomeEmpty.vue";
-// import CMHomeInvestor from "@/components/CMHomeInvestor.vue";
+import { useAuthStore } from "@/stores/auth";
 
-export default {
-  name: "HomeView",
+// name: "HomeView",
 
-  components: {
-    CMHomeManager,
-    TKHomeEmpty,
-  },
+/// SETUP
+const authStore = useAuthStore();
 
-  mounted() {
-    this.ping();
-  },
+/// FUNCTIONS
 
-  methods: {
-    checkAuthRole(role) {
-      return this.$store.getters["auth/getAuthRights"].includes(role);
-    },
+// function checkAuthRole(role) {
+//   return authStore.getAuthRights.includes(role);
+// }
 
-    // Networking
-    async ping() {
-      try {
-        await apiService.ping();
-        // console.log(result);
-      } catch (error) {
-        this.$UIService.showNetworkError(error);
-      }
-    },
-  },
-};
+// Networking
+async function ping() {
+  try {
+    await apiService.ping();
+    // console.log(result);
+  } catch (error) {
+    // console.error(error);
+    // this.$UIService.showNetworkError(error);
+  }
+}
+
+/// RUN
+
+ping();
 </script>

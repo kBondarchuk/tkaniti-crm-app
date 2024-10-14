@@ -5,6 +5,7 @@ const _paymentsSettingsSbpObject = {
   settings_type: "sbp",
   enabled: 0,
   payload: {
+    ofd_settings_id: null,
     api_login: "",
     api_password: "",
     api_url: "",

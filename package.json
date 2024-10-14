@@ -1,7 +1,8 @@
 {
   "name": "tkaniti-crm-app",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "open -n /Applications/Chromium.app --args -u http://localhost:6137 && vite --port 6137",
     "dev2": "bunx vite --mode development2",
@@ -11,33 +12,38 @@
     "serve-prod2": "bunx vite --mode staging2",
     "build2": "bunx vite build --mode production2",
     "lint": "eslint 'src/**/*.{js,vue}'",
-    "lint-fix": "eslint --fix 'src/**/*.{js,vue}'"
+    "lint-fix": "eslint --fix 'src/**/*.{js,vue}'",
+    "route-build-names": "bun src/router/genNames.js > src/router/names.gen.js && bunx eslint --fix src/router/names.gen.js",
+    "route-build-navigation": "bun src/router/genNavigation.js > src/router/navigation.gen.js && bunx eslint --fix src/router/navigation.gen.js",
+    "route-build-routes": "bun src/router/genRoutes.js > src/router/routes.gen.js && bunx eslint --fix src/router/routes.gen.js",
+    "route-build-all": "bun run route-build-routes && bun run route-build-navigation && bun run route-build-names",
+    "unused VUE": "check-unused-comp ."
   },
   "dependencies": {
     "@kbond/vue-ui": "file:../../vue-ui",
     "@vueuse/core": "^10.9.0",
-    "axios": "^1.6.0",
-    "cleave.js": "^1.6.0",
+    "axios": "^1.7.3",
     "jquery-tablesort": "^0.0.11",
-    "jwt-decode": "^3.1.2",
-    "uuid": "^8.3.2",
-    "vue": "^3.2.0",
+    "jwt-decode": "^4.0.0",
+    "pinia": "^2.2.0",
+    "vue": "^3.4.35",
     "vue-easy-lightbox": "^1.4.1",
-    "vue-router": "^4.0.0",
-    "vuex": "^4.0.0"
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "vite": "^5.0.12",
-    "@vitejs/plugin-vue": "^4.6.2",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "eslint": "^8.14.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "prettier": "^2.2.1",
-    "sass": "^1.53.0",
-    "stylelint": "^14.6.1",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-recommended-vue": "^1.4.0"
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/eslint-config-prettier": "^10.0.0",
+    "eslint": "^9.12.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-vue": "^9.29.0",
+    "prettier": "^3.3.3",
+    "sass": "^1.79.5",
+    "stylelint": "^16.10.0",
+    "stylelint-config-recommended-vue": "^1.5.0",
+    "vite": "^5.4.9",
+    "vite-plugin-html": "^3.2.2",
+    "vue-eslint-parser": "^9.4.3",
+    "vue-unused-components-checker": "^1.1.2"
   },
   "browserslist": [
     "last 2 Chrome versions",

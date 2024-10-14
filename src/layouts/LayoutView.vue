@@ -2,26 +2,25 @@
   <div id="layout" class="wrapper">
     <CMMainMenu />
 
-    <!-- <div class="ui-layout"> -->
-    <!-- Header Title -->
-    <!-- <LayoutPageTitle /> -->
-    <!-- /Header Title -->
-    <router-view />
-    <!-- </div> -->
+    <router-view v-if="authStore.isAuthenticated" />
+    <div
+      v-else
+      class="ui-layout"
+      style="background-color: #76767624; display: flex; justify-content: center; align-items: center"
+    >
+      <span>Loading...</span>
+    </div>
 
     <LayoutFooter />
   </div>
 </template>
 
-<script>
+<script setup>
+import { useAuthStore } from "@/stores/auth";
 import CMMainMenu from "@/components/CMMainMenu.vue";
 import LayoutFooter from "@/layouts/LayoutFooter.vue";
 
-export default {
-  name: "LayoutView",
-  components: {
-    CMMainMenu,
-    LayoutFooter,
-  },
-};
+/// SETUP
+
+const authStore = useAuthStore();
 </script>

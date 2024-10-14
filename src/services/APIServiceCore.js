@@ -1,11 +1,12 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { jwtDecode as jwt_decode } from "jwt-decode";
 
 export class APIServiceCore {
   // End points
   static REQUESTS = {
     LOGIN: "/login",
     TOKEN: "/token",
+    LOGOUT: "/logout",
   };
 
   constructor() {
@@ -38,10 +39,10 @@ export class APIServiceCore {
     // Refresh call
     this.refreshingCall = null;
     // Remember url
-    this.repeatUrl = null;
+    // this.repeatUrl = null;
 
     // API Client ID
-    this.apiClientId = null;
+    // this.apiClientId = null;
   }
 
   init(options) {
@@ -88,7 +89,13 @@ export class APIServiceCore {
     }
 
     // Do something before request is sent
-    console.log("[APIService]: ⬆️ Request:", "(" + config.method.toUpperCase() + ")", config.url, config.params);
+    console.log(
+      "[APIService]: ⬆️ Request:",
+      "(" + config.method.toUpperCase() + ")",
+      config.url,
+      config.params,
+      config.headers["Authorization"]?.slice(-10)
+    );
     return config;
   };
 
@@ -119,7 +126,7 @@ export class APIServiceCore {
       !Object.prototype.hasOwnProperty.call(error, "response") ||
       (Object.prototype.hasOwnProperty.call(error, "response") && !error.response)
     ) {
-      console.log("[APIService]: Error (no response): " + error);
+      console.warn("[APIService]: ❌ Error (no response): " + error);
       return Promise.reject(error);
     }
     // console.log(this.callback);
@@ -130,14 +137,12 @@ export class APIServiceCore {
         // If login ???
         // If Refresh Token broken then logoff
         if (error.config.url === APIServiceCore.REQUESTS.TOKEN || error.config.url === APIServiceCore.REQUESTS.LOGIN) {
-          // this.();
           this.logoutCallback("token 401");
           return Promise.reject(error);
         }
 
         // Check retry
         if (error.config.__isRetry) {
-          // this.logoutCallback("Got 401 at retry: " + error.config.url);
           console.warn("[APIService]: Got 401 at retry: " + error.config.url);
           return Promise.reject(error);
         }
@@ -146,16 +151,17 @@ export class APIServiceCore {
         var self = this;
         return this.makeRefreshCall()
           .then((data) => {
-            this.refreshingCall = null;
-            console.log("[APIService]: 🔄", data);
-
+            self.refreshingCall = null;
             error.config.headers["Authorization"] = "Bearer " + data.jwt;
             error.config.baseURL = undefined;
             error.config.__isRetry = true;
-            return this.service.request(error.config);
+            console.info("[APIService]: 🔄", error.config.url, error.config.headers["Authorization"]?.slice(-10));
+            return self.service.request(error.config);
           })
           .catch(function () {
             if (!error.config.__isRetry) {
+              self.removeRefreshToken();
+              self.removeAccessToken();
               self.logoutCallback("makeRefreshCall 401");
               error.hide = true;
             }
@@ -197,11 +203,11 @@ export class APIServiceCore {
 
   loadRefreshToken() {
     // Load refreshToken
-    const refreshToken = localStorage.getItem("refresh_token");
+    const refreshToken = sessionStorage.getItem("refresh_token");
     if (!refreshToken) {
       return;
     }
-    console.log("[APIService]: Loaded Refresh token: " + refreshToken.substr(0, 40));
+    console.log("[APIService]: Loaded Refresh token: " + refreshToken.slice(-10));
     // Set refreshToken
     this.refreshToken = refreshToken;
     // this.setRefreshToken(refreshToken);
@@ -222,19 +228,23 @@ export class APIServiceCore {
 
   removeAccessToken() {
     delete this.service.defaults.headers.common["Authorization"];
-    // localStorage.removeItem("JWT");
     console.log("[APIService]: Access token removed.");
-    // Stop refreshing
-    // this.stopRefreshing();
   }
 
   setRefreshToken(token, lifeTime, needSave) {
+    // lifeTime gap?
+    if (lifeTime > 120) {
+      lifeTime = lifeTime - 60;
+    } else {
+      console.warn("[APIService]: Token lifeTime value is too low! ", lifeTime);
+      lifeTime = lifeTime - 5;
+    }
     if (token) {
       this.refreshToken = token;
       this.tokenLifeTime = lifeTime;
 
       if (needSave) {
-        localStorage.setItem("refresh_token", token);
+        sessionStorage.setItem("refresh_token", token);
       }
 
       this.startRefreshing(lifeTime);
@@ -247,25 +257,27 @@ export class APIServiceCore {
     this.refreshToken = null;
     this.tokenLifeTime = 0;
     this.stopRefreshing();
-    localStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("refresh_token");
     console.log("[APIService]: Refresh token removed.");
   }
 
   startRefreshing(interval) {
     clearInterval(this.refreshInterval);
 
+    const doRefresh = async () => {
+      console.log("[APIService]: Refreshing... after " + interval + " seconds.");
+      try {
+        await this.refreshTokens();
+      } catch (error) {
+        console.error("Ошибка при обновлении токена!", error);
+        this.removeRefreshToken();
+        this.removeAccessToken();
+        return;
+      }
+    };
+
     // Start interval for refresh token
-    this.refreshInterval = setInterval(
-      (function (self) {
-        //Self-executing func which takes 'this' as self
-        return function () {
-          //Return a function in the context of 'self'
-          console.log("[APIService]: Refreshing...");
-          self.refreshTokens();
-        };
-      })(this),
-      interval * 1000
-    );
+    this.refreshInterval = setInterval(doRefresh, interval * 1000);
   }
 
   stopRefreshing() {
@@ -291,8 +303,8 @@ export class APIServiceCore {
     const refreshToken = response.data.data.refresh_token;
     const authPayload = jwt_decode(response.data.data.jwt);
     // Apply Tokens
-    console.log("[APIService]: Access token: " + accessToken.substr(0, 20));
-    console.log("[APIService]: Refresh token: " + refreshToken.substr(0, 20));
+    console.log("[APIService]: Access token: " + accessToken.slice(-10));
+    console.log("[APIService]: Refresh token: " + refreshToken.slice(-10));
     console.log("[APIService]: Token lifetime: " + lifeTime);
 
     // Set jwt
@@ -300,20 +312,21 @@ export class APIServiceCore {
     this.setRefreshToken(refreshToken, lifeTime, true); // lifetime
 
     // Login callback
-    this.loginCallback(authPayload);
+    // this.loginCallback(authPayload);
 
     return authPayload;
   }
 
   makeRefreshCall() {
     if (this.refreshingCall !== null) {
-      console.log("[APIService]: *** return existing call");
+      console.log("[APIService]: *** return existing refresh call");
       return this.refreshingCall;
     }
 
-    const call = this.refreshTokens().catch((error) => {
-      console.log("[APIService]: " + error);
-    });
+    const call = this.refreshTokens();
+    // .catch((error) => {
+    //   console.log("[APIService]: " + error);
+    // });
 
     this.refreshingCall = call;
 
@@ -323,17 +336,15 @@ export class APIServiceCore {
   async refreshTokens() {
     if (!this.refreshToken) {
       console.log("[APIService]: Can't refresh token! No refresh token given!");
-      return Promise.reject("Can't refresh token! No refresh token given!");
+      // return Promise.reject("Can't refresh token! No refresh token given!");
+      throw new Error("Can't refresh token! No refresh token given!");
     }
 
     const params = {
       refresh_token: this.refreshToken,
     };
 
-    let response = await this.service.post(APIServiceCore.REQUESTS.TOKEN, params).catch(function (error) {
-      console.log("[APIService]: Error. " + error);
-      return Promise.reject(error);
-    });
+    let response = await this.service.post(APIServiceCore.REQUESTS.TOKEN, params);
 
     // Processing
     const accessToken = response.data.data.jwt;
@@ -342,8 +353,8 @@ export class APIServiceCore {
     const authPayload = jwt_decode(response.data.data.jwt);
 
     // Apply Tokens
-    console.log("[APIService]: Access token : " + accessToken.substr(0, 40));
-    console.log("[APIService]: Refresh token: " + refreshToken.substr(0, 40));
+    console.log("[APIService]: Access token : " + accessToken?.slice(-10));
+    console.log("[APIService]: Refresh token: " + refreshToken?.slice(-10));
     console.log("[APIService]: Token lifetime: " + lifeTime);
 
     this.setAccessToken(accessToken);
@@ -351,6 +362,21 @@ export class APIServiceCore {
 
     // Login callback
     this.loginCallback(authPayload);
+
+    return response.data.data;
+  }
+
+  async logout() {
+    if (!this.refreshToken) {
+      console.log("[APIService]: Can't logout! No refresh token given!");
+      return;
+    }
+
+    const params = {
+      refresh_token: this.refreshToken,
+    };
+
+    const response = await this.service.post(APIServiceCore.REQUESTS.LOGOUT, params);
 
     return response.data.data;
   }

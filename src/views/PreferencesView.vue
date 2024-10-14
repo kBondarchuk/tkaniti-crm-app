@@ -1,25 +1,18 @@
 <template>
-  <LayoutPage :no-paddings="currentPaddings">
+  <LayoutPage :view-id="_viewId">
     <!-- Side Menu -->
     <template #side>
-      <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
+      <LayoutSideMenu v-model="menuSelectedId" :items="menu" />
     </template>
-    <!-- <h1>Заглавная страница</h1> -->
-    <UITransition mode="out-in" duration="0.3s">
-      <component :is="currentComponent" />
-    </UITransition>
+    <!-- <UITransition mode="out-in" appear :duration="150"> -->
+    <component :is="currentComponent" />
+    <!-- </UITransition> -->
   </LayoutPage>
 </template>
 
-<script>
-import { useView } from "@/composables/view";
-import { useDetailsTabs } from "@/composables/detailsTabs";
-
-import LayoutPage from "@/layouts/LayoutPage.vue";
-import LayoutSideMenu from "@/layouts/LayoutSideMenu.vue";
+<script setup>
 import CMPrefsUsers from "@/components/CMPrefsUsers.vue";
 import CMPrefsProfile from "@/components/CMPrefsProfile.vue";
-// import CMPrefsTemplates from "@/components/CMPrefsTemplates.vue";
 import CMPrefsParams from "@/components/CMPrefsParams.vue";
 import CMPrefsCompanies from "@/components/CMPrefsCompanies.vue";
 import CMPrefsSettings from "@/components/CMPrefsSettings.vue";
@@ -29,6 +22,12 @@ import CMPrefsPaymentsSbp from "@/components/CMPrefsPaymentsSbp.vue";
 import CMPrefsOfd from "@/components/CMPrefsOfd.vue";
 import CMPrefsSystem from "@/components/CMPrefsSystem.vue";
 
+import { ref, computed, watch, toRaw } from "vue";
+
+import { useView } from "@/composables/view";
+import { useAuthStore } from "@/stores/auth";
+
+import { arrayEquals } from "@/utils/utils.js";
 import AccessRights from "@/enums/AccessRights";
 
 const _menu_items = [
@@ -36,97 +35,105 @@ const _menu_items = [
     id: 1,
     name: "Профиль пользователя",
     icon: "address card",
-    component: "CMPrefsProfile",
-    access: "user",
-    noPaddings: true,
+    component: CMPrefsProfile,
+    access: AccessRights.User,
   },
   {
     id: 2,
     name: "Пользователи",
     icon: "user friends",
     component: "CMPrefsUsers",
-    access: "sysadmin",
-    noPaddings: true,
+    access: AccessRights.Sysadmin,
   },
-  // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: "admin" },
-  { id: 15, name: "Настройки", icon: "tools", component: "CMPrefsSettings", access: "prefs.settings" },
-  { id: 4, name: "Параметры", icon: "tools", component: "CMPrefsParams", access: "admin" },
-  // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
-  { id: 8, name: "Юр. лица", icon: "stamp", component: "CMPrefsCompanies", access: "admin" },
-  { id: 9, name: "Эквайринг", icon: "visa", component: "CMPrefsAcquiring", access: "admin" },
-  { id: 12, name: "Ю-касса", icon: "visa", component: "CMPrefsPaymentsYoo", access: AccessRights.Admin },
-  { id: 11, name: "СБП", icon: "visa", component: "CMPrefsPaymentsSbp", access: "admin" },
-  { id: 10, name: "Фискализация", icon: "cash register", component: "CMPrefsOfd", access: "admin" },
-  { id: 20, name: "Система", icon: "lightbulb", component: "CMPrefsSystem", access: "sysadmin" },
+  // { id: 3, name: "Шаблоны", icon: "file word", component: "CMPrefsTemplates", access: AccessRights.Admin },
+  { id: 15, name: "Настройки", icon: "tools", component: CMPrefsSettings, access: "prefs.settings" },
+  { id: 4, name: "Параметры", icon: "tools", component: CMPrefsParams, access: AccessRights.Admin },
+  // { id: 7, name: "Реквизиты", icon: "stamp", component: "CMPrefsCompanies", access: AccessRights.Admin },
+  { id: 8, name: "Юр. лица", icon: "stamp", component: CMPrefsCompanies, access: AccessRights.Admin },
+  { id: 9, name: "Эквайринг", icon: "visa", component: CMPrefsAcquiring, access: AccessRights.Admin },
+  { id: 12, name: "Ю-касса", icon: "visa", component: CMPrefsPaymentsYoo, access: AccessRights.Admin },
+  { id: 11, name: "СБП", icon: "visa", component: CMPrefsPaymentsSbp, access: AccessRights.Admin },
+  { id: 10, name: "Фискализация", icon: "cash register", component: CMPrefsOfd, access: AccessRights.Admin },
+  { id: 20, name: "Система", icon: "lightbulb", component: CMPrefsSystem, access: AccessRights.Sysadmin },
 ];
 
-export default {
-  name: "PreferencesView",
+/// SETUP
 
-  components: {
-    CMPrefsUsers,
-    CMPrefsProfile,
-    // CMPrefsTemplates,
-    CMPrefsSettings,
-    CMPrefsParams,
-    CMPrefsCompanies,
-    CMPrefsAcquiring,
-    CMPrefsPaymentsYoo,
-    CMPrefsPaymentsSbp,
-    CMPrefsOfd,
-    CMPrefsSystem,
+const _viewId = "PreferencesView";
+
+const { view, checkAuthRole } = useView(_viewId, {
+  title: "Настройки",
+  subTitle: "",
+});
+
+const authStore = useAuthStore();
+
+/// DATA
+
+const menu = ref([]);
+const menuSelectedId = ref(1);
+
+/// COMPUTED
+
+const currentComponent = computed(() => {
+  const item = menu.value.find((obj) => obj.id == menuSelectedId.value);
+
+  // console.warn(toRaw(item.component));
+  if (item) {
+    return toRaw(item.component);
+  } else {
+    return null;
+  }
+});
+
+const currentPaddings = computed(() => {
+  const item = menu.value.find((obj) => obj.id == menuSelectedId.value);
+
+  // console.warn(item);
+  if (item?.noPaddings) {
+    return true;
+  } else {
+    return false;
+  }
+});
+
+/// WATCHERS
+
+watch(
+  () => authStore.getAuthData,
+  (newValue, oldValue) => {
+    if (newValue !== null && !arrayEquals(newValue?.rights, oldValue?.rights)) {
+      console.warn("[PrefsView]: Reparsing...");
+      mountMenu();
+    }
   },
+  { immediate: true }
+);
 
-  setup() {
-    const { view } = useView("PreferencesView");
+/// FUNCTIONS
 
-    view.title = "Настройки";
-    view.subTitle = "Заготовка страницы";
+function mountMenu() {
+  menu.value = [];
+  menu.value = parseMenu(_menu_items);
+  if (menu.value.length > 0) {
+    menuSelectedId.value = menu.value[0].id;
+  }
+}
 
-    const { tabs: menu } = useDetailsTabs(_menu_items);
+function parseMenu(menuItems) {
+  const parsedMenu = [];
 
-    // console.warn("Menu: ", menu);
+  menuItems.forEach((item) => {
+    if (checkMenuItem(item)) {
+      parsedMenu.push(item);
+    }
 
-    return { view, menu: menu.filter((item) => item.disabled == false), useDetailsTabs };
-  },
+    return true;
+  });
+  return parsedMenu;
+}
 
-  data() {
-    return {
-      menuSelectedId: 1,
-    };
-  },
-
-  computed: {
-    authData() {
-      return this.$store.getters["auth/getAuthData"];
-    },
-    menuFiltered() {
-      return this.menu.filter((item) => item.disabled == false);
-    },
-    currentComponent() {
-      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
-      return item ? item.component : null;
-    },
-    currentPaddings() {
-      if (!this.menu) return null;
-      const item = this.menu.find((obj) => obj.id == this.menuSelectedId);
-      return item?.noPaddings ? true : false;
-    },
-  },
-
-  watch: {
-    authData: {
-      immediate: true,
-      handler(newValue) {
-        // console.warn("authdata: ", newValue);
-
-        if (newValue !== null) {
-          // this.mountMenu();
-          const { tabs } = useDetailsTabs(_menu_items);
-          this.menu = tabs.filter((item) => item.disabled == false);
-        }
-      },
-    },
-  },
-};
+function checkMenuItem(item) {
+  return checkAuthRole(item.access) || item.access === undefined;
+}
 </script>

@@ -3,20 +3,24 @@
     <!-- Header -->
     <LayoutPageTitle>
       <slot name="title"></slot>
+      <template #subtitle><slot name="subtitle"></slot></template>
     </LayoutPageTitle>
+
     <!-- Toolbar -->
-    <LayoutToolbar v-if="$slots.toolbar">
+    <LayoutToolbar v-if="$slots.toolbar || togglePanelButton || backButton">
+      <YTogglePanelButton v-if="togglePanelButton" :show="showSidePanel" @click="toggleSidePanel" />
+      <YBackButton v-if="backButton != null" :to="backButton" />
       <slot name="toolbar"></slot>
     </LayoutToolbar>
-    <!-- /Toolbar -->
+
+    <!-- Main container -->
     <div class="ui-container">
-      <!-- Side Menu -->
-      <div v-if="$slots.side" class="ui-side-bar">
+      <!-- Side Panel column -->
+      <div v-if="$slots.side && showSidePanel" class="ui-side-bar">
         <slot name="side"></slot>
       </div>
-      <!-- /Side Menu -->
 
-      <!-- main column -->
+      <!-- Content column -->
       <div
         class="ui-main"
         :class="{
@@ -26,43 +30,65 @@
           flex: flex,
         }"
       >
-        <slot></slot>
+        <slot :show-side-panel="showSidePanel"></slot>
       </div>
-      <!-- /main column -->
+      <!--  -->
     </div>
   </div>
 </template>
 
-<script>
-import LayoutPageTitle from "@/layouts/LayoutPageTitle.vue";
-import LayoutToolbar from "@/layouts/LayoutToolbar.vue";
+<script setup>
+import { ref } from "vue";
+import { useStorage } from "@vueuse/core";
 
-export default {
-  name: "LayoutPage",
-  abstract: true,
-  components: {
-    LayoutPageTitle,
-    LayoutToolbar,
+/// PROPS
+
+const props = defineProps({
+  noPaddings: {
+    type: Boolean,
+    default: false,
   },
-  props: {
-    noPaddings: {
-      type: Boolean,
-      default: false,
-    },
-    noVerticalPaddings: {
-      type: Boolean,
-      default: false,
-    },
-    background: {
-      type: String,
-      default: null,
-    },
-    flex: {
-      type: Boolean,
-      default: false,
-    },
+  noVerticalPaddings: {
+    type: Boolean,
+    default: false,
   },
-};
+  background: {
+    type: String,
+    default: null,
+  },
+  flex: {
+    type: Boolean,
+    default: false,
+  },
+  togglePanelButton: {
+    type: Boolean,
+    default: false,
+  },
+  backButton: {
+    type: String,
+    default: null,
+  },
+  viewId: {
+    type: String,
+    default: null,
+  },
+});
+
+// setup(props) {
+if (!props.viewId) {
+  console.warn("[LayoutPage] No viewId defined!");
+}
+
+/// DATA
+
+const showSidePanel = props.viewId ? useStorage(props.viewId + ".show_side_panel", true) : ref(true);
+
+/// FUNCTIONS
+
+function toggleSidePanel() {
+  // console.warn("toggleSidePanel", showSidePanel);
+  showSidePanel.value = !showSidePanel.value;
+}
 </script>
 
 <style>

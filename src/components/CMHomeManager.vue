@@ -4,7 +4,6 @@
     <div class="ui grid">
       <!-- fist column -->
       <!-- <div class="eight wide column">
-        <CMWarningsList />
       </div> -->
       <!-- second column -->
       <!-- <div class="eight wide second column">

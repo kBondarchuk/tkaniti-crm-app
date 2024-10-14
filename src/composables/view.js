@@ -1,37 +1,39 @@
 // view.js
 import { onMounted, watch, reactive, inject } from "vue";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
+import { useUiStore } from "@/stores/uiStore";
 
 export function useView(viewId, { title = "", subTitle = "" } = {}) {
   /// SETUP
+
   if (viewId == undefined) {
     console.warn("[useView]: viewId is undefined!");
   }
 
   // const router = useRouter();
-  const store = useStore();
+  // const store = useStore();
+  const authStore = useAuthStore();
+  const uiStore = useUiStore();
 
   const appPresets = inject("APP_PRESETS");
-
-  const _sidePanelStatus = loadSidePanel(viewId);
 
   /// DATA
 
   const view = reactive({
     title: title,
     subTitle: subTitle,
-    showSidePanel: _sidePanelStatus,
   });
 
   /// WATCHERS
 
   watch([() => view.title, () => view.subTitle], () => {
-    // console.warn("!", view);
     setHtmlTitle();
     saveTitle();
   });
 
   /// LIFECYCLE
+
+  saveTitle();
 
   onMounted(() => {
     setHtmlTitle();
@@ -41,7 +43,7 @@ export function useView(viewId, { title = "", subTitle = "" } = {}) {
   /// FUNCTIONS
 
   function saveTitle() {
-    store.commit("setTitle", {
+    uiStore.$patch({
       title: view.title,
       subTitle: view.subTitle,
     });
@@ -53,16 +55,7 @@ export function useView(viewId, { title = "", subTitle = "" } = {}) {
   }
 
   function checkAuthRole(role) {
-    return store.getters["auth/getAuthRights"].includes(role);
-  }
-
-  function loadSidePanel(tid) {
-    return JSON.parse(localStorage.getItem(tid + ".show_side_panel")) ?? true;
-  }
-
-  function toggleSidePanel() {
-    view.showSidePanel = !view.showSidePanel;
-    localStorage.setItem(viewId + ".show_side_panel", view.showSidePanel);
+    return authStore.checkAuthRole(role);
   }
 
   function storageSaveValue(_storageID, value) {
@@ -82,5 +75,6 @@ export function useView(viewId, { title = "", subTitle = "" } = {}) {
   }
 
   /// EXPOSE
-  return { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue };
+
+  return { view, checkAuthRole, storageSaveValue, storageLoadValue };
 }

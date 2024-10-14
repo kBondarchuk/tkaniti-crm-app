@@ -90,7 +90,6 @@ export default {
       items: [],
       isLoading: false,
       filter: {},
-      // urlDownloadBase: this.$store.state.url_download_base,
       apiBaseUrl: import.meta.env.VUE_APP_API_BASE,
       token: null,
     };

@@ -1,4 +1,5 @@
 import LayoutPage from "@/layouts/LayoutPage.vue";
+import LayoutPageTitle from "@/layouts/LayoutPageTitle.vue";
 import LayoutTwoColumns from "@/layouts/LayoutTwoColumns.vue";
 import UITextfieldHinted from "@/components/UITextfieldHinted.vue";
 import UITableRow from "@/components/UITableRow.vue";
@@ -14,6 +15,7 @@ import YTogglePanelButton from "@/components/YTogglePanelButton.vue";
 
 const register = (app) => {
   app.component("LayoutPage", LayoutPage);
+  app.component("LayoutPageTitle", LayoutPageTitle);
   app.component("LayoutTwoColumns", LayoutTwoColumns);
   app.component("UITextfieldHinted", UITextfieldHinted);
   app.component("UITableRow", UITableRow);

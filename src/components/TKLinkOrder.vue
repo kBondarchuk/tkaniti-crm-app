@@ -6,30 +6,28 @@
   </a>
 </template>
 
-<script>
-export default {
-  name: "TKLinkOrder",
+<script setup>
+// name: "TKLinkOrder",
+import { useNavigation } from "@/composables/navigation";
 
-  props: {
-    id: {
-      type: Number,
-      default: null,
-    },
-    path: {
-      type: String,
-      default: "order_details",
-    },
-  },
+/// SETUP
 
-  methods: {
-    go() {
-      this.$router.push({
-        name: this.path,
-        params: { id: this.id },
-      });
-    },
+const { navigateTo } = useNavigation();
+
+/// PROPS
+
+const props = defineProps({
+  id: {
+    type: Number,
+    default: null,
   },
-};
+});
+
+/// FUNCTIONS
+
+function go() {
+  navigateTo.Orders.Details({ orderId: props.id });
+}
 </script>
 
 <style scoped>

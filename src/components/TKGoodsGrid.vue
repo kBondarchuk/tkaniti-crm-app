@@ -104,7 +104,6 @@ export default {
       items: [],
       isLoading: false,
       filter: {},
-      // url_download_base: this.$store.state.url_download_base,
       token: null,
       apiBaseUrl: import.meta.env.VUE_APP_API_BASE,
     };

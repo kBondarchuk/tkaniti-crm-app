@@ -1,4 +1,4 @@
 import OrderStatusEnum from "./OrderStatusEnum";
-import AccessRightsEnum from "./AccessRights";
+import AccessRights from "./AccessRights";
 
-export { OrderStatusEnum as OrderStatusEnum, AccessRightsEnum as AccessRightsEnum };
+export { OrderStatusEnum as OrderStatusEnum, AccessRights };

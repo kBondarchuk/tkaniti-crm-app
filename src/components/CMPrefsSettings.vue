@@ -3,8 +3,9 @@
     <h2>Заказы</h2>
     <CUISelectCompany v-model="orderCompanyId" :disabled="isLoading" @selected="valueChanged" />
   </form> -->
-
-  <YParamsList style="width: 40em" />
+  <PagesPage>
+    <YParamsList style="width: 40em" />
+  </PagesPage>
 </template>
 
 <script setup>
@@ -13,6 +14,7 @@
 // import CUISelectCompany from "@/components/CUISelectCompany.vue";
 // import Alerts from "@/utils/alerts";
 import YParamsList from "@/components/YParamsList.vue";
+import PagesPage from "@/components/PagesPage.vue";
 
 // name: "CMPrefsSettings",
 

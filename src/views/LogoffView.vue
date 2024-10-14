@@ -8,31 +8,28 @@
   </UITransition>
 </template>
 
-<script>
-export default {
-  name: "LogoffView",
+<script setup>
+// name: "LogoffView",
 
-  data() {
-    return {
-      login: "",
-      password: "",
-      error: "",
-    };
-  },
-  created() {
-    this.$store
-      .dispatch("auth/logoff")
-      .then((status) => {
-        console.log("[LOGOFF]: success: " + status.message);
-        // this.$UIService.showMessage(status.message);
-        this.$router.push({ path: "/login" });
-      })
-      .catch(() => {
-        // this.$UIService.showNetworkError(error);
-        this.$router.push({ path: "/login" });
-      });
-  },
-};
+import { useNavigation } from "@/composables/navigation";
+import { useAuthStore } from "@/stores/auth";
+
+/// SETUP
+
+const { navigateTo } = useNavigation();
+const authStore = useAuthStore();
+
+/// RUN
+
+authStore
+  .logoff()
+  .then((status) => {
+    console.log("[LOGOFF]: success: " + status.message);
+    navigateTo.Login();
+  })
+  .catch(() => {
+    navigateTo.Login();
+  });
 </script>
 
 <style scoped>

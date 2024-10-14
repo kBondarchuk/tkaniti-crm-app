@@ -9,12 +9,7 @@
     @header:sort="handleHeaderSort"
   >
     <!-- Items -->
-    <TKOrdersListItem
-      v-for="item in orders"
-      :key="item.id"
-      :item="item"
-      @event-details="go('order_details', item.id)"
-    />
+    <TKOrdersListItem v-for="item in orders" :key="item.id" :item="item" @event-details="gotoOrderDetails(item.id)" />
     <!--  -->
   </UITableList>
 
@@ -22,6 +17,7 @@
 </template>
 
 <script>
+import { useNavigation } from "@/composables/navigation";
 import apiService from "@/services/api.service.js";
 import TKOrdersListItem from "@/components/TKOrdersListItem.vue";
 
@@ -37,6 +33,18 @@ export default {
       type: Number,
       default: null,
     },
+  },
+
+  setup() {
+    const { navigateTo } = useNavigation();
+
+    /// FUNCTIONS
+
+    function gotoOrderDetails(orderId) {
+      navigateTo.Orders.Details({ orderId: orderId });
+    }
+
+    return { gotoOrderDetails };
   },
 
   data() {
@@ -72,12 +80,6 @@ export default {
   },
 
   methods: {
-    go(pathName, id) {
-      this.$router.push({
-        name: pathName,
-        params: { id: id },
-      });
-    },
     handleHeaderSort(item) {
       this.filter = item;
       this.refetch(item);

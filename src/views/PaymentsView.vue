@@ -35,7 +35,7 @@ import { ref } from "vue";
 import { useView } from "@/composables/view";
 import { useStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
-// import { useNavigation } from "@/composables/navigation";
+import { useNavigation } from "@/composables/navigation";
 
 import CMPaymentsInvoicesList from "@/components/CMPaymentsInvoicesList.vue";
 import CUISelectCompany from "@/components/CUISelectCompany.vue";
@@ -44,7 +44,7 @@ import CUISelectCompany from "@/components/CUISelectCompany.vue";
 
 const { view } = useView("PaymentsView", { title: "Касса", subTitle: "Список счетов на оплату" });
 const router = useRouter();
-// const { navigateTo } = useNavigation();
+const { navigateTo } = useNavigation();
 
 /// DATA
 
@@ -97,12 +97,7 @@ const filter = useStorage("payments.filter", _filter);
 /// FUNCTIONS
 
 function handleDetails(item) {
-  router.push({
-    name: "payments_invoice_details",
-    params: { id: item.id },
-  });
-  // TODO:
-  // navigateTo.Payments.Details({ invoiceId: item.id });
+  navigateTo.Payments.Details({ invoiceId: item.id });
 }
 
 function reload() {

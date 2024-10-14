@@ -116,7 +116,7 @@ export default {
     async refetch() {
       this.filter.pagination.page = this.currentPage;
       var filter = { ...this.filter.sort, ...this.filter.pagination };
-      console.warn("filter", filter);
+      // console.warn("filter", filter);
       this.isLoading = true;
       let data, meta;
 
@@ -124,7 +124,7 @@ export default {
         let result = await apiService.getOrders(filter, this.filterStatus, this.searchString);
         data = result.data;
         meta = result.meta;
-        console.warn(result);
+        // console.warn(result);
       } catch (error) {
         this.$UIService.showNetworkError(error);
       }
@@ -134,7 +134,7 @@ export default {
       let pagination = { total_count: 0, total_pages: 0, current_page: 0 };
       // Meta
       if (meta) {
-        console.log(meta);
+        // console.log(meta);
         pagination.total_count = meta.total_count;
         pagination.total_pages = meta.total_pages;
         pagination.current_page = meta.current_page;

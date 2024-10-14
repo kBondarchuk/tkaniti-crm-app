@@ -20,14 +20,10 @@
 </template>
 
 <script>
-import TKGoodStatus from "@/components/TKGoodStatus.vue";
-
 export default {
   name: "TKGoodsGridCell",
 
-  components: {
-    TKGoodStatus,
-  },
+  components: {},
 
   props: {
     item: {

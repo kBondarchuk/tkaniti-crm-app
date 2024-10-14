@@ -21,8 +21,21 @@ const _filters = {
     const datetime = String(value).split(" ");
     const date = datetime[0];
 
-    // eslint-disable-next-line prettier/prettier
-  const monthes = ["", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+    const monthes = [
+      "",
+      "Январь",
+      "Февраль",
+      "Март",
+      "Апрель",
+      "Май",
+      "Июнь",
+      "Июль",
+      "Август",
+      "Сентябрь",
+      "Октябрь",
+      "Ноябрь",
+      "Декабрь",
+    ];
     const monthNumber = parseInt(date.split("-")[1]);
     return monthes[monthNumber];
   },
@@ -142,8 +155,19 @@ const _filters = {
     if (d === undefined) {
       return value;
     }
-    // eslint-disable-next-line prettier/prettier
-  return "+" + d.slice(-11, -10) + " (" + d.slice(-10, -7) + ") " + d.slice(-7, -4) + "-" + d.slice(-4, -2) + "-" + d.slice(-2);
+
+    return (
+      "+" +
+      d.slice(-11, -10) +
+      " (" +
+      d.slice(-10, -7) +
+      ") " +
+      d.slice(-7, -4) +
+      "-" +
+      d.slice(-4, -2) +
+      "-" +
+      d.slice(-2)
+    );
   },
 
   // 120000 -> 120 000

@@ -12,7 +12,7 @@ export function useOfdOptions() {
     return [{ name: "Нет", value: null }].concat(
       ofdItems.value.map((item) => {
         return { name: item.name, value: item.id };
-      })
+      }),
     );
   });
 
