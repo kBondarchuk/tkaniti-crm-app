@@ -22,7 +22,7 @@
         @click="actionMakeInvoice"
       /> -->
     </div>
-    <div class="ui divider"></div>
+    <div class="ui divider" />
     <!-- /Toolbar -->
 
     <!-- Results -->
