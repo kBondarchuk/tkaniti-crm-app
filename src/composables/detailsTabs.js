@@ -1,13 +1,11 @@
 // detailsTabs.js
 // import { ref, onMounted, onUnmounted, watch, reactive } from "vue";
-import { useStore } from "vuex";
+import { useCheckAuth } from "@/composables/checkAuth";
 
-// by convention, composable function names start with "use"
 export function useDetailsTabs(options) {
   /// SETUP
 
-  // const router = useRouter();
-  const store = useStore();
+  const { checkAuthRole } = useCheckAuth();
 
   /// FUNCTIONS
 
@@ -31,13 +29,9 @@ export function useDetailsTabs(options) {
     return checkAuthRole(item.access) || item.access === undefined;
   }
 
-  function checkAuthRole(role) {
-    return store.getters["auth/getAuthRights"].includes(role);
-  }
-
   function createTabs(kTABS) {
     if (!kTABS) {
-      console.error("[TabsMixin]: createTabs - No tabs defined!");
+      console.error("[Tabs Composable]: createTabs - No tabs defined!");
       return;
     }
     return parseTabs(kTABS);

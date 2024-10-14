@@ -1,17 +1,15 @@
 // checkAuth.js
-// import { useAuthStore } from "@/stores/auth";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/stores/auth";
 
 export function useCheckAuth(options) {
   /// SETUP
 
-  // const authStore = useAuthStore();
-  const store = useStore();
+  const authStore = useAuthStore();
 
   /// FUNCTIONS
 
   function checkAuthRole(role) {
-    return store.getters["auth/getAuthRights"].includes(role);
+    return authStore.checkAuthRole(role);
   }
 
   /// RUN
