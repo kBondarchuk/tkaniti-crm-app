@@ -1,4 +1,4 @@
-const AccessRightsEnum = Object.freeze({
+const AccessRights = Object.freeze({
   User: "user",
   Admin: "admin",
   Sysadmin: "sysadmin",
@@ -6,8 +6,10 @@ const AccessRightsEnum = Object.freeze({
   ProfileEdit: "profile.edit",
   Operations: "operations",
   Acquiring: "acquiring",
-  CustomersView: "customers.view",
-  CustomersEdit: "customers.edit",
+  Customers: {
+    View: "customers.view",
+    Edit: "customers.edit",
+  },
   GoodsView: "goods.view",
   GoodsEdit: "goods.edit",
   OrdersView: "orders.view",
@@ -24,4 +26,4 @@ const AccessRightsEnum = Object.freeze({
   },
 });
 
-export default AccessRightsEnum;
+export default AccessRights;
