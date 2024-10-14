@@ -89,7 +89,7 @@ const Views = Object.freeze({
       Edit: {
         path: ":orderId/edit",
         props: {
-          goodId: {
+          orderId: {
             type: Number,
             from: "params",
           },

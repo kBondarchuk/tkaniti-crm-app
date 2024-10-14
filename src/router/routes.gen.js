@@ -127,7 +127,7 @@ export const routes = [
       {
         name: "OrdersEdit",
         path: ":orderId/edit",
-        props: (route) => ({ goodId: Number(route.params.goodId) }),
+        props: (route) => ({ orderId: Number(route.params.orderId) }),
         component: () => import("../views/OrdersEditView.vue"),
       },
     ],
