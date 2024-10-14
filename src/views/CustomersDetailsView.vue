@@ -1,9 +1,7 @@
 <template>
-  <LayoutPage no-paddings>
+  <LayoutPage no-paddings back-button="customers" :view-id="_viewId">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton to="customers" />
       <UISpacer />
       <!-- Edit -->
       <UIButton :disabled="!accessCustomerEdit" type="basic labeled" icon="edit" text="Изменить" @click="edit" />
@@ -40,7 +38,15 @@ const kTABS = [
   { name: "НАСТРОЙКИ", id: "options" },
 ];
 
-// name: "TKCustomersDetailsView",
+/// SETUP
+
+const _viewId = "CustomersDetails";
+const { tabs } = useDetailsTabs(kTABS);
+const { navigateTo } = useNavigation();
+const { view, checkAuthRole } = useView(_viewId, {
+  title: "Клиент",
+  subTitle: "Детализация",
+});
 
 /// PROPS
 
@@ -50,27 +56,6 @@ const props = defineProps({
     default: null,
   },
 });
-
-/// SETUP
-
-const viewId = "CustomersDetails";
-const { tabs } = useDetailsTabs(kTABS);
-const { view, checkAuthRole } = useView(viewId, {
-  title: "Клиент",
-  subTitle: "Детализация",
-});
-const { navigateTo } = useNavigation();
-
-// setup() {
-//   const { view, checkAuthRole } = useView("CustomersDetailsView");
-
-//   view.title = "Клиент";
-//   view.subTitle = "Детализация";
-
-//   const { tabs } = useDetailsTabs(kTABS);
-
-//   return { tabs, view, checkAuthRole };
-// },
 
 /// DATA
 
@@ -91,7 +76,7 @@ const accessCustomerEdit = computed(() => {
 /// WATCH
 
 watchEffect(async () => {
-  console.warn("watchEffect", props.customerId);
+  // console.warn("watchEffect", props.customerId);
   if (props.customerId) {
     customer.value = await apiService.getCustomer(props.customerId);
     // console.warn("getCustomer", customer.value);
@@ -112,15 +97,6 @@ function setTitle() {
     view.title = customer.value._fio_full + " " + "(" + props.customerId + ")";
 }
 
-// methods: {
-//   setTitle() {
-//     this.view.title = "Клиент " + this.customerId;
-
-//     if (this.customer === null) return;
-
-//     this.view.title = this.customer?._fio_full + " " + "(" + this.customerId + ")";
-//   },
-// ---
 function reload() {
   if (props.customerId) {
     this.fetchCustomer(props.customerId);

@@ -1,5 +1,5 @@
 <template>
-  <LayoutPage no-paddings>
+  <LayoutPage no-paddings :view-id="_viewId">
     <!-- Toolbar -->
     <template #toolbar>
       <!-- Hide / Show -->
@@ -34,17 +34,19 @@ import TKCustomersList from "@/components/TKCustomersList.vue";
 
 import AccessRights from "@/enums/AccessRights";
 
-// name: "TKCustomersView",
-
 /// SETUP
-// const router = useRouter();
-const { view, checkAuthRole } = useView("CustomersView");
+
+const _viewId = "CustomersListView";
+const _storageID = _viewId + ".list.selected_menu";
+
+const { view, checkAuthRole } = useView(_viewId, {
+  title: "Клиенты",
+  subTitle: "Список клиентов",
+});
 const { navigateTo } = useNavigation();
 
-view.title = "Клиенты";
-view.subTitle = "Список клиентов";
-
 /// DATA
+
 const searchString = ref("");
 
 /// COMPUTED
@@ -56,14 +58,10 @@ const checkAuthNewCustomer = computed(() => {
 /// FUNCTIONS
 
 function newCustomer() {
-  // router.push({ name: "customers_new" });
   navigateTo.Customers.New();
-
 }
 
 function handleDetails(item) {
-  console.log("row clicked: " + item.id);
-  // router.push({ name: "customers_details", params: { id: item.id } });
   navigateTo.Customers.Details({ customerId: item.id });
 }
 </script>
