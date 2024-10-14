@@ -1,68 +1,65 @@
 {
-    "items": [
-        {
-            "id": 1,
-            "name": "Клиенты",
-            "icon": "user friends",
-            "route": "/customers",
-            "access": "customers.view"
-        },
-        {
-            "id": 2,
-            "name": "Товары",
-            "icon": "gifts",
-            "route": "/goods",
-            "access": "goods.view"
-        },
-        {
-            "id": 3,
-            "name": "Заказы",
-            "icon": "shopping cart",
-            "route": "/orders",
-            "access": "orders.view"
-        },
+  "items": [
+    {
+      "id": 1,
+      "name": "Клиенты",
+      "icon": "user friends",
+      "route": "/customers",
+      "access": "customers.view"
+    },
+    {
+      "id": 2,
+      "name": "Товары",
+      "icon": "gifts",
+      "route": "/goods",
+      "access": "goods.view"
+    },
+    {
+      "id": 3,
+      "name": "Заказы",
+      "icon": "shopping cart",
+      "route": "/orders",
+      "access": "orders.view"
+    },
 
+    {
+      "id": 66,
+      "name": "Эквайринг",
+      "icon": "cc visa",
+      "route": "/cashier/transactions",
+      "access": "acquiring.hide",
+      "divider": "top"
+    },
+    {
+      "id": 65,
+      "name": "Отчёты",
+      "icon": "table",
+      "route": "/finances/reports",
+      "access": "reports",
+      "divider": "top"
+    },
+    {
+      "id": 67,
+      "name": "Касса",
+      "icon": "cash register",
+      "route": "/payments",
+      "access": "acquiring",
+      "divider": "top"
+    },
+    {
+      "id": 6,
+      "name": "Финансы",
+      "icon": "id ruble sign",
+      "route": "",
+      "items": [
         {
-            "id": 66,
-            "name": "Эквайринг",
-            "icon": "cc visa",
-            "route": "/cashier/transactions",
-            "access": "acquiring.hide",
-            "divider": "top"
-        },
-        {
-            "id": 65,
-            "name": "Отчёты",
-            "icon": "table",
-            "route": "/finances/reports",
-            "access": "reports",
-            "divider": "top"
-        },
-        {
-            "id": 67,
-            "name": "Касса",
-            "icon": "cash register",
-            "route": "/cashier/invoices",
-            "access": "acquiring",
-            "divider": "top"
-        },
-        {
-            "id": 6,
-            "name": "Финансы",
-            "icon": "id ruble sign",
-            "route": "",
-            "items": [
-
-                {
-                    "id": 64,
-                    "name": "Фин. операции",
-                    "icon": "coins icon",
-                    "route": "/finances/operations",
-                    "access": "operations"
-                }
-            ]
+          "id": 64,
+          "name": "Фин. операции",
+          "icon": "coins icon",
+          "route": "/finances/operations",
+          "access": "operations"
         }
-
-
-    ]
+      ]
+    }
+  ]
 }
