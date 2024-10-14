@@ -82,16 +82,7 @@ export default {
       // investors: [],
     };
   },
-  // computed: {
-  //   investorsList() {
-  //     return this.investors.map(function (item) {
-  //       return { name: item.last_name, value: item.id };
-  //     });
-  //   },
-  //   authBranches() {
-  //     return this.$store.getters["auth/getAuthData"].branches;
-  //   },
-  // },
+
   created() {
     // Load saved params
     const ext_type = this.dateType ? "_" + this.dateType : "";

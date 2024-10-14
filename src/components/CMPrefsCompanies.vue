@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <PagesPage>
     <UIButton
       icon="plus"
       type="right labeled"
@@ -36,21 +36,21 @@
       @did-change="branchCreated"
     />
     <!------->
-  </div>
+  </PagesPage>
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 import CMPrefsCompaniesListItem from "@/components/CMPrefsCompaniesListItem.vue";
 import ModalCompanyEdit from "@/components/ModalCompanyEdit.vue";
-// import UIButton from "@/components/UIButton.vue";
+import PagesPage from "@/components/PagesPage.vue";
 
 export default {
   name: "CMPrefsCompanies",
   components: {
     CMPrefsCompaniesListItem,
     ModalCompanyEdit,
-    // UIButton,
+    PagesPage,
   },
   emits: ["eventEdit", "eventDelete"],
   data() {

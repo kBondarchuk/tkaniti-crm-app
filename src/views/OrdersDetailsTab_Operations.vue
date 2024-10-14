@@ -15,12 +15,12 @@
         text="Возврат"
         @click="actionRefund"
       />
-      <UISpacer />
+      <!-- <UISpacer />
       <UIButton
         :disabled="(order?.status.fixed != 1 && order?.payment_status_id == 0) || !checkAuthPaymentsAcquiring"
         text="Cчёт на оплату"
         @click="actionMakeInvoice"
-      />
+      /> -->
     </div>
     <div class="ui divider"></div>
     <!-- /Toolbar -->
@@ -60,109 +60,95 @@
     <!-- Refund Modal -->
     <ModalOrderRefund v-model:active="modals.refund" :order-id="order?.id" @created="depositCreated" />
     <!-- Make Invoice -->
-    <ModalOrderMakeInvoice v-model:active="modals.invoice" :order="order" @created="invoiceCreated" />
+    <!-- <ModalOrderMakeInvoice v-model:active="modals.invoice" :order="order" @created="invoiceCreated" /> -->
     <!--  -->
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, watch } from "vue";
 
 import { useCheckAuth } from "@/composables/checkAuth";
-import AccessRightsEnum from "@/enums/AccessRights";
+import { useNavigation } from "@/composables/navigation";
+
+import AccessRights from "@/enums/AccessRights";
 
 import TKOperationsList from "@/components/TKOperationsList.vue";
 import TKOrderTransactionsResults from "@/components/TKOrderTransactionsResults.vue";
 import CMPaymentsInvoicesList from "@/components/CMPaymentsInvoicesList.vue";
 import ModalOrderDeposit from "@/components/ModalOrderDeposit.vue";
 import ModalOrderRefund from "@/components/ModalOrderRefund.vue";
-import ModalOrderMakeInvoice from "@/components/ModalOrderMakeInvoice.vue";
+// import ModalOrderMakeInvoice from "@/components/ModalOrderMakeInvoice.vue";
 
-import { OrderStatusEnum } from "@/enums/index";
+// name: "TKOrderDetailsTabTransactions",
 
-export default {
-  name: "TKOrderDetailsTabTransactions",
+/// SETUP
 
-  components: {
-    TKOperationsList,
-    TKOrderTransactionsResults,
-    CMPaymentsInvoicesList,
-    ModalOrderDeposit,
-    ModalOrderRefund,
-    ModalOrderMakeInvoice,
+const { checkAuthRole } = useCheckAuth();
+const { navigateTo } = useNavigation();
+
+/// PROPS
+
+const props = defineProps({
+  order: {
+    type: Object,
+    default: null,
   },
+});
 
-  props: {
-    order: {
-      type: Object,
-      default: null,
-    },
-  },
+/// EMITS
 
-  emits: ["update"],
+const emit = defineEmits(["update"]);
 
-  setup() {
-    const { checkAuthRole } = useCheckAuth();
+/// DATA
 
-    const checkAuthPaymentsDeposit = computed(() => {
-      return checkAuthRole(AccessRightsEnum.PaymentsDeposit);
-    });
+const secondaryActiveTab = ref(1);
 
-    const checkAuthPaymentsRefund = computed(() => {
-      return checkAuthRole(AccessRightsEnum.PaymentsRefund);
-    });
-    const checkAuthPaymentsAcquiring = computed(() => {
-      return checkAuthRole(AccessRightsEnum.Acquiring);
-    });
+const keys = ref({
+  update: 1,
+  invoices: 1,
+});
 
-    return { checkAuthPaymentsDeposit, checkAuthPaymentsRefund, checkAuthPaymentsAcquiring };
-  },
+const modals = ref({
+  deposit: false,
+  refund: false,
+  invoice: false,
+});
 
-  data() {
-    return {
-      keys: {
-        update: 1,
-        invoices: 1,
-      },
-      secondaryActiveTab: 1,
-      modals: {
-        deposit: false,
-        refund: false,
-        invoice: false,
-      },
-      OrderStatusEnum,
-    };
-  },
+/// COMPUTED
 
-  methods: {
-    actionDeposit() {
-      this.modals.deposit = true;
-      //
-    },
-    actionRefund() {
-      this.modals.refund = true;
-      //
-    },
-    actionMakeInvoice() {
-      this.modals.invoice = true;
-      //
-    },
-    depositCreated() {
-      //
-      this.keys.update++;
-      this.$emit("update");
-    },
-    invoiceCreated() {
-      //
-      this.keys.invoices++;
-      this.$emit("update");
-    },
-    handleInvoiceDetails(item) {
-      this.$router.push({
-        name: "payments_invoice_details",
-        params: { id: item.id },
-      });
-    },
-  },
-};
+const checkAuthPaymentsDeposit = computed(() => {
+  return checkAuthRole(AccessRights.PaymentsDeposit);
+});
+
+const checkAuthPaymentsRefund = computed(() => {
+  return checkAuthRole(AccessRights.PaymentsRefund);
+});
+const checkAuthPaymentsAcquiring = computed(() => {
+  return checkAuthRole(AccessRights.Acquiring);
+});
+
+/// FUNCTIONS
+
+function actionDeposit() {
+  modals.value.deposit = true;
+}
+
+function actionRefund() {
+  modals.value.refund = true;
+}
+
+function actionMakeInvoice() {
+  modals.value.invoice = true;
+}
+
+function depositCreated() {
+  //
+  keys.value.update++;
+  emit("update");
+}
+
+function handleInvoiceDetails(item) {
+  navigateTo.Payments.Details({ invoiceId: item.id });
+}
 </script>

@@ -37,7 +37,7 @@
               <button
                 id="login"
                 class="ui submit fluid button"
-                :class="{ loading: isLoading }"
+                :class="{ 'double loading': isLoading }"
                 :disabled="!isReady || isLoading"
                 @click.prevent="submit"
               >
@@ -96,7 +96,7 @@
             </div>
             <!-- /password change -->
 
-            <div v-if="message" class="ui message floating" style="margin-left: -5em; margin-right: -5em">
+            <div v-if="message" class="ui inverted message floating" style="margin-left: -5em; margin-right: -5em">
               {{ message }}
             </div>
           </form>
@@ -111,15 +111,46 @@
 
 <script>
 import apiService from "@/services/api.service.js";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+import { useUiStore } from "@/stores/uiStore";
+import Alerts from "@/utils/alerts";
+import Animations from "@/utils/animations";
 
+// import UITransition from "@/components/UITransition.vue";
 // import XThemeManager from "@/components/XThemeManager.vue";
 
 export default {
   name: "LoginView",
+
   components: {
     // UITransition,
     // XThemeManager,
   },
+
+  setup() {
+    if (window.matchMedia) {
+      // Check if the dark-mode Media-Query matches
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        // Dark
+        console.warn("🌜 DARK MODE");
+        document.getElementsByTagName("meta")["theme-color"].content = "rgb(32, 32, 32)";
+      } else {
+        // Light
+        console.warn("🌞 LIGHT MODE");
+        document.getElementsByTagName("meta")["theme-color"].content = "#c1c2c6";
+      }
+    } else {
+      // Default (when Media-Queries are not supported)
+      console.warn("MODES NOT SUPPORTED");
+    }
+
+    const uiStore = useUiStore();
+    const authStore = useAuthStore();
+    const router = useRouter();
+    return { uiStore, authStore, router };
+  },
+
   data() {
     return {
       login: "",
@@ -132,24 +163,28 @@ export default {
       focusFlag: 0,
     };
   },
+
   computed: {
     isLoading() {
-      return this.$store.getters["auth/isLoading"];
+      return this.authStore.isLoading;
     },
     isReady() {
       return this.login.length > 1 && this.password.length > 1;
     },
   },
+
   mounted() {
     this.$UIService.setHtmlTitle("Вход", false);
   },
+
   methods: {
     submit() {
       let login = this.login;
       let password = this.password;
 
-      this.$store
-        .dispatch("auth/login", { login: login, password: password })
+      //   .dispatch("auth/login", { login: login, password: password })
+      this.authStore
+        .login({ login: login, password: password })
         .then((status) => {
           console.log("[LOGIN]: success: " + status);
 
@@ -157,31 +192,36 @@ export default {
             this.message = "Требуется смена пароля. Введите новый пароль дважды.";
 
             this.needPasswordChange = true;
-            this.$UIService.showWarning("Требуется смена пароля!");
+            Alerts.showWarning("Требуется смена пароля!");
           } else {
             this.error = "";
 
             // Check saved path
-            const savedPath = this.$store.getters["getSavedPath"];
-            console.warn("[LoginView]: Redirecting to savedPath: ", savedPath);
+            const savedPath = this.uiStore.getSavedPath();
+            console.log("[LoginView]: savedPath: ", savedPath);
 
-            if (savedPath !== null) {
-              this.$store.commit("setSavedPath", null);
-              this.$router.push({ path: savedPath });
+            if (savedPath != null) {
+              console.warn("[LoginView]: Redirecting to savedPath: ", savedPath);
+              this.uiStore.setSavedPath(null);
+              this.router.replace({ path: savedPath });
             } else {
-              this.$router.push({ path: "/" });
-              this.$UIService.showSuccess("Добро пожаловать!");
+              this.router.replace({ path: "/" });
+              Alerts.showSuccess("Добро пожаловать!");
             }
           }
         })
         .catch((error) => {
-          $(".column").transition("shake");
-          this.$UIService.showNetworkError(error);
+          const element = document.querySelector(".column");
+
+          Animations.animate(element, Animations.Names.ShakeHorizontal);
+
+          document.getElementsByTagName("meta")["theme-color"].content = "rgb(212, 18, 0)";
+          Alerts.showNetworkError(error);
         });
     },
     updatePassword() {
       let user = {
-        id: this.$store.getters["auth/getAuthData"].userid,
+        id: this.authStore.getAuthData.userid,
         password: this.password1,
         password_required: 0,
       };
@@ -195,11 +235,11 @@ export default {
 
       try {
         await apiService.updateUserProfile(user);
-        this.$UIService.showSuccess("Пароль обновлён");
+        Alerts.showSuccess("Пароль обновлён");
         this.needPasswordChange = false;
-        this.$router.push({ path: "/logoff" });
+        this.router.push({ path: "/logoff" });
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       }
       // this.isLoading = false;
     },
@@ -208,23 +248,73 @@ export default {
 </script>
 
 <style>
-body.page-login {
-  background-color: #464646;
-  /* //#d8d8d8; */
+@media (prefers-color-scheme: light) {
+  body.page-login {
+    /* background: #464646; */
+    background: #c1c2c6;
+    /* //#d8d8d8; */
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body.page-login {
+    background: rgb(32, 32, 32);
+  }
 }
 </style>
 
 <style scoped>
 .login {
-  /* background-color: rgba(218, 218, 218, 0.185); */
-  background: #fafafa;
-  background: -webkit-radial-gradient(center, #fafafa, #c1c2c6);
-  background: -moz-radial-gradient(center, #fafafa, #c1c2c6);
-  background: radial-gradient(ellipse at center, #fafafa 30%, #c1c2c6 100%);
-
   height: 100%;
   min-height: 100vh;
 }
+
+@media (prefers-color-scheme: light) {
+  .login {
+    /* background-color: rgba(218, 218, 218, 0.185);
+  background: -webkit-radial-gradient(center, #fafafa, #c1c2c6);
+  background: -moz-radial-gradient(center, #fafafa, #c1c2c6);
+  */
+    background: #fafafa;
+    background: radial-gradient(ellipse at center, #fafafa 30%, #c1c2c6 70%);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="text"]#email {
+    background-color: rgb(48, 48, 48);
+    color: white;
+  }
+
+  input#password,
+  input#password1,
+  input#password2 {
+    background-color: rgb(48, 48, 48);
+    color: white;
+  }
+
+  input[type="text"]#email:not(:focus) {
+    border-color: rgb(64, 64, 64);
+  }
+
+  input#password:not(:focus),
+  input#password1:not(:focus),
+  input#password2:not(:focus) {
+    border-color: rgb(64, 64, 64);
+  }
+
+  i.icon:before {
+    color: white;
+  }
+
+  button#login {
+    background-color: rgb(51, 118, 205);
+  }
+  button#login {
+    color: white;
+  }
+}
+
 .grid {
   height: 100%;
   min-height: 100vh;
@@ -240,7 +330,7 @@ body.page-login {
 
 input[type="text"]#email,
 #password {
-  border-radius: 4px;
+  border-radius: 6px;
   padding-top: 9px;
   padding-bottom: 9px;
 }
@@ -261,42 +351,7 @@ input#password:focus {
   z-index: 1;
 }
 
-/* button#login {
-  width: 60%;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 0 0px rgba(34, 36, 38, 0.15) inset;
-  color: #fff;
+button#login {
+  border-radius: 6px;
 }
-
-button:hover#login {
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid rgba(255, 255, 255, 1);
-}
-
-input[type="text"]#email,
-#password {
-  background-color: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  color: #fff;
-}
-
-input[type="text"]:focus#email,
-input[type="password"]:focus#password {
-  background-color: rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-} */
-
-/* #myCanvas {
-  position: fixed;
-  z-index: -1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  filter: blur(150px);
-  -webkit-filter: blur(150px);
-  -moz-filter: blur(150px);
-  -o-filter: blur(150px);
-  -ms-filter: blur(150px);
-} */
 </style>

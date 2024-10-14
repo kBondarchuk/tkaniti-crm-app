@@ -48,6 +48,7 @@ import FormAddPhoto from "@/components/FormAddPhoto.vue";
 // import VueEasyLightbox from "vue-easy-lightbox";
 // import CoolLightBox from "vue-cool-lightbox";
 // import "vue-cool-lightbox/dist/vue-cool-lightbox.min.css";
+import { useUiStore } from "@/stores/uiStore";
 
 export default {
   name: "CMVideoGallery",
@@ -65,12 +66,17 @@ export default {
     },
   },
 
+  setup() {
+    const { urlDownloadBase } = useUiStore();
+
+    return { urlDownloadBase };
+  },
+
   data() {
     return {
       records: [],
       isLoading: false,
       updateKey: 0,
-      url_download_base: this.$store.state.url_download_base,
       token: "",
       // Modals
       modals: {
@@ -84,7 +90,7 @@ export default {
   computed: {
     items() {
       return this.records.map((item) => {
-        return this.url_download_base + "?file=videos/" + item.filename + ".jpeg" + "&jwt=" + this.token;
+        return this.urlDownloadBase + "?file=videos/" + item.filename + ".jpeg" + "&jwt=" + this.token;
       });
     },
   },
@@ -123,7 +129,7 @@ export default {
       this.fetchVideos(this.albumUuid);
     },
     openVideo(filename) {
-      const url = this.url_download_base + "?file=videos/" + filename + ".png" + "&jwt=" + this.token;
+      const url = this.urlDownloadBase + "?file=videos/" + filename + ".png" + "&jwt=" + this.token;
     },
     deleteVideo(filename) {
       console.log("deleteVideo: " + filename);

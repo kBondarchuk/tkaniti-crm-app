@@ -1,11 +1,8 @@
 <template>
-  <LayoutPage no-paddings>
+  <LayoutPage no-paddings back-button="orders" :view-id="_viewId">
     <!-- Toolbar -->
     <!-- Back -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton to="orders" />
-      <!--  -->
       <UISpacer />
       <!--  -->
       <!-- Откатить -->
@@ -50,12 +47,10 @@
         @click="actionCancelOrder"
       />
       <!--  -->
-      <!-- <UIButton type="basic labeled" text="Изменить" icon="edit" :class="{ disabled: !validateEdit }" @click="edit" /> -->
-      <!--  -->
     </template>
 
     <!-- Tabs -->
-    <YDetailsTabs :tabs="tabs" @tab-select="tabLink" />
+    <YDetailsTabs :tabs="tabs" />
 
     <!-- Pages -->
     <div class="ui active tab" style="padding: 0 1.5em 1.5em 1.5em">
@@ -75,9 +70,10 @@ import apiService from "@/services/api.service.js";
 
 import { useView } from "@/composables/view";
 import { useDetailsTabs } from "@/composables/detailsTabs";
+import { useNavigation } from "@/composables/navigation";
 
 import { OrderStatusEnum } from "@/enums/index";
-import { AccessRightsEnum } from "@/enums/index";
+import AccessRights from "@/enums/AccessRights";
 
 import ModalParcelNumberEdit from "@/components/ModalParcelNumberEdit.vue";
 
@@ -159,15 +155,24 @@ export default {
     },
   },
 
-  setup() {
-    const { view, checkAuthRole } = useView("OrderDetailsView");
+  setup(props) {
+    /// SETUP
 
-    view.title = "Заказ";
-    view.subTitle = "Детализация заказа";
+    const _viewId = "OrderDetailsView";
+    const { view, checkAuthRole } = useView(_viewId, {
+      title: "Заказ",
+      subTitle: "Детализация заказа",
+    });
 
     const { tabs } = useDetailsTabs(kTABS);
+    const { navigateTo } = useNavigation();
 
-    return { tabs, view, checkAuthRole };
+    /// FUNCTION
+    // function edit() {
+    //   navigateTo.Orders.Edit({ orderId: props.orderId });
+    // }
+
+    return { view, tabs, checkAuthRole, navigateTo, _viewId };
   },
 
   data() {
@@ -187,13 +192,13 @@ export default {
   computed: {
     // Auth
     checkAuthRevertOrder() {
-      return this.checkAuthRole(AccessRightsEnum.OrdersRevert);
+      return this.checkAuthRole(AccessRights.OrdersRevert);
     },
     checkAuthForwardOrder() {
-      return this.checkAuthRole(AccessRightsEnum.OrdersForward);
+      return this.checkAuthRole(AccessRights.OrdersForward);
     },
     checkAuthCancelOrder() {
-      return this.checkAuthRole(AccessRightsEnum.OrdersCancel);
+      return this.checkAuthRole(AccessRights.OrdersCancel);
     },
 
     // Validate
@@ -220,14 +225,7 @@ export default {
       this.view.subTitle = this.titles.find((item) => item.id == this.order?.status_id)?.text ?? "Работа с заказом";
     },
     // ---
-    edit() {
-      this.$router.push({ name: "order_edit" });
-    },
 
-    // Tabs
-    tabLink(name) {
-      this.$router.push({ name: `order_details_${name}`, params: { id: this.orderId } });
-    },
     // Actions
     actionSetNextStatus(status) {
       var text;
@@ -361,7 +359,7 @@ export default {
       try {
         let result = await apiService.cloneOrder(order_id);
         console.warn(result);
-        this.$router.push({ name: "order_details", params: { id: result.id } });
+        this.navigateTo.Orders.Details({ orderId: result.id });
 
         this.$UIService.showSuccess(`Создан новый заказ!`);
       } catch (error) {

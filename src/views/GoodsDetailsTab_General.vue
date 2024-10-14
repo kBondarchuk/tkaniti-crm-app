@@ -9,7 +9,7 @@
 import TKGoodDetails from "@/components/TKGoodDetails.vue";
 
 export default {
-  name: "TKGoodsDetailsTabGeneral",
+  name: "GoodsDetailsTabGeneral",
 
   components: {
     TKGoodDetails,

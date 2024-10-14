@@ -1,9 +1,7 @@
 <template>
-  <LayoutPage no-vertical-paddings>
+  <LayoutPage no-vertical-paddings back-button="orders" view-id="OrdersEditView">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton />
       <UISpacer />
 
       <template v-if="order?.status_id != 6 && order?.id">
@@ -129,6 +127,7 @@
 import { toRaw } from "vue";
 
 import { useView } from "@/composables/view";
+import { useNavigation } from "@/composables/navigation";
 
 import apiService from "@/services/api.service.js";
 
@@ -142,7 +141,7 @@ import OrderObject from "@/objects/Order";
 import { OrderStatusEnum } from "@/enums/index";
 
 export default {
-  name: "OrderEdit",
+  name: "OrdersEditView",
 
   components: {
     TKOrderBasketEdit,
@@ -164,7 +163,9 @@ export default {
     view.title = "Заказ";
     view.subTitle = "Редактирование заказа";
 
-    return { view, checkAuthRole };
+    const { navigateTo } = useNavigation();
+
+    return { view, checkAuthRole, navigateTo };
   },
 
   data() {
@@ -190,7 +191,7 @@ export default {
       let menu = [{ name: "Не выбран", value: null }].concat(
         this.deliveryMethods.map((item) => {
           return { name: item.name, value: item.id };
-        })
+        }),
       );
       return menu;
     },
@@ -198,7 +199,7 @@ export default {
       let menu = [{ name: "Не выбран", value: null }].concat(
         this.paymentMethods.map((item) => {
           return { name: item.name, value: item.id };
-        })
+        }),
       );
       return menu;
     },
@@ -229,7 +230,7 @@ export default {
   },
 
   created() {
-    console.log("[OrderEdit]: Created Params.id: " + this.$route.params);
+    // console.log("[OrderEdit]: Created Params.id: " + this.$route.params);
     // Get ID from params
     // this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
     this.reset();
@@ -262,13 +263,6 @@ export default {
       }
       // item
       // this.investor.id = item.id;
-    },
-    back() {
-      if (this.orderId) {
-        this.$router.push({ name: "order_details", id: this.orderId });
-      } else {
-        this.$router.push({ name: "orders" });
-      }
     },
     basketChanged(basket) {
       //
@@ -349,7 +343,7 @@ export default {
 
       try {
         let result = await apiService.createOrder(this.order);
-        this.$router.push({ name: "order_details", params: { id: result.id } });
+        this.navigateTo.Orders.Details({ orderId: result.id });
       } catch (error) {
         // console.error("!!!! " + error);
         this.$UIService.showNetworkError(error);
@@ -362,7 +356,7 @@ export default {
       this.isLoading = true;
       try {
         await apiService.updateOrder(this.order);
-        this.$router.push({ name: "order_details", params: { id: this.order.id } });
+        this.navigateTo.Orders.Details({ orderId: this.order.id });
       } catch (error) {
         this.$UIService.showNetworkError(error);
       } finally {

@@ -27,18 +27,19 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useRouter } from "vue-router";
 import { useView } from "@/composables/view";
+import { useNavigation } from "@/composables/navigation";
 
 import TKCustomersList from "@/components/TKCustomersList.vue";
 
-import { AccessRightsEnum } from "@/enums/index";
+import AccessRights from "@/enums/AccessRights";
 
 // name: "TKCustomersView",
 
 /// SETUP
-const router = useRouter();
+// const router = useRouter();
 const { view, checkAuthRole } = useView("CustomersView");
+const { navigateTo } = useNavigation();
 
 view.title = "Клиенты";
 view.subTitle = "Список клиентов";
@@ -49,17 +50,20 @@ const searchString = ref("");
 /// COMPUTED
 
 const checkAuthNewCustomer = computed(() => {
-  return checkAuthRole(AccessRightsEnum.CustomersEdit);
+  return checkAuthRole(AccessRights.Customers.Edit);
 });
 
 /// FUNCTIONS
 
 function newCustomer() {
-  router.push({ name: "customers_new" });
+  // router.push({ name: "customers_new" });
+  navigateTo.Customers.New();
+
 }
 
 function handleDetails(item) {
   console.log("row clicked: " + item.id);
-  router.push({ name: "customers_details", params: { id: item.id } });
+  // router.push({ name: "customers_details", params: { id: item.id } });
+  navigateTo.Customers.Details({ customerId: item.id });
 }
 </script>

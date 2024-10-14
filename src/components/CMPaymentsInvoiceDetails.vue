@@ -33,7 +33,7 @@
         <td>ID Заказа</td>
         <td>
           {{ invoice.subject_id }}
-          <a v-if="invoice.subject_type == 'order'" @click.stop="go('order')"> Перейти к заказу </a>
+          <a v-if="invoice.subject_type == 'order'" @click.stop="goto('order')"> Перейти к заказу </a>
         </td>
       </tr>
 
@@ -74,45 +74,40 @@
   </table>
 </template>
 
-<script>
-// import CMAcquiringTypeStatus from "@/components/CMAcquiringTypeStatus.vue";
+<script setup>
+import { useNavigation } from "@/composables/navigation";
+
 import CMInvoiceStatus from "@/components/CMInvoiceStatus.vue";
 import CMInvoicePaymentMethod from "@/components/CMInvoicePaymentMethod.vue";
 
-export default {
-  name: "CMPaymentsInvoiceDetails",
+// name: "CMPaymentsInvoiceDetails",
 
-  components: {
-    // CMAcquiringTypeStatus,
-    CMInvoiceStatus,
-    CMInvoicePaymentMethod,
+/// PROPS
+
+const props = defineProps({
+  invoice: {
+    type: Object,
+    default: () => {},
   },
-
-  props: {
-    invoice: {
-      type: Object,
-      default: () => {},
-    },
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
+  isLoading: {
+    type: Boolean,
+    default: false,
   },
+});
 
-  methods: {
-    go(type) {
-      switch (type) {
-        case "order":
-          this.$router.push({
-            name: "order_details",
-            params: { id: this.invoice.subject_id },
-          });
-          break;
+/// SETUP
 
-        default:
-          return;
-      }
-    },
-  },
-};
+const { navigateTo } = useNavigation();
+
+function goto(type) {
+  switch (type) {
+    case "order":
+      navigateTo.Orders.Details({ orderId: props.invoice.subject_id });
+      break;
+
+    default:
+      console.warn("[CMPaymentsInvoiceDetails]: goto type not supported: ", type);
+      return;
+  }
+}
 </script>

@@ -1,10 +1,7 @@
 <template>
-  <LayoutPage no-paddings>
+  <LayoutPage no-paddings toggle-panel-button :view-id="_viewId">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Toggle -->
-      <YTogglePanelButton :show="view.showSidePanel" @click="toggleSidePanel" />
-
       <!-- Refresh -->
       <UIButton icon="refresh" type="icon basic" title="Обновить список" @click="reload" />
       <!-- <UISpacer /> -->
@@ -37,7 +34,7 @@
     <!-- /Toolbar -->
 
     <!-- Side Menu -->
-    <template v-if="view.showSidePanel" #side>
+    <template #side>
       <LayoutSideMenu v-model="menuSelectedId" :items="menu" :sticky-at="56" />
     </template>
 
@@ -55,34 +52,39 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import { useRouter } from "vue-router";
+import { ref, watchEffect, watch, computed } from "vue";
+import { useStorage, StorageSerializers } from "@vueuse/core";
 
-import apiService from "@/services/api.service.js";
 import { useView } from "@/composables/view";
+import { useNavigation } from "@/composables/navigation";
+
+import AccessRights from "@/enums/AccessRights";
+
 import combineMenu from "@/utils/combine";
+import apiService from "@/services/api.service.js";
+
 import TKOrdersList from "@/components/TKOrdersList.vue";
-
-import AccessRightsEnum from "@/enums/AccessRights";
-import RouteNames from "@/router/routeNames";
-
-const _storageID = "OrdersView.list.selected_menu";
 
 // name: "OrdersView",
 
 /// SETUP
 
-const router = useRouter();
-const { view, checkAuthRole, toggleSidePanel, storageSaveValue, storageLoadValue } = useView("OrdersView");
+const _viewId = "OrdersListView";
+const _storageID = _viewId + ".list.selected_menu";
 
-view.title = "Заказы";
-view.subTitle = "Работа с заказами";
+const { checkAuthRole } = useView(_viewId, {
+  title: "Заказы",
+  subTitle: "Работа с заказами",
+});
+const { navigateTo } = useNavigation();
 
 /// DATA
+const searchString = useStorage(_viewId + ".list.search", "");
+const menuSelectedId = useStorage(_storageID, null, undefined, {
+  serializer: StorageSerializers.number,
+});
 
-const searchString = ref("");
 const seq = ref(0);
-const menuSelectedId = ref(999);
 const currentPage = ref(0);
 const totalPages = ref(0);
 
@@ -101,7 +103,7 @@ const menu = ref([
 /// COMPUTED
 
 const checkAuthNewOrder = computed(() => {
-  return checkAuthRole(AccessRightsEnum.OrdersEdit);
+  return checkAuthRole(AccessRights.OrdersEdit);
 });
 
 const isPageLast = computed(() => {
@@ -114,14 +116,18 @@ const pageText = computed(() => {
 
 /// WATCHERS
 
+watchEffect(async () => {
+  console.warn("watchEffect", menuSelectedId.value);
+  await fetchOrdersCount();
+});
+
 watch(
   () => menuSelectedId.value,
   (newValue, oldValue) => {
     console.warn(newValue);
     currentPage.value = 0;
-    storageSaveValue(_storageID, newValue);
     fetchOrdersCount();
-  }
+  },
 );
 
 watch(
@@ -129,7 +135,7 @@ watch(
   (newValue, oldValue) => {
     console.warn(newValue);
     currentPage.value = 0;
-  }
+  },
 );
 
 /// FUNCTIONS
@@ -142,12 +148,12 @@ async function fetchOrdersCount() {
 }
 
 function newOrder() {
-  router.push({ name: "order_new" });
+  // router.push({ name: "order_new" });
+  navigateTo.Orders.New();
 }
 
 function handleDetails(item) {
-  // console.log("row clicked: " + item.id);
-  router.push({ name: "order_details", params: { id: item.id } });
+  navigateTo.Orders.Details({ orderId: item.id });
 }
 
 function handlePagerEvent(event) {
@@ -166,8 +172,4 @@ function pageUp() {
 function pageDown() {
   currentPage.value--;
 }
-
-/// RUN
-
-menuSelectedId.value = storageLoadValue(_storageID);
 </script>

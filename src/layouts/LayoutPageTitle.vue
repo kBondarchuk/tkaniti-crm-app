@@ -1,25 +1,22 @@
 <template>
   <div id="header" class>
     <h2 class="ui header" style="display: inline-block; margin-bottom: 0; margin-top: 0; flex: 1">
-      {{ title }}
-      <div v-if="subTitle" class="sub header">{{ subTitle }}</div>
+      {{ uiStore.title }}
+      <div v-if="uiStore.subTitle || $slots.subtitle" class="sub header">
+        <slot name="subtitle"></slot> {{ uiStore.subTitle }}
+      </div>
     </h2>
     <div><slot></slot></div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "LayoutPageTitle",
-  computed: {
-    title() {
-      return this.$store.state.title;
-    },
-    subTitle() {
-      return this.$store.state.subTitle;
-    },
-  },
-};
+<script setup>
+// name: "LayoutPageTitle",
+import { useUiStore } from "@/stores/uiStore";
+
+/// SETUP
+
+const uiStore = useUiStore();
 </script>
 
 <style scoped>

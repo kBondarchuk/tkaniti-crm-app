@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <PagesPage>
     <!-- info -->
     <table class="ui compact small collapsing definition table">
       <tbody>
@@ -76,15 +76,17 @@
       </tbody>
     </table>
     <!--  -->
-  </div>
+  </PagesPage>
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
+import PagesPage from "@/components/PagesPage.vue";
+
 export default {
   name: "CMPrefsSystem",
 
-  components: {},
+  components: { PagesPage },
 
   data() {
     return {

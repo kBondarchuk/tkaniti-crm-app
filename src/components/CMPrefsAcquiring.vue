@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <PagesPage>
     <UIButton
       text="Новые настройки эквайринга"
       icon="plus"
@@ -36,13 +36,14 @@
       @did-change="itemCreated"
     />
     <!------->
-  </div>
+  </PagesPage>
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 import CMPrefsAcquiringListItem from "@/components/CMPrefsAcquiringListItem.vue";
 import ModalPrefsAcquiringItemEdit from "@/components/ModalPrefsAcquiringItemEdit.vue";
+import PagesPage from "@/components/PagesPage.vue";
 
 export default {
   name: "CMPrefsAcquiring",
@@ -50,6 +51,7 @@ export default {
   components: {
     CMPrefsAcquiringListItem,
     ModalPrefsAcquiringItemEdit,
+    PagesPage,
   },
 
   emits: ["eventEdit", "eventDelete"],

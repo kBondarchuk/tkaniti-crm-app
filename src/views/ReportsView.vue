@@ -14,22 +14,18 @@
 import { ref, computed, watch } from "vue";
 import { useView } from "@/composables/view";
 
-import LayoutPage from "@/layouts/LayoutPage.vue";
-import LayoutSideMenu from "@/layouts/LayoutSideMenu.vue";
 import TKReportDaily from "@/components/TKReportDaily.vue";
 import TKReportMonthly from "@/components/TKReportMonthly.vue";
 import TKReportQuantityMonthly from "@/components/TKReportQuantityMonthly.vue";
 import TKReportQuantityDaily from "@/components/TKReportQuantityDaily.vue";
 import TKReportPicking from "@/components/TKReportPicking.vue";
 import TKReportPacking from "@/components/TKReportPacking.vue";
-import AccessRightsEnum from "@/enums/AccessRights";
+import AccessRights from "@/enums/AccessRights";
 
 export default {
   name: "ReportsView",
 
   components: {
-    LayoutPage,
-    LayoutSideMenu,
     TKReportDaily,
     TKReportMonthly,
     TKReportQuantityMonthly,
@@ -50,10 +46,6 @@ export default {
 
     /// COMPUTED
 
-    // const checkAuthNewCustomer = computed(() => {
-    //   return checkAuthRole(AccessRightsEnum.CustomersEdit);
-    // });
-
     return { view, menuSelectedId, checkAuthRole };
   },
 
@@ -67,42 +59,42 @@ export default {
           component: "TKReportDaily",
           name: "По дням",
           icon: "table",
-          access: AccessRightsEnum.Reports.Finances,
+          access: AccessRights.Reports.Finances,
         },
         {
           id: 2,
           component: "TKReportMonthly",
           name: "По месяцам",
           icon: "table",
-          access: AccessRightsEnum.Reports.Finances,
+          access: AccessRights.Reports.Finances,
         },
         {
           id: 3,
           component: "TKReportQuantityMonthly",
           name: "Кол-во по месяцам",
           icon: "table",
-          access: AccessRightsEnum.Reports.Finances,
+          access: AccessRights.Reports.Finances,
         },
         {
           id: 4,
           component: "TKReportQuantityDaily",
           name: "Кол-во по дням",
           icon: "table",
-          access: AccessRightsEnum.Reports.Finances,
+          access: AccessRights.Reports.Finances,
         },
         {
           id: 5,
           component: "TKReportPicking",
           name: "Товар к сборке",
           icon: "table",
-          access: AccessRightsEnum.Reports.Logistics,
+          access: AccessRights.Reports.Logistics,
         },
         {
           id: 6,
           component: "TKReportPacking",
           name: "Задание на упаковку",
           icon: "table",
-          access: AccessRightsEnum.Reports.Logistics,
+          access: AccessRights.Reports.Logistics,
         },
         // {
         //   id: 2,

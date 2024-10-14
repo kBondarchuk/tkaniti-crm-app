@@ -9,7 +9,7 @@
     bordered
   >
     <!--  -->
-    <tr v-for="item in orders" :key="item.id" @click="go('order_details', item.order_id)">
+    <tr v-for="item in orders" :key="item.id" @click="gotoOrderDetails(item.order_id)">
       <td>{{ item.order_id }}</td>
       <td><TKOrderStatus :value="item.order_status_id" /></td>
       <td>{{ $filters.date(item.order_date) }}</td>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { useNavigation } from "@/composables/navigation";
 import apiService from "@/services/api.service.js";
 import TKOrderStatus from "@/components/TKOrderStatus.vue";
 
@@ -40,6 +41,18 @@ export default {
       type: Number,
       default: null,
     },
+  },
+
+  setup() {
+    const { navigateTo } = useNavigation();
+
+    /// FUNCTIONS
+
+    function gotoOrderDetails(orderId) {
+      navigateTo.Orders.Details({ orderId: orderId });
+    }
+
+    return { gotoOrderDetails };
   },
 
   data() {
@@ -65,12 +78,6 @@ export default {
   },
 
   methods: {
-    go(pathName, id) {
-      this.$router.push({
-        name: pathName,
-        params: { id: id },
-      });
-    },
     // Networking
     async refetch() {
       this.isLoading = true;

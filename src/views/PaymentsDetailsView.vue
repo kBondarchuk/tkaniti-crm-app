@@ -2,9 +2,6 @@
   <LayoutPage back-button="payments_invoices" view-id="PaymentDetails">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton to="payments_invoices" />
-
       <UISpacer />
       <!-- Кассовый чек -->
       <UIButton

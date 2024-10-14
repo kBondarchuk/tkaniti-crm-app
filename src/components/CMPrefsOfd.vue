@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <PagesPage>
     <UIButton
       text="Новые настройки кассы"
       icon="plus"
@@ -36,13 +36,14 @@
       @did-change="itemCreated"
     />
     <!------->
-  </div>
+  </PagesPage>
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 import CMPrefsOfdListItem from "@/components/CMPrefsOfdListItem.vue";
 import ModalOfdPrefItemEdit from "@/components/ModalOfdPrefItemEdit.vue";
+import PagesPage from "@/components/PagesPage.vue";
 
 export default {
   name: "CMPrefsOfd",
@@ -50,6 +51,7 @@ export default {
   components: {
     CMPrefsOfdListItem,
     ModalOfdPrefItemEdit,
+    PagesPage,
   },
 
   emits: ["eventEdit", "eventDelete"],

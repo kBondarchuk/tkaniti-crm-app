@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <PagesPage>
     <UIButton
       text="Новые настройки СБП"
       icon="plus"
@@ -29,27 +29,29 @@
       />
     </UITableList>
     <!-- New Expense Modal -->
-    <ModalSbpPrefItemEdit
+    <ModalPrefsSbpItemEdit
       :active="modals.item"
       :selected-item="selectedItem"
       @hide="modals.item = false"
       @did-change="itemCreated"
     />
     <!------->
-  </div>
+  </PagesPage>
 </template>
 
 <script>
 import apiService from "@/services/api.service.js";
 import CMPrefsSbpListItem from "@/components/CMPrefsSbpListItem.vue";
-import ModalSbpPrefItemEdit from "@/components/ModalSbpPrefItemEdit.vue";
+import ModalPrefsSbpItemEdit from "@/components/ModalPrefsSbpItemEdit.vue";
+import PagesPage from "@/components/PagesPage.vue";
 
 export default {
   name: "CMPrefsPaymentsSbp",
 
   components: {
     CMPrefsSbpListItem,
-    ModalSbpPrefItemEdit,
+    ModalPrefsSbpItemEdit,
+    PagesPage,
   },
 
   emits: ["eventEdit", "eventDelete"],

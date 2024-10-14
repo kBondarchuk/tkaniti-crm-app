@@ -1,9 +1,7 @@
 <template>
-  <LayoutPage no-vertical-paddings>
+  <LayoutPage no-vertical-paddings back-button="goods" view-id="GoodsEditView">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton :to="isEditMode ? RouteNames.Goods.Details : RouteNames.Goods.List" force />
       <UISpacer />
       <!-- Save -->
       <UIButton text="Сохранить" type="primary" :class="validateSubmit" @click.prevent="actionsSave" />
@@ -88,12 +86,15 @@
 import apiService from "@/services/api.service.js";
 
 import { useView } from "@/composables/view";
+import { useNavigation } from "@/composables/navigation";
+
 import RouteNames from "@/router/routeNames";
 
 import GoodObject from "@/objects/Good";
+import Alerts from "@/utils/alerts";
 
 export default {
-  name: "GoodEditView",
+  name: "GoodsEditView",
 
   props: {
     goodId: {
@@ -103,12 +104,21 @@ export default {
   },
 
   setup() {
-    const { view } = useView("CarsView");
+    /// SETUP
 
-    view.title = "Товар";
-    view.subTitle = "Редактирование товара";
+    const { view } = useView("CarsView", {
+      title: "Товар",
+      subTitle: "Редактирование товара",
+    });
+    const { navigateTo } = useNavigation();
 
-    return { view };
+    /// FUNCTIONS
+
+    function gotoGoodDetails(goodId) {
+      navigateTo.Goods.Details({ goodId: goodId }, true);
+    }
+
+    return { view, useNavigation, gotoGoodDetails };
   },
 
   data() {
@@ -134,7 +144,7 @@ export default {
       let menu = [{ name: "Не выбран", value: null }].concat(
         this.categories.map((item) => {
           return { name: item.name, value: item.id };
-        })
+        }),
       );
       return menu;
     },
@@ -227,7 +237,7 @@ export default {
       try {
         this.good = await apiService.getGood(good_id);
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       }
       this.isLoading = false;
     },
@@ -236,7 +246,7 @@ export default {
       try {
         this.categories = await apiService.getGoodCategories();
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       }
       this.isLoading = false;
     },
@@ -246,10 +256,10 @@ export default {
       try {
         let result = await apiService.createGood(this.good);
         this.good = result;
-        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
+        this.gotoGoodDetails(result.id);
       } catch (error) {
         console.error("!!!! " + error);
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       }
       this.isLoading = false;
     },
@@ -258,10 +268,9 @@ export default {
       this.isLoading = true;
       try {
         let result = await apiService.updateGood(this.good.id, this.good);
-        this.good = result;
-        this.$router.push({ name: RouteNames.Goods.Details, params: { id: result.id } });
+        this.gotoGoodDetails(result.id);
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       }
       this.isLoading = false;
     },

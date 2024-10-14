@@ -115,10 +115,6 @@ export default {
 
     /// COMPUTED
 
-    // const checkAuthNewCustomer = computed(() => {
-    //   return checkAuthRole(AccessRightsEnum.CustomersEdit);
-    // });
-
     return { view, menuSelectedId, checkAuthRole };
   },
 

@@ -1,9 +1,7 @@
 <template>
-  <LayoutPage no-vertical-paddings>
+  <LayoutPage no-vertical-paddings back-button="customers" view-id="CustomersEditView">
     <!-- Toolbar -->
     <template #toolbar>
-      <!-- Back -->
-      <YBackButton to="customers" />
       <UISpacer />
       <!-- Save -->
       <UIButton
@@ -85,32 +83,52 @@ import { ref, computed, watch } from "vue";
 
 import apiService from "@/services/api.service.js";
 import { useView } from "@/composables/view";
-import { AccessRightsEnum } from "@/enums/index";
+import { useNavigation } from "@/composables/navigation";
+
+import AccessRights from "@/enums/AccessRights";
 
 import CustomerObject from "@/objects/Customer";
+import Alerts from "@/utils/alerts";
 
 export default {
   name: "CMCustomersEditView",
 
-  setup() {
-    const { view, checkAuthRole } = useView("CustomersEditView");
+  /// PROPS
 
-    view.title = "Клиент";
-    view.subTitle = "Редактирование клиента";
+  props: {
+    customerId: {
+      type: Number,
+      default: null,
+    },
+  },
+
+  setup() {
+    /// SETUP
+
+    const { view, checkAuthRole } = useView("CustomersEditView", {
+      title: "Клиент",
+      subTitle: "Редактирование клиента",
+    });
+    const { navigateTo } = useNavigation();
 
     /// COMPUTED
 
     const checkAuthNewCustomer = computed(() => {
-      return checkAuthRole(AccessRightsEnum.CustomersEdit);
+      return checkAuthRole(AccessRights.Customers.Edit);
     });
 
-    return { view, checkAuthRole, checkAuthNewCustomer };
+    /// FUNCTIONS
+
+    function gotoCustomerDetails(customerId) {
+      navigateTo.Customers.Details({ customerId: customerId }, true);
+    }
+
+    return { view, checkAuthRole, checkAuthNewCustomer, gotoCustomerDetails };
   },
 
   data() {
     return {
       customer: Object.assign({}, CustomerObject),
-      paramId: null,
       isLoading: false,
     };
   },
@@ -122,63 +140,25 @@ export default {
         disabled: !this.customer.first_name || !this.customer.last_name,
       };
     },
-    validateBranch() {
-      return {
-        success: this.customer.branch_id != null && this.customer.branch_id >= 0,
-        error: this.customer.branch_id === null || this.customer.branch_id === undefined,
-      };
-    },
-    // isEditable() {
-    //   return this.checkAuthRole("customers") || !this.customer.id > 0;
-    // },
-  },
-
-  created() {
-    console.log("[Customers Edit]: Created Params.id: " + this.$route.params.id);
-    // Get ID from params
-    this.paramId = this.$route.params.id === undefined ? null : parseInt(this.$route.params.id);
   },
 
   mounted() {
     this.setTitle();
-    if (this.paramId) {
-      this.fetchItem(this.paramId);
+    if (this.customerId) {
+      this.fetchItem(this.customerId);
     }
   },
 
   methods: {
     setTitle() {
-      if (this.paramId === null) {
+      if (this.customerId === null) {
         this.view.title = "Новый клиент";
         this.view.subTitle = "Создание нового клиента";
       } else {
-        this.view.title = "Клиент" + " " + this.paramId;
+        this.view.title = "Клиент" + " " + this.customerId;
       }
     },
-    //
-    // browseCustomers() {
-    //   this.modals.browseCustomers = true;
-    // },
-    // ---
-    fillAddress() {
-      //* this.$set(this.customer, "address_fact_region", this.customer.address_reg_region || null);
-      //* this.$set(this.customer, "address_fact_area", this.customer.address_reg_area || null);
-      //* this.$set(this.customer, "address_fact_city_type", this.customer.address_reg_city_type || null);
-      //* this.$set(this.customer, "address_fact_city", this.customer.address_reg_city || null);
-      //* this.$set(this.customer, "address_fact", this.customer.address_reg || null);
-      this.customer["address_fact_region"] = this.customer.address_reg_region || null;
-      this.customer["address_fact_area"] = this.customer.address_reg_area || null;
-      this.customer["address_fact_city_type"] = this.customer.address_reg_city_type || null;
-      this.customer["address_fact_city"] = this.customer.address_reg_city || null;
-      this.customer["address_fact"] = this.customer.address_reg || null;
-    },
-    back() {
-      if (this.paramId) {
-        this.$router.push({ name: "customers_details", id: this.paramId });
-      } else {
-        this.$router.push({ name: "customers" });
-      }
-    },
+
     actionsSave() {
       console.log("[SAVE] ", JSON.stringify(this.customer));
       if (this.customer.id == null) {
@@ -195,7 +175,7 @@ export default {
       try {
         this.customer = await apiService.getCustomer(customer_id);
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       } finally {
         this.isLoading = false;
       }
@@ -205,15 +185,11 @@ export default {
       this.isLoading = true;
       try {
         let result = await apiService.createCustomer(this.customer);
-        // this.customer = result;
         console.log(result);
 
-        this.$router.push({
-          name: "customers_details",
-          params: { id: result.id },
-        });
+        this.gotoCustomerDetails(result.id);
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       } finally {
         this.isLoading = false;
       }
@@ -223,12 +199,9 @@ export default {
       this.isLoading = true;
       try {
         await apiService.updateCustomer(this.customer);
-        this.$router.push({
-          name: "customers_details",
-          params: { id: this.customer.id },
-        });
+        this.gotoCustomerDetails(this.customer.id);
       } catch (error) {
-        this.$UIService.showNetworkError(error);
+        Alerts.showNetworkError(error);
       } finally {
         this.isLoading = false;
       }
