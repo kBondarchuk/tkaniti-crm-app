@@ -1,46 +1,43 @@
 <template>
   <div class="ui top tabular menu" style="padding-top: 1em; padding-left: 1.5em">
-    <div
-      v-for="tab in tabs"
-      :key="tab.id"
-      class="item"
-      :class="{ active: tabIsActive(tab.id), disabled: tab.disabled }"
-      @click="selected(tab.id)"
-    >
-      {{ tab.name }}
-    </div>
+    <router-link v-for="tab in tabs" :key="tab.id" v-slot="{ navigate, isActive }" :to="tab.id" custom replace>
+      <div
+        role="link"
+        class="item"
+        :class="{ active: isActive, disabled: tab.disabled }"
+        @click="navigate"
+        @keypress.enter="navigate"
+      >
+        {{ tab.name }} <span v-if="tab.label" class="text-color-grey">&nbsp;{{ tab.label }}</span>
+      </div>
+    </router-link>
   </div>
 </template>
 
-<script>
-export default {
-  name: "YDetailsTabs",
+<script setup>
+// name: "YDetailsTabs",
 
-  props: {
-    tabs: {
-      type: Array,
-      default: () => [],
-    },
+const props = defineProps({
+  tabs: {
+    type: Array,
+    default: () => [],
   },
-
-  emits: ["tabSelect"],
-
-  methods: {
-    tabIsActive(tabId) {
-      const paths = this.$route.path.split("/");
-      return paths[paths.length - 1] == tabId;
-    },
-    selected(tabId) {
-      if (!this.tabIsActive(tabId)) {
-        this.$emit("tabSelect", tabId);
-      }
-    },
-  },
-};
+});
 </script>
 
 <style scoped>
 .item:not(.active) {
   cursor: pointer;
+}
+.item:not(.active):hover {
+  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: var(--color-lightgrey) !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 4px;
+}
+.item.active {
+  cursor: default;
 }
 </style>
