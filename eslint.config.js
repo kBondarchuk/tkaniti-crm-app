@@ -2,14 +2,15 @@
 import js from "@eslint/js";
 import pluginVue from "eslint-plugin-vue";
 import globals from "globals";
-import { FlatCompat } from "@eslint/eslintrc";
+// import { FlatCompat } from "@eslint/eslintrc";
+import prettierConfig from "@vue/eslint-config-prettier";
 
 // For FlatCompat
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const compat = new FlatCompat({ baseDirectory: __dirname });
+// const compat = new FlatCompat({ baseDirectory: __dirname });
 
 // import globals from "globals";
 // import pluginJs from "@eslint/js";
@@ -25,9 +26,10 @@ const compat = new FlatCompat({ baseDirectory: __dirname });
 export default [
   js.configs.recommended,
   ...pluginVue.configs["flat/recommended"],
+  prettierConfig,
 
   /// remove compat stuff when vue/eslint-config-prettier flat config will be ready
-  ...compat.extends("@vue/eslint-config-prettier"),
+  // ...compat.extends("@vue/eslint-config-prettier"),
   {
     // root: true,
 
