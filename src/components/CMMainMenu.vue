@@ -1,6 +1,6 @@
 <template>
   <div id="mainmenu" class="ui fixed inverted menu">
-    <div id="nav" class="ui fluid container">
+    <nav id="nav" class="ui fluid container">
       <!-- Home -->
       <CMMainMenuLogoItem :text="appName" />
 
@@ -14,7 +14,7 @@
 
       <!-- Prefs submenu -->
       <CMMainMenuPrefsItem />
-    </div>
+    </nav>
     <!-- <div id="progress" class="ui blue swinging inverted indeterminate bottom attached progress">
       <div class="bar"></div>
     </div> -->
@@ -25,129 +25,107 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, watch, computed } from "vue";
+
 import CMMainMenuItem from "@/components/CMMainMenuItem.vue";
 import CMMainMenuSubmenu from "@/components/CMMainMenuSubmenu.vue";
 import CMMainMenuPrefsItem from "@/components/CMMainMenuPrefsItem.vue";
 import CMMainMenuLogoItem from "@/components/CMMainMenuLogoItem.vue";
 
+import { useUiStore } from "@/stores/uiStore";
+import { useAuthStore } from "@/stores/auth";
+
 // import * as _menuObject from "../main_menu.json";
 
-export default {
-  name: "CMMainMenu",
+// name: "CMMainMenu",
 
-  components: {
-    CMMainMenuItem,
-    CMMainMenuSubmenu,
-    CMMainMenuPrefsItem,
-    CMMainMenuLogoItem,
+const uiStore = useUiStore();
+const authStore = useAuthStore();
+
+// Set Safari toolbar color
+document.getElementsByTagName("meta")["theme-color"].content = "rgb(54,54,54)";
+
+/// DATA
+
+let menuObject = null;
+const menu = ref({ items: [] });
+
+/// COMPUTED
+
+const loadingState = computed(() => {
+  return uiStore.globalLoading;
+});
+
+const appName = computed(() => {
+  return uiStore.appName;
+});
+
+/// WATCHERS
+
+watch(
+  () => authStore.getAuthData,
+  (newValue, oldValue) => {
+    console.log("[MainMenu]: *** Auth data changed to: ", newValue);
+    if (newValue !== null) {
+      makeMenu();
+    } else {
+      console.log("[MainMenu]: *** No Auth data! ");
+    }
   },
+  { immediate: true }
+);
 
-  data() {
-    return {
-      menuObject: null,
-      menu: { items: [] },
-    };
-  },
+/// FUNCTIONS
 
-  computed: {
-    authData() {
-      return this.$store.getters["auth/getAuthData"];
-    },
-    authRights() {
-      return this.$store.getters["auth/getAuthRights"];
-    },
-    loadingState() {
-      return this.$store.getters["getLoadingState"];
-    },
-    appName() {
-      return this.$store.state.appName;
-    },
-  },
+async function makeMenu() {
+  if (!menuObject) {
+    //
+    var main_menu_file = "main_menu";
 
-  watch: {
-    authData: {
-      immediate: true,
-      handler(newValue) {
-        console.log("[MainMenu]: *** Auth data changed to: ", newValue);
-        if (newValue !== null) {
-          this.makeMenu();
-        } else {
-          console.log("[MainMenu]: *** No Auth data! "); // Redirecting to logoff...
+    if (uiStore.isAppModeCustom) {
+      main_menu_file = "main_menu_customers";
+    }
 
-          // this.$router.push({ path: "/logoff" });
-        }
-      },
-    },
-  },
+    menuObject = await import(`../${main_menu_file}.json`);
+  }
 
-  methods: {
-    subIsActive(input) {
-      const paths = Array.isArray(input) ? input : [input];
+  menu.value = parseMenu(menuObject.default.items);
+}
 
-      return paths.some((path) => {
-        return this.$route.path.indexOf(path) === 0; // current path starts with this path string
-      });
-    },
-    // makeActive: function (event) {
-    //   if (event.srcElement.classList.contains("active")) {
-    //     event.srcElement.classList.remove("active");
-    //   } else {
-    //     event.srcElement.classList.add("active");
-    //   }
-    // },
-    checkAccess(role) {
-      return this.authRights.includes(role);
-    },
-    parseMenu(menuItems) {
-      const parsedMenu = { items: [] };
+function parseMenu(menuItems) {
+  const parsedMenu = { items: [] };
 
-      menuItems.forEach((item) => {
-        if (item.items) {
-          const newItem = Object.assign({}, item);
-          newItem.items = this.parseMenu(item.items).items;
+  menuItems.forEach((item) => {
+    if (item.items) {
+      const newItem = Object.assign({}, item);
+      newItem.items = parseMenu(item.items).items;
 
-          if (newItem.items.length > 0) {
-            parsedMenu.items.push(newItem);
-          }
-        } else {
-          if (this.checkMenuItem(item)) {
-            parsedMenu.items.push(item);
-          }
-        }
-
-        return true;
-      });
-      return parsedMenu;
-    },
-    checkMenuItem(item) {
-      return this.checkAccess(item.access) || item.access === undefined;
-    },
-    async makeMenu() {
-      if (!this.menuObject) {
-        //
-        var main_menu_file = "main_menu";
-
-        if (import.meta.env.VUE_APP_MODE === "customers") {
-          var main_menu_file = "main_menu_customers";
-        }
-
-        // console.warn(main_menu_file);
-
-        this.menuObject = await import(`../${main_menu_file}.json`);
-        // console.log("MENU:   ", JSON.stringify(this.menuObject.default));
+      if (newItem.items.length > 0) {
+        parsedMenu.items.push(newItem);
       }
+    } else {
+      if (checkMenuItem(item)) {
+        parsedMenu.items.push(item);
+      }
+    }
 
-      // console.log("+++ ", this.authRights);
-      // console.log(this.checkMenu(_menuObject.items));
-      this.menu = this.parseMenu(this.menuObject.default.items);
-      // console.log(">>> menu ", JSON.stringify(this.menu));
-      // console.log(">>> после", JSON.stringify(_menuObject.default));
+    return true;
+  });
+  return parsedMenu;
+}
 
-      // $("#progress").progress();
-    },
-  },
-};
+function checkMenuItem(item) {
+  return checkAccess(item.access) || item.access === undefined;
+}
+
+function checkAccess(role) {
+  if (Array.isArray(role)) {
+    return role.every((item) => authStore.getAuthRights.includes(item));
+  } else {
+    return authStore.getAuthRights.includes(role);
+  }
+}
 </script>
 
 <style scoped>
@@ -159,7 +137,7 @@ div#mainmenu {
 div#mainmenu {
   /* font-family: "SF Pro Text", "Myriad Set Pro", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif; */
   /* font-family: -apple-system, BlinkMacSystemFont, sans-serif; */
-  background-color: rgba(0, 0, 0, 0.79);
+  background: rgba(0, 0, 0, 0.79);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -226,6 +204,7 @@ div#mainmenu :deep(.item > .icon:not(.ui.dropdown.item .item > .icon)) {
   right: calc(-9.5px);
   height: 80%;
   width: 2px;
+  pointer-events: none; /* disable link */
   /* background: red; */
 }
 
@@ -251,49 +230,40 @@ $brand-warning: #ffd600;
 $brand-info: #29b6f6;
 $brand-danger: #ef1c1c;
 $bg-light-gray: #f5f5f5;
-
 .progress {
   background-color: $bg-light-gray;
   border-radius: 3px;
   box-shadow: none;
-
   &.progress-xs {
     height: 5px;
     margin-top: 5px;
   }
-
   &.progress-sm {
     height: 10px;
     margin-top: 5px;
   }
-
   &.progress-lg {
     height: 25px;
   }
-
   &.vertical {
     position: relative;
     width: 20px;
     height: 200px;
     display: inline-block;
     margin-right: 10px;
-
     > .progress-bar {
       width: 100% !important;
       position: absolute;
       bottom: 0;
     }
-
     &.progress-xs {
       width: 5px;
       margin-top: 5px;
     }
-
     &.progress-sm {
       width: 10px;
       margin-top: 5px;
     }
-
     &.progress-lg {
       width: 30px;
     }
@@ -303,24 +273,19 @@ $bg-light-gray: #f5f5f5;
 .progress-bar {
   background-color: $brand-primary;
   box-shadow: none;
-
   &.text-left {
     text-align: left;
-
     span {
       margin-left: 10px;
     }
   }
-
   &.text-right {
     text-align: right;
-
     span {
       margin-right: 10px;
     }
   }
 }
-
 @mixin gradient-striped($color: rgba(255, 255, 255, 0.372), $angle: 45deg) {
   // background-image: -webkit-linear-gradient(
   //   $angle,
@@ -358,7 +323,6 @@ $bg-light-gray: #f5f5f5;
   from {
     background-position: 40px 0;
   }
-
   to {
     background-position: 0 0;
   }
@@ -369,7 +333,6 @@ $bg-light-gray: #f5f5f5;
   from {
     background-position: 40px 0;
   }
-
   to {
     background-position: 0 0;
   }
@@ -380,18 +343,15 @@ $bg-light-gray: #f5f5f5;
   -o-animation: $animation;
   animation: $animation;
 }
-
 .progress.active .progress-bar,
 .progress-bar.active {
   @include animation(progress-bar-stripes 0.2s linear infinite);
 }
-
 .progress-striped .progress-bar,
 .progress-bar-striped {
   @include gradient-striped;
   background-size: 40px 40px;
 }
-
 @mixin progress-bar-variant($color) {
   background-color: $color;
 }
