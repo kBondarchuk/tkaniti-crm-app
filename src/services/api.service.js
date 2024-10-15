@@ -137,7 +137,7 @@ class APIService extends APIServiceCore {
     description,
     progressCallback = (progress) => {
       console.log(progress, "%");
-    }
+    },
   ) {
     // Validate
     if (!album_uuid) {
@@ -817,7 +817,7 @@ class APIService extends APIServiceCore {
 
     let response = await this.service.post(
       REQUESTS.REGISTRATION_REQUESTS + "/" + request_id + "/stages/" + status,
-      params
+      params,
     );
     return response.data.data;
   }
@@ -934,7 +934,7 @@ class APIService extends APIServiceCore {
   async setCustomerOption(customerId, optionName, optionValue) {
     optionValue = optionValue ? 1 : 0;
     let response = await this.service.put(
-      REQUESTS.CUSTOMERS + "/" + customerId + "/options/" + optionName + "/" + optionValue
+      REQUESTS.CUSTOMERS + "/" + customerId + "/options/" + optionName + "/" + optionValue,
     );
     return response.data.data;
   }
@@ -1262,6 +1262,11 @@ class APIService extends APIServiceCore {
 
   async setGoodStatus(good_id, status) {
     let response = await this.service.post(REQUESTS.GOODS + "/" + good_id + "/status/" + status);
+    return response.data.data;
+  }
+
+  async getGoodHistory(good_id) {
+    let response = await this.service.get(REQUESTS.GOODS + "/" + good_id + "/history");
     return response.data.data;
   }
 
