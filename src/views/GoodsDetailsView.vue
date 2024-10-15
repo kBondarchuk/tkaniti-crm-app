@@ -47,8 +47,6 @@ import Alerts from "@/utils/alerts";
 
 import AccessRights from "@/enums/AccessRights";
 
-// import RouteNames from "@/router/routeNames";
-
 import UIOptButtons from "@/components/UIOptButtons.vue";
 
 const kTABS = [

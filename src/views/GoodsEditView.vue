@@ -88,8 +88,6 @@ import apiService from "@/services/api.service.js";
 import { useView } from "@/composables/view";
 import { useNavigation } from "@/composables/navigation";
 
-import RouteNames from "@/router/routeNames";
-
 import GoodObject from "@/objects/Good";
 import Alerts from "@/utils/alerts";
 
@@ -132,7 +130,6 @@ export default {
       //   subTitle: "Редактирование товара",
       // },
       isLoading: false,
-      RouteNames,
     };
   },
 
