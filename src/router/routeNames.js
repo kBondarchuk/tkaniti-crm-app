@@ -1,10 +1,5 @@
-const RouteNames = Object.freeze({
-  Goods: {
-    List: "goods",
-    Details: "goods_details",
-    New: "good_new",
-    Edit: "good_edit",
-  },
-});
+import names from "@/router/names.gen";
+
+const RouteNames = Object.freeze(names);
 
 export default RouteNames;
