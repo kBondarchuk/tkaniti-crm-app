@@ -7,6 +7,7 @@
 ### Added
 
 - Good History tab
+- Клонирование товара
 - CustomersList: search string persistance
 - [DEV]: @crmkit folder
 
