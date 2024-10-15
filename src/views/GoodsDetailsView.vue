@@ -57,6 +57,7 @@ const kTABS = [
   { name: "ФОТО", id: "photos" },
   { name: "ВИДЕО", id: "videos" },
   { name: "ЗАКАЗЫ", id: "orders", access: AccessRights.OrdersView },
+  { name: "ИСТОРИЯ", id: "history" },
 ];
 
 /// SETUP
