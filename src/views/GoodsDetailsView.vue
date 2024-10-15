@@ -15,7 +15,7 @@
       <UISpacer />
 
       <!-- Clone -->
-      <!-- <UIButton type="basic labeled" text="Клонировать" icon="clone" @click="print" /> -->
+      <UIButton type="basic labeled" text="Клонировать" icon="clone" @click="cloneGood" />
       <!-- Print -->
       <UIButton type="basic labeled" text="На сборку" icon="print" @click="print" />
       <!-- Edit -->
@@ -120,6 +120,14 @@ function setTitle() {
 // ---
 function edit() {
   navigateTo.Goods.Edit({ goodId: props.goodId });
+}
+
+function cloneGood() {
+  const text = "Будет создана копия этого товара. Фото и видео альбомы у этих товаров будут общие.";
+  var confirmed = confirm(text);
+  if (confirmed) {
+    postCloneGood(props.goodId);
+  }
 }
 
 async function print() {
@@ -232,5 +240,16 @@ async function postSetStatus(good_id, status) {
   }
 
   fetchGood(props.goodId);
+}
+
+async function postCloneGood(good_id, status) {
+  try {
+    let result = await apiService.cloneGood(good_id);
+
+    navigateTo.Goods.Edit({ goodId: result.id });
+    Alerts.showSuccess(`Товар клонирован!`);
+  } catch (error) {
+    Alerts.showNetworkError(error);
+  }
 }
 </script>

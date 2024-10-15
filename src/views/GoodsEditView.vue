@@ -178,7 +178,9 @@ export default {
           !this.good.price ||
           !this.good.quantity ||
           !this.good.brand ||
-          !this.good.description,
+          !this.good.description ||
+          this.isLoading,
+        loading: this.isLoading,
       };
     },
   },
