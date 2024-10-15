@@ -7,7 +7,13 @@
 ### Added
 
 - Good History tab
+- Клонирование товара
+- CustomersList: search string persistance
 - [DEV]: @crmkit folder
+
+### Changed
+
+- TKReportPacking: Changed to single date
 
 ## [0.27.1] - 2024-10-14
 

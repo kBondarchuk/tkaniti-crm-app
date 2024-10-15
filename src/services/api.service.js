@@ -1270,6 +1270,11 @@ class APIService extends APIServiceCore {
     return response.data.data;
   }
 
+  async cloneGood(good_id) {
+    let response = await this.service.post(REQUESTS.GOODS + "/" + good_id + "/clone");
+    return response.data.data;
+  }
+
   /**
    * Acquiring Transactions
    */
