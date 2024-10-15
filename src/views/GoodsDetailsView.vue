@@ -14,6 +14,8 @@
       />
       <UISpacer />
 
+      <!-- Clone -->
+      <!-- <UIButton type="basic labeled" text="Клонировать" icon="clone" @click="print" /> -->
       <!-- Print -->
       <UIButton type="basic labeled" text="На сборку" icon="print" @click="print" />
       <!-- Edit -->
