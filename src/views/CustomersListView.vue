@@ -27,6 +27,8 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { useStorage, StorageSerializers } from "@vueuse/core";
+
 import { useView } from "@/composables/view";
 import { useNavigation } from "@/composables/navigation";
 
@@ -47,7 +49,7 @@ const { navigateTo } = useNavigation();
 
 /// DATA
 
-const searchString = ref("");
+const searchString = useStorage(_viewId + ".list.search", "");
 
 /// COMPUTED
 

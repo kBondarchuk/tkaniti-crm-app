@@ -62,8 +62,8 @@ const Alerts = {
         var error_url = error.config.url;
       }
       this.showError(
-        error.response.data.message ? error.response.data.message : error_url ?? "ОШИБКА",
-        error.response.data.error + "<br/>" + error
+        error.response.data.message ? error.response.data.message : (error_url ?? "ОШИБКА"),
+        error.response.data.error + "<br/>" + error,
       );
     } else if (error instanceof DOMException) {
       console.error(error);

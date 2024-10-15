@@ -8,6 +8,9 @@
       ],
       "#/*": [
         "src/components/*"
+      ],
+      "%/*": [
+        "src/@crmkit/*"
       ]
     },
     "jsx": "preserve"

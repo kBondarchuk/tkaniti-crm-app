@@ -2,7 +2,7 @@ import { createApp } from "vue";
 // import { createApp, configureCompat } from "vue";
 import App from "./App.vue";
 import { createPinia } from "pinia";
-import { createRouter } from "./router/router";
+import { createRouter } from "%/router/router";
 import { setNavigation } from "./utils/navigation";
 import GlobalComponents from "@/global_components";
 import UIService from "./plugins/UIService";
@@ -49,18 +49,18 @@ console.log(
   `%c ${APP_PRESETS.app_name} APP ${APP_PRESETS.app_version} %c Detected Vue v${app.version} %c`, // ${Vue.version}
   "background:#35495e ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff",
   "background:#41b883 ; padding: 1px; border-radius: 0 3px 3px 0;  color: #fff",
-  "background:transparent"
+  "background:transparent",
 );
 console.log(
   `%c Copyright (c) 2019-2024 Konstantin Bondarchuk %c`,
   "background:#35495e ; padding: 1px; border-radius: 3px;  color: #fff",
-  "background:transparent"
+  "background:transparent",
 );
 console.log(
   `%c API BASE: %c ${import.meta.env.VUE_APP_API_BASE} %c`,
   "background:#b84541 ; padding: 1px; border-radius: 3px 0 0 3px;  color: #fff",
   "background:#fff ; padding: 1px; border-radius: 0 3px 3px 0;  color: #000",
-  "background:transparent"
+  "background:transparent",
 );
 console.log("CLIENT ID: " + import.meta.env.VUE_APP_API_CLIENT_ID);
 console.warn("[main]: APP MODE: ", import.meta.env.MODE);

@@ -3,7 +3,7 @@
   <div>
     <!-- Filter Form -->
     <YReportForm
-      date-mode="double"
+      date-mode="single"
       show-print
       @report-request="requestReport"
       @report-save="saveReport"

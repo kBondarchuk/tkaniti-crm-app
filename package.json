@@ -1,6 +1,6 @@
 {
   "name": "tkaniti-crm-app",
-  "version": "0.27.1",
+  "version": "0.28.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,9 +13,9 @@
     "build2": "bunx vite build --mode production2",
     "lint": "eslint 'src/**/*.{js,vue}'",
     "lint-fix": "eslint --fix 'src/**/*.{js,vue}'",
-    "route-build-names": "bun src/router/genNames.js > src/router/names.gen.js && bunx eslint --fix src/router/names.gen.js",
-    "route-build-navigation": "bun src/router/genNavigation.js > src/router/navigation.gen.js && bunx eslint --fix src/router/navigation.gen.js",
-    "route-build-routes": "bun src/router/genRoutes.js > src/router/routes.gen.js && bunx eslint --fix src/router/routes.gen.js",
+    "route-build-names": "bun src/@crmkit/router/bin/genNames.js > src/router/names.gen.js && bunx eslint --fix src/router/names.gen.js",
+    "route-build-navigation": "bun src/@crmkit/router/bin/genNavigation.js > src/router/navigation.gen.js && bunx eslint --fix src/router/navigation.gen.js",
+    "route-build-routes": "bun src/@crmkit/router/bin/genRoutes.js > src/router/routes.gen.js && bunx eslint --fix src/router/routes.gen.js",
     "route-build-all": "bun run route-build-routes && bun run route-build-navigation && bun run route-build-names",
     "unused VUE": "check-unused-comp ."
   },

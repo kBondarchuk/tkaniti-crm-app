@@ -176,6 +176,11 @@ export const routes = [
             name: "GoodsDetailsTab_Orders",
             component: () => import("../views/GoodsDetailsTab_Orders.vue"),
           },
+          {
+            path: "history",
+            name: "GoodsDetailsTab_History",
+            component: () => import("../views/GoodsDetailsTab_History.vue"),
+          },
         ],
       },
 

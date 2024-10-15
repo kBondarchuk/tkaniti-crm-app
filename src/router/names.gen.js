@@ -38,6 +38,8 @@ export default {
       VideosPath: "videos",
       Orders: "GoodsDetailsTab_Orders",
       OrdersPath: "orders",
+      History: "GoodsDetailsTab_History",
+      HistoryPath: "history",
     },
     Edit: "GoodsEdit",
   },

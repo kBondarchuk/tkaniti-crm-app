@@ -121,6 +121,7 @@ const Views = Object.freeze({
           Photos: "photos",
           Videos: "videos",
           Orders: "orders",
+          History: "history",
         },
       },
 

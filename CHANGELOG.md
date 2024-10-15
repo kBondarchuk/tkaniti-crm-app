@@ -2,6 +2,19 @@
 
 Все заметные изменения в проекте будут отражены в этом файле.
 
+## [0.28.0] - 2024-10-15
+
+### Added
+
+- Good History tab
+- Клонирование товара
+- CustomersList: search string persistance
+- [DEV]: @crmkit folder
+
+### Changed
+
+- TKReportPacking: Changed to single date
+
 ## [0.27.1] - 2024-10-14
 
 ### Fixed
