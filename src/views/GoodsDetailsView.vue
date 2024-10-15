@@ -46,11 +46,12 @@ import apiService from "@/services/api.service.js";
 import Alerts from "@/utils/alerts";
 
 import AccessRights from "@/enums/AccessRights";
+import RouteNames from "%/router/routeNames";
 
-import UIOptButtons from "@/components/UIOptButtons.vue";
+import UIOptButtons from "#/UIOptButtons.vue";
 
 const kTABS = [
-  { name: "ОСНОВНОЕ", id: "general" },
+  { name: "ОСНОВНОЕ", id: RouteNames.Goods.DetailsTabs.GeneralPath },
   { name: "ФОТО", id: "photos" },
   { name: "ВИДЕО", id: "videos" },
   { name: "ЗАКАЗЫ", id: "orders", access: AccessRights.OrdersView },
